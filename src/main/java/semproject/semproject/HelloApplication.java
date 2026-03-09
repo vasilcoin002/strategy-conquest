@@ -28,6 +28,7 @@ public class HelloApplication extends Application {
     public void start(Stage stage) throws IOException {
         Entity mainCharacter = new Entity(1d, "Vasya", 0, 0);
 
+
         HBox root = new HBox();
         root.setPadding(new Insets(10));
         root.setAlignment(Pos.CENTER);
