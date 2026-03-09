@@ -1,8 +1,9 @@
-module semproject.semproject {
+module pjvsemproj.pjvsemproj {
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.graphics;
 
 
-    opens semproject.semproject to javafx.fxml;
-    exports semproject.semproject;
+    opens pjvsemproj to javafx.fxml;
+    exports pjvsemproj;
 }

@@ -1,4 +1,4 @@
-package semproject.semproject;
+package pjvsemproj;
 
 import javafx.application.Application;
 
