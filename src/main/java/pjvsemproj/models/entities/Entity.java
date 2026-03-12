@@ -5,10 +5,15 @@ public abstract class Entity implements Positionable {
     protected int y;
     protected int width;
     protected int height;
-    protected boolean isPassable;
+    protected final boolean isPassable;
 
-    protected int rotation;
+    protected Entity(boolean isPassable) {
+        this.isPassable = isPassable;
+    }
 
-    protected int speed;
+    public void setX(int x) {
+        this.x = x;
+    }
+
 
 }
