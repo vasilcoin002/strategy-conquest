@@ -1,6 +1,5 @@
 package pjvsemproj.models.entities.troopUnits;
 
-import pjvsemproj.models.GameConstants;
 import pjvsemproj.models.entities.Damageable;
 import pjvsemproj.models.entities.Entity;
 import pjvsemproj.models.entities.IDamager;
@@ -8,6 +7,7 @@ import pjvsemproj.models.entities.ILiving;
 
 // TODO add and implement interface Purchasable
 // TODO connect with Game class
+// TODO change methods, that teammates cannot damage each other
 public abstract class TroopUnit extends Entity implements ILiving, IDamager {
 
     protected int health;
