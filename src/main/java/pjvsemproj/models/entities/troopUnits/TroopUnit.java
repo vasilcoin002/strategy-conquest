@@ -6,6 +6,8 @@ import pjvsemproj.models.entities.Entity;
 import pjvsemproj.models.entities.IDamager;
 import pjvsemproj.models.entities.ILiving;
 
+// TODO add and implement interface Purchasable
+// TODO connect with Game class
 public abstract class TroopUnit extends Entity implements ILiving, IDamager {
 
     protected int health;
@@ -18,8 +20,10 @@ public abstract class TroopUnit extends Entity implements ILiving, IDamager {
     protected int maxStamina;
     protected int stamina;
 
-    public TroopUnit() {
+    public TroopUnit(int x, int y) {
         super(false);
+        this.x = x;
+        this.y = y;
     }
 
     @Override
@@ -67,7 +71,7 @@ public abstract class TroopUnit extends Entity implements ILiving, IDamager {
     @Override
     public void moveUp(int step) {
         if (step <= this.stamina) {
-            this.y += step * GameConstants.CELL_SIZE;
+            this.y += step;
             this.stamina -= step;
         }
     }
@@ -75,7 +79,7 @@ public abstract class TroopUnit extends Entity implements ILiving, IDamager {
     @Override
     public void moveDown(int step) {
         if (step <= this.stamina) {
-            this.y -= step * GameConstants.CELL_SIZE;
+            this.y -= step;
             this.stamina -= step;
         }
     }
@@ -83,7 +87,7 @@ public abstract class TroopUnit extends Entity implements ILiving, IDamager {
     @Override
     public void moveLeft(int step) {
         if (step <= this.stamina) {
-            this.x -= step * GameConstants.CELL_SIZE;
+            this.x -= step;
             this.stamina -= step;
         }
     }
@@ -91,7 +95,7 @@ public abstract class TroopUnit extends Entity implements ILiving, IDamager {
     @Override
     public void moveRight(int step) {
         if (step <= this.stamina) {
-            this.x += step * GameConstants.CELL_SIZE;
+            this.x += step;
             this.stamina -= step;
         }
     }
@@ -104,5 +108,25 @@ public abstract class TroopUnit extends Entity implements ILiving, IDamager {
     @Override
     public void refreshStamina() {
         this.stamina = maxStamina;
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    public int getMinDamage() {
+        return minDamage;
+    }
+
+    public int getMaxDamage() {
+        return maxDamage;
+    }
+
+    public int getAttackRange() {
+        return attackRange;
+    }
+
+    public int getMaxStamina() {
+        return maxStamina;
     }
 }
