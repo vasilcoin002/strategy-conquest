@@ -1,13 +1,12 @@
 package pjvsemproj.models.entities;
 
 public interface Movable {
-    public void moveUp();
-    public void moveDown();
-    public void moveLeft();
-    public void moveRight();
+    void moveUp(int step);
+    void moveDown(int step);
+    void moveLeft(int step);
+    void moveRight(int step);
 
-    public void moveUp(int step);
-    public void moveDown(int step);
-    public void moveLeft(int step);
-    public void moveRight(int step);
+    int getStamina();
+    void refreshStamina();
+    // TODO add method that returns list of available points to move on
 }

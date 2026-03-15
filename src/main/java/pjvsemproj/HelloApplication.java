@@ -19,7 +19,7 @@ public class HelloApplication extends Application {
         root.setPadding(new Insets(10));
         root.setAlignment(Pos.CENTER);
 
-        Scene scene = new Scene(root, 320, 240);
+        Scene scene = new Scene(root, 50, 50);
 
         stage.setScene(scene);
 //        stage.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
