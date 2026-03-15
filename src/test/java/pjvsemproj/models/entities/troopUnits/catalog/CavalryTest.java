@@ -6,61 +6,61 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class KnightsTest {
+public class CavalryTest {
 
-    private static Knights knights;
-    private static Knights enemy;
+    private static Cavalry cavalry;
+    private static Cavalry enemy;
 
     @BeforeAll
     public static void init() {
-        knights = new Knights(0, 0);
-        enemy = new Knights(0, 1);
+        cavalry = new Cavalry(0, 0);
+        enemy = new Cavalry(0, 1);
     }
 
     @BeforeEach
     public void refreshStamina() {
-        knights.refreshStamina();
+        cavalry.refreshStamina();
     }
 
     @Test
     @Order(1)
     public void moveUp_by1_ok() {
-        knights.moveUp(1);
+        cavalry.moveUp(1);
 
-        assertEquals(1, knights.getY());
+        assertEquals(1, cavalry.getY());
     }
 
     @Test
     @Order(2)
     public void moveDown_by1_ok() {
-        knights.moveDown(1);
+        cavalry.moveDown(1);
 
-        assertEquals(0, knights.getY());
+        assertEquals(0, cavalry.getY());
     }
 
     @Test
     @Order(3)
     public void moveLeft_by1_ok() {
-        knights.moveLeft(1);
+        cavalry.moveLeft(1);
 
-        assertEquals(-1, knights.getX());
+        assertEquals(-1, cavalry.getX());
     }
 
 
     @Test
     @Order(4)
     public void moveRight_by1_ok() {
-        knights.moveRight(1);
+        cavalry.moveRight(1);
 
-        assertEquals(0, knights.getX());
+        assertEquals(0, cavalry.getX());
     }
 
     @Test
     @Order(5)
     public void moveUp_byStaminaPlus1_doesntMove() {
-        knights.moveUp(knights.getStamina() + 1);
+        cavalry.moveUp(cavalry.getStamina() + 1);
 
-        assertEquals(0, knights.getY());
+        assertEquals(0, cavalry.getY());
     }
 
     @Test
@@ -68,15 +68,15 @@ public class KnightsTest {
     public void attackEnemy_void_enemyLostHealth() {
         int initialEnemyHealth = enemy.getHealth();
 
-        knights.attack(enemy);
+        cavalry.attack(enemy);
 
-        assertFalse(enemy.getHealth() > initialEnemyHealth - knights.getMinDamage());
+        assertFalse(enemy.getHealth() > initialEnemyHealth - cavalry.getMinDamage());
     }
 
     @Test
     public void moveOnEnemy_rightBy1_doesntMove() {
-        knights.moveRight(1);
+        cavalry.moveRight(1);
 
-        assertEquals(0, knights.getX());
+        assertEquals(0, cavalry.getX());
     }
 }
