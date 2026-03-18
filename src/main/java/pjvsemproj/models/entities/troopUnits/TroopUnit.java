@@ -1,17 +1,11 @@
 package pjvsemproj.models.entities.troopUnits;
 
-import pjvsemproj.models.entities.Damageable;
-import pjvsemproj.models.entities.Entity;
-import pjvsemproj.models.entities.IDamager;
-import pjvsemproj.models.entities.ILiving;
+import pjvsemproj.models.entities.*;
 
 // TODO add and implement interface Purchasable
 // TODO connect with Game class
 // TODO change methods, that teammates cannot damage each other
-public abstract class TroopUnit extends Entity implements ILiving, IDamager {
-
-    protected int health;
-    protected int maxHealth;
+public abstract class TroopUnit extends DamageableEntity implements Movable, IDamager {
 
     protected int minDamage;
     protected int maxDamage;
@@ -24,38 +18,6 @@ public abstract class TroopUnit extends Entity implements ILiving, IDamager {
         super(false);
         this.x = x;
         this.y = y;
-    }
-
-    @Override
-    public void takeDamage(int damage) {
-        this.health -= damage;
-
-        if (this.health < 0) {
-            this.health = 0;
-        }
-    }
-
-    @Override
-    public void takeHeal(int heal) {
-        this.health += heal;
-
-        if (this.health > maxHealth) {
-            this.health = maxHealth;
-        }
-    }
-
-    @Override
-    public int getHealth() {
-        return this.health;
-    }
-
-    @Override
-    public void setHealth(int health) {
-        this.health = health;
-
-        if (this.health > maxHealth) {
-            this.health = maxHealth;
-        }
     }
 
     @Override
