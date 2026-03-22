@@ -5,17 +5,27 @@ import pjvsemproj.models.entities.*;
 // TODO add and implement interface Purchasable
 // TODO connect with Game class
 // TODO change methods, that teammates cannot damage each other
-public abstract class TroopUnit extends DamageableEntity implements Movable, IDamager {
+public class TroopUnit extends DamageableEntity implements Movable, IDamager {
 
-    protected int minDamage;
-    protected int maxDamage;
-    protected int attackRange;
+    private final int minDamage;
+    private final int maxDamage;
+    private final int attackRange;
 
-    protected int maxStamina;
-    protected int stamina;
+    private final int maxStamina;
+    private int stamina;
 
-    public TroopUnit(int x, int y) {
+    public TroopUnit(TroopType troopType, int x, int y) {
         super(false);
+
+        this.maxStamina = troopType.maxStamina;
+        this.maxHealth = troopType.maxHealth;
+        this.attackRange = troopType.attackRange;
+        this.maxDamage = troopType.maxDamage;
+        this.minDamage = troopType.minDamage;
+
+        this.stamina = maxStamina;
+        this.health = maxHealth;
+
         this.x = x;
         this.y = y;
     }

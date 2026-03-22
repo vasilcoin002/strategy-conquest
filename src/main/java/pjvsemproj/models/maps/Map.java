@@ -1,4 +1,4 @@
-package pjvsemproj.models.entities.maps;
+package pjvsemproj.models.maps;
 
 public class Map {
     public final int boundWest;

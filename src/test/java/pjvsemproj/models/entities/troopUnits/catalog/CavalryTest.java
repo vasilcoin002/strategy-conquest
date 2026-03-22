@@ -1,6 +1,8 @@
 package pjvsemproj.models.entities.troopUnits.catalog;
 
 import org.junit.jupiter.api.*;
+import pjvsemproj.models.entities.troopUnits.TroopType;
+import pjvsemproj.models.entities.troopUnits.TroopUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -8,13 +10,13 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CavalryTest {
 
-    private static Cavalry cavalry;
-    private static Cavalry enemy;
+    private static TroopUnit cavalry;
+    private static TroopUnit enemy;
 
     @BeforeAll
     public static void init() {
-        cavalry = new Cavalry(0, 0);
-        enemy = new Cavalry(0, 1);
+        cavalry = new TroopUnit(TroopType.Cavalry, 0, 0);
+        enemy = new TroopUnit(TroopType.Cavalry, 0, 1);
     }
 
     @BeforeEach
