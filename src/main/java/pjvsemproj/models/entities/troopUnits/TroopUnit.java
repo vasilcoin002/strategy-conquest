@@ -7,6 +7,8 @@ import pjvsemproj.models.entities.*;
 // TODO change methods, that teammates cannot damage each other
 public class TroopUnit extends DamageableEntity implements Movable, IDamager {
 
+    private final String name;
+
     private final int minDamage;
     private final int maxDamage;
     private final int attackRange;
@@ -16,6 +18,8 @@ public class TroopUnit extends DamageableEntity implements Movable, IDamager {
 
     public TroopUnit(TroopType troopType, int x, int y) {
         super(false);
+
+        this.name = troopType.name();
 
         this.maxStamina = troopType.maxStamina;
         this.maxHealth = troopType.maxHealth;
@@ -70,6 +74,10 @@ public class TroopUnit extends DamageableEntity implements Movable, IDamager {
             this.x += step;
             this.stamina -= step;
         }
+    }
+
+    public String getName() {
+        return this.name;
     }
 
     @Override

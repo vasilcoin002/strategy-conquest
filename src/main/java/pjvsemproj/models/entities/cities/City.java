@@ -1,9 +1,9 @@
 package pjvsemproj.models.entities.cities;
 
-import pjvsemproj.models.entities.DamageableEntity;
+import pjvsemproj.models.entities.Entity;
 import pjvsemproj.models.entities.Upgradable;
 
-public class City extends DamageableEntity implements Upgradable {
+public class City extends Entity implements Upgradable {
 
     protected CityType cityType;
 
@@ -11,11 +11,8 @@ public class City extends DamageableEntity implements Upgradable {
         super(true);
 
         this.cityType = CityType.LEVEL_1;
-        this.maxHealth = 100;
-        this.health = maxHealth;
     }
 
-    // TODO implement method
     @Override
     public void upgrade() {
         if (this.cityType.nextCityType != null) {
