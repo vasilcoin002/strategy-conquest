@@ -13,7 +13,6 @@ import java.io.IOException;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-//        Player mainCharacter = new Player(100, 0, 0, new Knife());
 
         HBox root = new HBox();
         root.setPadding(new Insets(10));
@@ -22,18 +21,6 @@ public class HelloApplication extends Application {
         Scene scene = new Scene(root, 50, 50);
 
         stage.setScene(scene);
-//        stage.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
-//            Map<KeyCode, Runnable> controls = Map.of(
-//                    KeyCode.UP, mainCharacter::moveUp,
-//                    KeyCode.DOWN, mainCharacter::moveDown,
-//                    KeyCode.LEFT, mainCharacter::moveLeft,
-//                    KeyCode.RIGHT, mainCharacter::moveRight
-//            );
-//            controls.getOrDefault(event.getCode(), () -> {
-//            }).run();
-//
-//            System.out.println("x: " + mainCharacter.getX() + "y: " + mainCharacter.getY());
-//        });
         stage.show();
     }
 }

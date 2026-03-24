@@ -5,8 +5,8 @@ public abstract class DamageableEntity extends Entity implements Damageable {
     protected int health;
     protected int maxHealth;
 
-    protected DamageableEntity(boolean isPassable) {
-        super(isPassable);
+    protected DamageableEntity(int x, int y, boolean isPassable) {
+        super(x, y, isPassable);
     }
 
     @Override

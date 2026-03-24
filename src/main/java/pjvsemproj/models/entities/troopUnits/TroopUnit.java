@@ -1,6 +1,8 @@
 package pjvsemproj.models.entities.troopUnits;
 
 import pjvsemproj.models.entities.*;
+import pjvsemproj.models.entities.cities.City;
+import pjvsemproj.models.game.players.Player;
 
 // TODO add and implement interface Purchasable
 // TODO connect with Game class
@@ -8,32 +10,29 @@ import pjvsemproj.models.entities.*;
 public class TroopUnit extends DamageableEntity implements Movable, IDamager {
 
     private final String name;
+    private Player owner;
 
     private final int minDamage;
     private final int maxDamage;
     private final int attackRange;
 
-    private final int maxStamina;
-    private int stamina;
+    private final int movementRange;
 
-    public TroopUnit(TroopType troopType, int x, int y) {
-        super(false);
+    public TroopUnit(TroopType troopType, City city) {
+        super(city.getX(), city.getY(), false);
 
         this.name = troopType.name();
 
-        this.maxStamina = troopType.maxStamina;
+        this.movementRange = troopType.movementRange;
         this.maxHealth = troopType.maxHealth;
         this.attackRange = troopType.attackRange;
         this.maxDamage = troopType.maxDamage;
         this.minDamage = troopType.minDamage;
 
-        this.stamina = maxStamina;
         this.health = maxHealth;
-
-        this.x = x;
-        this.y = y;
     }
 
+    // TODO move to manager
     @Override
     public void attack(Damageable damageTaker) {
         int additionalDamageRange = maxDamage - minDamage;
@@ -44,35 +43,32 @@ public class TroopUnit extends DamageableEntity implements Movable, IDamager {
         );
     }
 
-    @Override
+    // TODO move moving methods to manager and rewrite them, so it can move to specific coordinates
+//    @Override
     public void moveUp(int step) {
-        if (step <= this.stamina) {
+        if (step <= this.movementRange) {
             this.y += step;
-            this.stamina -= step;
         }
     }
 
-    @Override
+//    @Override
     public void moveDown(int step) {
-        if (step <= this.stamina) {
+        if (step <= this.movementRange) {
             this.y -= step;
-            this.stamina -= step;
         }
     }
 
-    @Override
+//    @Override
     public void moveLeft(int step) {
-        if (step <= this.stamina) {
+        if (step <= this.movementRange) {
             this.x -= step;
-            this.stamina -= step;
         }
     }
 
-    @Override
+//    @Override
     public void moveRight(int step) {
-        if (step <= this.stamina) {
+        if (step <= this.movementRange) {
             this.x += step;
-            this.stamina -= step;
         }
     }
 
@@ -80,14 +76,17 @@ public class TroopUnit extends DamageableEntity implements Movable, IDamager {
         return this.name;
     }
 
-    @Override
-    public int getStamina() {
-        return this.stamina;
+    public Player getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Player owner) {
+        this.owner = owner;
     }
 
     @Override
-    public void refreshStamina() {
-        this.stamina = maxStamina;
+    public int getMovementRange() {
+        return this.movementRange;
     }
 
     public int getMaxHealth() {
@@ -104,9 +103,5 @@ public class TroopUnit extends DamageableEntity implements Movable, IDamager {
 
     public int getAttackRange() {
         return attackRange;
-    }
-
-    public int getMaxStamina() {
-        return maxStamina;
     }
 }

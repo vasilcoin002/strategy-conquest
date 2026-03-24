@@ -5,7 +5,9 @@ public abstract class Entity implements Positionable {
     protected int y;
     protected final boolean isPassable;
 
-    protected Entity(boolean isPassable) {
+    protected Entity(int x, int y, boolean isPassable) {
+        this.x = x;
+        this.y = y;
         this.isPassable = isPassable;
     }
 
