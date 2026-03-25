@@ -3,15 +3,19 @@ package pjvsemproj.models.maps;
 // TODO rename to MapConfig and make it record
 // TODO think if we need to add Tile class
 public class GameMap {
-    public final int boundWest;
-    public final int boundEast;
-    public final int boundNorth;
-    public final int boundSouth;
+    private final Tile[][] tiles;
 
-    public GameMap(int boundWest, int boundEast, int boundNorth, int boundSouth) {
-        this.boundWest = boundWest;
-        this.boundEast = boundEast;
-        this.boundNorth = boundNorth;
-        this.boundSouth = boundSouth;
+    public GameMap(int xLength, int yLength) {
+        this.tiles = new Tile[xLength][yLength];
+
+        for (int x = 0; x < xLength; x++) {
+            for (int y = 0; y < yLength; y++) {
+                this.tiles[x][y] = new Tile(x, y);
+            }
+        }
+    }
+
+    public Tile[][] getTiles() {
+        return tiles;
     }
 }
