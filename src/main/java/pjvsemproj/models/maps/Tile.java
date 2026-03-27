@@ -1,6 +1,6 @@
 package pjvsemproj.models.maps;
 
-import pjvsemproj.models.entities.Entity;
+import pjvsemproj.models.entities.IGridEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.List;
 public class Tile {
     private final int x;
     private final int y;
-    private final List<Entity> entities;
+    private final List<IGridEntity> entities;
 
     public Tile(int x, int y) {
         this.x = x;
@@ -16,7 +16,7 @@ public class Tile {
         this.entities = new ArrayList<>();
     }
 
-    public boolean addEntity(Entity entity) {
+    public boolean addEntity(IGridEntity entity) {
         boolean isAdded = false;
         if (entity.isPassable() || !this.isBlocked()) {
             isAdded = this.entities.add(entity);
@@ -24,12 +24,12 @@ public class Tile {
         return isAdded;
     }
 
-    public boolean removeEntity(Entity entity) {
+    public boolean removeEntity(IGridEntity entity) {
         return this.entities.remove(entity);
     }
 
     public boolean isBlocked() {
-        return !entities.stream().allMatch(Entity::isPassable);
+        return !entities.stream().allMatch(IGridEntity::isPassable);
     }
 
     public int getX() {
@@ -40,7 +40,7 @@ public class Tile {
         return y;
     }
 
-    public List<Entity> getEntities() {
+    public List<IGridEntity> getEntities() {
         return entities;
     }
 }
