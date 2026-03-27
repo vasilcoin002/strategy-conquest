@@ -5,4 +5,5 @@ public interface Damageable {
     void takeHeal(int heal);
     void setHealth(int health);
     int getHealth();
+    boolean isDead();
 }

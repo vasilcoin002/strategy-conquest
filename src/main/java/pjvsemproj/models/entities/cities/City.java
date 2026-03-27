@@ -3,23 +3,24 @@ package pjvsemproj.models.entities.cities;
 import pjvsemproj.models.entities.Entity;
 import pjvsemproj.models.entities.Upgradable;
 import pjvsemproj.models.game.players.Player;
+import pjvsemproj.models.maps.Tile;
 
 public class City extends Entity implements Upgradable {
 
     private Player owner;
     private CityType cityType;
 
-    public City(int x, int y, CityType cityType) {
-        super(x, y, true);
+    public City(Tile tile, CityType cityType) {
+        super(tile, true);
         this.cityType = cityType;
     }
 
+    @Override
     public boolean canBeUpgraded() {
         return this.cityType.nextCityType != null;
     }
 
     // TODO Move method to manager
-    @Override
     public void upgrade() {
         if (canBeUpgraded()) {
             this.cityType = this.cityType.nextCityType;

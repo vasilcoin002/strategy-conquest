@@ -4,9 +4,6 @@ import pjvsemproj.models.entities.*;
 import pjvsemproj.models.entities.cities.City;
 import pjvsemproj.models.game.players.Player;
 
-// TODO add and implement interface Purchasable
-// TODO connect with Game class
-// TODO change methods, that teammates cannot damage each other
 public class TroopUnit extends DamageableEntity implements Movable, IDamager {
 
     private final String name;
@@ -19,7 +16,7 @@ public class TroopUnit extends DamageableEntity implements Movable, IDamager {
     private final int movementRange;
 
     public TroopUnit(TroopType troopType, City city) {
-        super(city.getX(), city.getY(), false);
+        super(city.getTile(), false);
 
         this.name = troopType.name();
 
@@ -32,44 +29,11 @@ public class TroopUnit extends DamageableEntity implements Movable, IDamager {
         this.health = maxHealth;
     }
 
-    // TODO move to manager
     @Override
-    public void attack(Damageable damageTaker) {
+    public int calculateDamage() {
         int additionalDamageRange = maxDamage - minDamage;
         // casting to float Math.random() because Math.round() returns float if there is argument of type double
-        damageTaker.takeDamage(
-                minDamage +
-                Math.round(additionalDamageRange * (float)Math.random())
-        );
-    }
-
-    // TODO move moving methods to manager and rewrite them, so it can move to specific coordinates
-//    @Override
-    public void moveUp(int step) {
-        if (step <= this.movementRange) {
-            this.y += step;
-        }
-    }
-
-//    @Override
-    public void moveDown(int step) {
-        if (step <= this.movementRange) {
-            this.y -= step;
-        }
-    }
-
-//    @Override
-    public void moveLeft(int step) {
-        if (step <= this.movementRange) {
-            this.x -= step;
-        }
-    }
-
-//    @Override
-    public void moveRight(int step) {
-        if (step <= this.movementRange) {
-            this.x += step;
-        }
+        return minDamage + Math.round(additionalDamageRange * (float)Math.random());
     }
 
     public String getName() {

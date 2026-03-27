@@ -1,12 +1,14 @@
 package pjvsemproj.models.entities;
 
+import pjvsemproj.models.maps.Tile;
+
 public abstract class DamageableEntity extends Entity implements Damageable {
 
     protected int health;
     protected int maxHealth;
 
-    protected DamageableEntity(int x, int y, boolean isPassable) {
-        super(x, y, isPassable);
+    protected DamageableEntity(Tile intialTile, boolean isPassable) {
+        super(intialTile, isPassable);
     }
 
     @Override
@@ -39,5 +41,10 @@ public abstract class DamageableEntity extends Entity implements Damageable {
         if (this.health > maxHealth) {
             this.health = maxHealth;
         }
+    }
+
+    @Override
+    public boolean isDead() {
+        return health == 0;
     }
 }

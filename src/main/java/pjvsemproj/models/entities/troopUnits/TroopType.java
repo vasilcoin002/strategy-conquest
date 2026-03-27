@@ -1,6 +1,8 @@
 package pjvsemproj.models.entities.troopUnits;
 
-public enum TroopType {
+import pjvsemproj.models.entities.Purchasable;
+
+public enum TroopType implements Purchasable {
     Militia(3, 20, 1, 5, 10, 10),
     Infantry(2, 50, 1, 15, 20, 20),
     Cavalry(5, 45, 1, 15, 20, 30),
@@ -15,5 +17,8 @@ public enum TroopType {
         this.minDamage = minDamage;
         this.maxDamage = maxDamage;
         this.price = price;
+    }
+    public int getPrice() {
+        return this.price;
     }
 }

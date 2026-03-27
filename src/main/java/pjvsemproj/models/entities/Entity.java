@@ -1,36 +1,27 @@
 package pjvsemproj.models.entities;
 
-public abstract class Entity implements Positionable {
-    protected int x;
-    protected int y;
+import pjvsemproj.models.maps.Tile;
+
+public abstract class Entity implements IGridEntity {
+    protected Tile tile;
     protected final boolean isPassable;
 
-    protected Entity(int x, int y, boolean isPassable) {
-        this.x = x;
-        this.y = y;
+    protected Entity(Tile intialTile, boolean isPassable) {
+        this.tile = intialTile;
         this.isPassable = isPassable;
     }
 
     @Override
-    public int getX() {
-        return x;
+    public Tile getTile() {
+        return tile;
     }
 
     @Override
-    public void setX(int x) {
-        this.x = x;
+    public void setTile(Tile tile) {
+        this.tile = tile;
     }
 
     @Override
-    public int getY() {
-        return y;
-    }
-
-    @Override
-    public void setY(int y) {
-        this.y = y;
-    }
-
     public boolean isPassable() {
         return isPassable;
     }
