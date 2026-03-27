@@ -7,6 +7,7 @@ import pjvsemproj.models.maps.GameMap;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO refactor class to managers
 public class Game {
     private final List<Player> players;
     private final GameMap map;
@@ -45,6 +46,7 @@ public class Game {
 //        currentTurnIndex = (currentTurnIndex + 1) % players.size();
 //    }
 
+    // TODO move method to manager
     private Player findCityOwner(City city) {
         Player cityOwner = null;
         for (Player player: players) {
@@ -56,6 +58,7 @@ public class Game {
         return cityOwner;
     }
 
+    // TODO move method to manager
     public void surrenderCityTo(City city, Player enemy) {
         Player cityOwner = findCityOwner(city);
         if (cityOwner != null) {
@@ -70,6 +73,7 @@ public class Game {
 //        }
     }
 
+    // TODO move method to manager
     public void setCurrentTurnIndex(int currentTurnIndex) {
         if (currentTurnIndex < 0 || currentTurnIndex > players.size()) {
             throw new IllegalArgumentException("Index is beyond of players list");

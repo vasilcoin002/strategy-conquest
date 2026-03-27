@@ -1,7 +1,5 @@
 package pjvsemproj.models.maps;
 
-// TODO rename to MapConfig and make it record
-// TODO think if we need to add Tile class
 public class GameMap {
     private final Tile[][] tiles;
 

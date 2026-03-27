@@ -18,10 +18,10 @@ public class City extends Entity implements Upgradable {
         return this.cityType.nextCityType != null;
     }
 
-    // Move method to manager
+    // TODO Move method to manager
     @Override
     public void upgrade() {
-        if (this.cityType.nextCityType != null) {
+        if (canBeUpgraded()) {
             this.cityType = this.cityType.nextCityType;
         }
     }
