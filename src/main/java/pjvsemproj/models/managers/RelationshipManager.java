@@ -4,6 +4,7 @@ import pjvsemproj.models.entities.cities.City;
 import pjvsemproj.models.entities.troopUnits.TroopUnit;
 import pjvsemproj.models.game.players.Player;
 
+// TODO Refactor and delete class
 public class RelationshipManager {
 
     public void changeCityOwner(City city, Player newOwner) {
