@@ -28,8 +28,7 @@ public class TroopUnit extends DamageableEntity implements Movable, IDamager {
         this.minDamage = troopType.minDamage;
 
         this.health = maxHealth;
-        // If there will be false, then player would be able to spawn
-        // many units in city per round
+        // false => player can spawn many units in one city per round
         this.hasMovedThisTurn = true;
     }
 
