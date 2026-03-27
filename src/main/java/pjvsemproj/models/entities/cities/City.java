@@ -15,6 +15,10 @@ public class City extends Entity implements Upgradable {
         this.cityType = cityType;
     }
 
+    public City(CityType cityType) {
+        this(null, cityType);
+    }
+
     @Override
     public boolean canBeUpgraded() {
         return this.cityType.nextCityType != null;

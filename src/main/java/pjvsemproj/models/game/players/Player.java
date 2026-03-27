@@ -28,16 +28,15 @@ public abstract class Player {
         return cities;
     }
 
-    public void addCity(City city) {
-        if (!cities.contains(city)) {
-            cities.add(city);
-            // TODO changeOwner move to manager if it is needed
-            city.changeOwner(this);
+    public boolean addCity(City city) {
+        if (!cities.contains(city) && city != null) {
+            return cities.add(city);
         }
+        return false;
     }
 
-    public void removeCity(City city) {
-        cities.remove(city);
+    public boolean removeCity(City city) {
+        return cities.remove(city);
     }
 
     public List<TroopUnit> getTroops() {

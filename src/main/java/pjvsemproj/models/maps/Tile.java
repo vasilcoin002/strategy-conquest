@@ -18,7 +18,7 @@ public class Tile {
 
     public boolean addEntity(Entity entity) {
         boolean isAdded = false;
-        if (entity.isPassable() || !this.isAlreadyTaken()) {
+        if (entity.isPassable() || !this.isBlocked()) {
             isAdded = this.entities.add(entity);
         }
         return isAdded;
@@ -28,7 +28,7 @@ public class Tile {
         return this.entities.remove(entity);
     }
 
-    public boolean isAlreadyTaken() {
+    public boolean isBlocked() {
         return !entities.stream().allMatch(Entity::isPassable);
     }
 
