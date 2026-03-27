@@ -14,6 +14,7 @@ public class TroopUnit extends DamageableEntity implements Movable, IDamager {
     private final int attackRange;
 
     private final int movementRange;
+    private boolean hasMovedThisTurn;
 
     public TroopUnit(TroopType troopType, City city) {
         super(city.getTile(), false);
@@ -27,6 +28,9 @@ public class TroopUnit extends DamageableEntity implements Movable, IDamager {
         this.minDamage = troopType.minDamage;
 
         this.health = maxHealth;
+        // If there will be false, then player would be able to spawn
+        // many units in city per round
+        this.hasMovedThisTurn = true;
     }
 
     @Override
@@ -51,6 +55,16 @@ public class TroopUnit extends DamageableEntity implements Movable, IDamager {
     @Override
     public int getMovementRange() {
         return this.movementRange;
+    }
+
+    @Override
+    public boolean hasMovedThisTurn() {
+        return hasMovedThisTurn;
+    }
+
+    @Override
+    public void setHasMovedThisTurn(boolean hasMovedThisTurn) {
+        this.hasMovedThisTurn = hasMovedThisTurn;
     }
 
     public int getMaxHealth() {
