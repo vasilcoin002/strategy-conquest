@@ -1,4 +1,4 @@
-package pjvsemproj.models.game;
+package pjvsemproj.models.managers;
 
 import pjvsemproj.models.game.players.Player;
 

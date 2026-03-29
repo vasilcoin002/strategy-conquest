@@ -1,6 +1,5 @@
 package pjvsemproj.models.managers;
 
-import pjvsemproj.models.game.ITurnListener;
 import pjvsemproj.models.game.players.Player;
 
 import java.util.ArrayList;
