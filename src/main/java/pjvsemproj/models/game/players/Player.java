@@ -2,7 +2,6 @@ package pjvsemproj.models.game.players;
 
 import pjvsemproj.models.entities.cities.City;
 import pjvsemproj.models.entities.troopUnits.TroopUnit;
-import pjvsemproj.models.game.Game;
 
 import java.util.ArrayList;
 import java.util.List;

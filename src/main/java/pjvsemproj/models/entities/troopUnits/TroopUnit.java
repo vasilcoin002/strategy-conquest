@@ -4,7 +4,7 @@ import pjvsemproj.models.entities.*;
 import pjvsemproj.models.entities.cities.City;
 import pjvsemproj.models.game.players.Player;
 
-public class TroopUnit extends DamageableEntity implements Movable, IDamager {
+public class TroopUnit extends DamageableEntity implements Movable, IDamager, Ownable {
 
     private final String name;
     private Player owner;
@@ -43,10 +43,12 @@ public class TroopUnit extends DamageableEntity implements Movable, IDamager {
         return this.name;
     }
 
+    @Override
     public Player getOwner() {
         return owner;
     }
 
+    @Override
     public void setOwner(Player owner) {
         this.owner = owner;
     }

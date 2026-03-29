@@ -1,6 +1,5 @@
 package pjvsemproj.models.managers;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pjvsemproj.models.game.Game;
@@ -32,6 +31,5 @@ public class GameSetupManagerTest {
 
         GameSetupManager gsm = new GameSetupManager();
         game = gsm.setupStandardMatch(map, p1, p2);
-        System.out.println();
     }
 }

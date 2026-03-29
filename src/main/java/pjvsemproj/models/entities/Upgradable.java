@@ -1,5 +1,6 @@
 package pjvsemproj.models.entities;
 
-public interface Upgradable {
+public interface Upgradable<T> {
     boolean canBeUpgraded();
+    T getCurrentLevel();
 }

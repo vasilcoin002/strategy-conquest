@@ -12,7 +12,6 @@ import pjvsemproj.models.maps.Tile;
 
 public class GameSetupManager {
 
-    // TODO create interface Ownable
     // TODO add TroopUnit -> Owner relationship (now it's not working)
     // TODO move connecting ownable entities with owner to helper class
     public Game setupStandardMatch(GameMap map, Player p1, Player p2) {

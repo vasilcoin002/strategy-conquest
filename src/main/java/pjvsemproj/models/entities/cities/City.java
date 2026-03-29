@@ -1,11 +1,12 @@
 package pjvsemproj.models.entities.cities;
 
 import pjvsemproj.models.entities.Entity;
+import pjvsemproj.models.entities.Ownable;
 import pjvsemproj.models.entities.Upgradable;
 import pjvsemproj.models.game.players.Player;
 import pjvsemproj.models.maps.Tile;
 
-public class City extends Entity implements Upgradable {
+public class City extends Entity implements Upgradable<CityType>, Ownable {
 
     private Player owner;
     private CityType cityType;
@@ -31,10 +32,12 @@ public class City extends Entity implements Upgradable {
         }
     }
 
+    @Override
     public Player getOwner() {
         return owner;
     }
 
+    @Override
     public void setOwner(Player owner) {
         this.owner = owner;
     }
@@ -54,6 +57,11 @@ public class City extends Entity implements Upgradable {
     }
 
     public CityType getCityType() {
+        return cityType;
+    }
+
+    @Override
+    public CityType getCurrentLevel() {
         return cityType;
     }
 }
