@@ -64,4 +64,12 @@ public class City extends Entity implements Upgradable<CityType>, Ownable {
     public CityType getCurrentLevel() {
         return cityType;
     }
+
+    public int getGoldProducedPerRound() {
+        return cityType.goldProducedPerRound;
+    }
+
+    public int getUpgradePrice() {
+        return cityType.upgradePrice;
+    }
 }

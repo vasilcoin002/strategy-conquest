@@ -12,9 +12,6 @@ import pjvsemproj.models.maps.GameMap;
 import pjvsemproj.models.maps.Tile;
 
 public class GameSetupManager {
-
-    // TODO add TroopUnit -> Owner relationship (now it's not working)
-    // TODO move connecting ownable entities with owner to helper class
     public Game setupStandardMatch(GameMap map, Player p1, Player p2) {
         City p1City = new City(CityType.LEVEL_1);
         OwnershipHelper.transferCity(p1City, p1);
