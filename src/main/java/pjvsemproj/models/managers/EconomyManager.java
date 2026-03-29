@@ -1,7 +1,10 @@
 package pjvsemproj.models.managers;
 
 import pjvsemproj.models.entities.cities.City;
+import pjvsemproj.models.entities.troopUnits.TroopType;
+import pjvsemproj.models.entities.troopUnits.TroopUnit;
 import pjvsemproj.models.game.players.Player;
+import pjvsemproj.models.managers.helpers.OwnershipHelper;
 
 public class EconomyManager implements ITurnListener {
     private Player currentPlayer;
@@ -32,10 +35,9 @@ public class EconomyManager implements ITurnListener {
         currentPlayer = player;
     }
 
+    // TODO test
     public boolean upgradeCity(City city) {
-        if (!canPlayerUpgradeCity(city, currentPlayer)) {
-            return false;
-        }
+        if (!canPlayerUpgradeCity(city, currentPlayer)) return false;
 
         currentPlayer.spendGold(city.getUpgradePrice());
         city.upgrade();
@@ -46,5 +48,21 @@ public class EconomyManager implements ITurnListener {
         return city.canBeUpgraded()
                 && city.getOwner() == player
                 && player.getBalance() >= city.getUpgradePrice();
+    }
+
+    // TODO test
+    public boolean buyTroopUnit(TroopType troopType, City city) {
+        if (!canPlayerBuyTroopUnit(troopType, city, currentPlayer)) return false;
+
+        currentPlayer.spendGold(troopType.getPrice());
+        TroopUnit troopUnit = new TroopUnit(troopType, city);
+        OwnershipHelper.transferTroopUnit(troopUnit, currentPlayer);
+        return true;
+    }
+
+    public boolean canPlayerBuyTroopUnit(TroopType troopType, City city, Player player) {
+        return player.getBalance() >= troopType.getPrice()
+                && city.getOwner() == currentPlayer
+                && !city.getTile().isBlocked();
     }
 }
