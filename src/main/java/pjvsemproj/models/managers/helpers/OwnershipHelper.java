@@ -24,9 +24,9 @@ public class OwnershipHelper {
     }
 
     /**
-     * Safely transfers a Unit to a new player.
+     * Safely transfers a TroopUnit to a new player.
      */
-    public static void transferUnit(TroopUnit troopUnit, Player newOwner) {
+    public static void transferTroopUnit(TroopUnit troopUnit, Player newOwner) {
         if (troopUnit == null || newOwner == null) return;
 
         Player oldOwner = troopUnit.getOwner();

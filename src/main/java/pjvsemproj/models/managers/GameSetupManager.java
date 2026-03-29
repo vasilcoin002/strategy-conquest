@@ -7,6 +7,7 @@ import pjvsemproj.models.entities.troopUnits.TroopUnit;
 import pjvsemproj.models.game.Game;
 import pjvsemproj.models.game.players.Player;
 import pjvsemproj.models.managers.helpers.GridPositionHelper;
+import pjvsemproj.models.managers.helpers.OwnershipHelper;
 import pjvsemproj.models.maps.GameMap;
 import pjvsemproj.models.maps.Tile;
 
@@ -16,40 +17,29 @@ public class GameSetupManager {
     // TODO move connecting ownable entities with owner to helper class
     public Game setupStandardMatch(GameMap map, Player p1, Player p2) {
         City p1City = new City(CityType.LEVEL_1);
-        p1City.setOwner(p1);
-        p1.addCity(p1City);
-
-        Tile p1CityTile = map.getTile(1, 2);
+        OwnershipHelper.transferCity(p1City, p1);
+        Tile p1CityTile = map.getTile(1, 1);
         GridPositionHelper.placeEntity(p1City, p1CityTile);
 
         TroopUnit p1StartUnit = new TroopUnit(TroopType.Militia, p1City);
-        // TODO move to class which handles owning relations
-        p1.addTroopUnit(p1StartUnit);
-
-        Tile p1UnitTile = map.getTile(1, 1);
-        GridPositionHelper.placeEntity(p1StartUnit, p1UnitTile);
+        OwnershipHelper.transferTroopUnit(p1StartUnit, p1);
+        GridPositionHelper.placeEntity(p1StartUnit, p1CityTile);
 
 
         City p2City = new City(CityType.LEVEL_1);
-        p2City.setOwner(p2);
-        p2.addCity(p2City);
-
-        // Opposite side of map
-        int mapWidth = map.getWidth();
-        int mapHeight = map.getHeight();
-        Tile p2CityTile = map.getTile(mapWidth - 2, mapHeight - 3);
+        OwnershipHelper.transferCity(p2City, p2);
+        // Opposite side of the map
+        Tile p2CityTile = map.getTile(map.getWidth() - 2, map.getHeight() - 2);
         GridPositionHelper.placeEntity(p2City, p2CityTile);
 
         TroopUnit p2StartUnit = new TroopUnit(TroopType.Militia, p2City);
-        // TODO move to class which handles relations
-        p2.addTroopUnit(p2StartUnit);
-
-        Tile p2UnitTile = map.getTile(mapWidth - 2, mapHeight - 2);
-        GridPositionHelper.placeEntity(p2StartUnit, p2UnitTile);
+        OwnershipHelper.transferTroopUnit(p2StartUnit, p2);
+        GridPositionHelper.placeEntity(p2StartUnit, p2CityTile);
 
 
         City neutralCity = new City(CityType.LEVEL_1); // No owner
-        Tile neutralTile = map.getTile(mapWidth / 2, mapHeight / 2);
+        // Middle of the map
+        Tile neutralTile = map.getTile(map.getWidth() / 2, map.getHeight() / 2);
         GridPositionHelper.placeEntity(neutralCity, neutralTile);
 
         Game game = new Game(map);
