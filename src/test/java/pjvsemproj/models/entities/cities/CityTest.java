@@ -7,7 +7,7 @@ import pjvsemproj.models.game.players.BotPlayer;
 import pjvsemproj.models.game.players.HumanPlayer;
 import pjvsemproj.models.game.players.Player;
 import pjvsemproj.models.managers.GameSetupManager;
-import pjvsemproj.models.maps.GameMap;
+import pjvsemproj.models.game.maps.GameMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -22,7 +22,7 @@ public class CityTest {
         GameSetupManager gsm = new GameSetupManager();
         player1 = new HumanPlayer("Vasya", 0);
         player2 = new BotPlayer("Ivan", 0);
-        game = gsm.setupStandardMatch(
+        game = gsm.setupTestMatch(
                 new GameMap(25, 25),
                 player1,
                 player2

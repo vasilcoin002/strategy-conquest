@@ -1,6 +1,8 @@
 package pjvsemproj.models.maps;
 
 import org.junit.jupiter.api.Test;
+import pjvsemproj.models.game.maps.GameMap;
+import pjvsemproj.models.game.maps.Tile;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;

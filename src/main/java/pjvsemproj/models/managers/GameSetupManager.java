@@ -8,11 +8,11 @@ import pjvsemproj.models.game.Game;
 import pjvsemproj.models.game.players.Player;
 import pjvsemproj.models.managers.helpers.GridPositionHelper;
 import pjvsemproj.models.managers.helpers.OwnershipHelper;
-import pjvsemproj.models.maps.GameMap;
-import pjvsemproj.models.maps.Tile;
+import pjvsemproj.models.game.maps.GameMap;
+import pjvsemproj.models.game.maps.Tile;
 
 public class GameSetupManager {
-    public Game setupStandardMatch(GameMap map, Player p1, Player p2) {
+    public Game setupTestMatch(GameMap map, Player p1, Player p2) {
         City p1City = new City(CityType.LEVEL_1);
         OwnershipHelper.transferCity(p1City, p1);
         Tile p1CityTile = map.getTile(1, 1);
@@ -45,4 +45,6 @@ public class GameSetupManager {
 
         return game;
     }
+
+    // TODO add method which returns a game set up by parsed from config file data (use GameConfigurationParser to generate those data)
 }

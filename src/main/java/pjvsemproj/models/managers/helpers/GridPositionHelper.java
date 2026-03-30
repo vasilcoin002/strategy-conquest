@@ -1,7 +1,7 @@
 package pjvsemproj.models.managers.helpers;
 
 import pjvsemproj.models.entities.IGridEntity;
-import pjvsemproj.models.maps.Tile;
+import pjvsemproj.models.game.maps.Tile;
 
 public class GridPositionHelper {
 

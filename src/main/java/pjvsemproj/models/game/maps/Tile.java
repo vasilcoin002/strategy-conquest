@@ -1,4 +1,4 @@
-package pjvsemproj.models.maps;
+package pjvsemproj.models.game.maps;
 
 import pjvsemproj.models.entities.IGridEntity;
 

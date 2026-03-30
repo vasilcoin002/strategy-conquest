@@ -6,7 +6,7 @@ import pjvsemproj.models.game.Game;
 import pjvsemproj.models.game.players.BotPlayer;
 import pjvsemproj.models.game.players.HumanPlayer;
 import pjvsemproj.models.game.players.Player;
-import pjvsemproj.models.maps.GameMap;
+import pjvsemproj.models.game.maps.GameMap;
 
 public class GameSetupManagerTest {
     private static Player p1;
@@ -24,12 +24,12 @@ public class GameSetupManagerTest {
 
     // TODO finish test
     @Test
-    public void setupStandardMatch_Map25x25_Human_Bot() {
+    public void setupTestMatch_Map25X25_Human_Bot() {
         map = new GameMap(25, 25);
         p1 = new HumanPlayer("p1", 0);
         p2 = new BotPlayer("p2", 0);
 
         GameSetupManager gsm = new GameSetupManager();
-        game = gsm.setupStandardMatch(map, p1, p2);
+        game = gsm.setupTestMatch(map, p1, p2);
     }
 }

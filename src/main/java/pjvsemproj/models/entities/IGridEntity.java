@@ -1,6 +1,6 @@
 package pjvsemproj.models.entities;
 
-import pjvsemproj.models.maps.Tile;
+import pjvsemproj.models.game.maps.Tile;
 
 public interface IGridEntity {
     Tile getTile();

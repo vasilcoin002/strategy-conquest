@@ -2,7 +2,7 @@ package pjvsemproj.models.managers;
 
 import pjvsemproj.models.entities.troopUnits.TroopUnit;
 import pjvsemproj.models.game.players.Player;
-import pjvsemproj.models.maps.Tile;
+import pjvsemproj.models.game.maps.Tile;
 
 import java.util.ArrayList;
 import java.util.List;

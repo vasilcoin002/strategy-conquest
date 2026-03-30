@@ -1,4 +1,4 @@
-package pjvsemproj.models.maps;
+package pjvsemproj.models.game.maps;
 
 public class GameMap {
     private final Tile[][] tiles;
