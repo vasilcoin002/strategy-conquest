@@ -3,7 +3,8 @@ package pjvsemproj.views;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.layout.Pane;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import pjvsemproj.models.game.Game;
 
@@ -27,8 +28,20 @@ public class GameView {
 
         Canvas canvas = new Canvas(gameAreaWidth, gameAreaHeight);
         gc = canvas.getGraphicsContext2D();
-        Pane root = new Pane(canvas);
+        BorderPane root = new BorderPane(canvas);
         scene = new Scene(root, gameAreaWidth, gameAreaHeight);
+
+//        MapRenderer mapRenderer = new MapRenderer(gc, TILE_SIZE);
+        Image grassTexture = new Image("grass.png");
+
+        BackgroundImage backgroundImage = new BackgroundImage(
+                grassTexture,
+                BackgroundRepeat.REPEAT,   // horizontally
+                BackgroundRepeat.REPEAT,   // vertically
+                BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT     // keep the exact 64x64 pixel size (don't stretch)
+        );
+        root.setBackground(new Background(backgroundImage));
     }
 
     public void show() {
