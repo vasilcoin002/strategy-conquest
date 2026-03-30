@@ -46,19 +46,10 @@ public class MovementManager implements ITurnListener {
      */
     public Set<Tile> getAvailableTilesForMovement(TroopUnit troopUnit) {
         Set<Tile> reachableTiles = new HashSet<>();
-
-        if (!canPlayerControlTroop(troopUnit)) {
-            return reachableTiles;
-        }
-
-        if (troopUnit.hasMovedThisTurn()) {
-            return reachableTiles;
-        }
+        if (!canPlayerControlTroop(troopUnit) || troopUnit.hasMovedThisTurn()) return reachableTiles;
 
         Tile startTile = troopUnit.getTile();
-        if (startTile == null) {
-            return reachableTiles;
-        }
+        if (startTile == null) return reachableTiles;
 
         int movementRange = troopUnit.getMovementRange();
 
@@ -79,21 +70,21 @@ public class MovementManager implements ITurnListener {
 
             reachableTiles.add(currentTile);
 
-            for (Tile neighbor : getNeighbors(currentTile)) {
+            for (Tile neighborTile : getNeighbors(currentTile)) {
                 int nextDistance = currentDistance + 1;
 
                 if (nextDistance > movementRange) {
                     continue;
                 }
 
-                if (!canMoveThroughOrToTile(troopUnit, neighbor, startTile)) {
+                if (!canMoveThroughOrToTile(troopUnit, neighborTile, startTile)) {
                     continue;
                 }
 
-                Integer knownDistance = visitedDistances.get(neighbor);
+                Integer knownDistance = visitedDistances.get(neighborTile);
                 if (knownDistance == null || nextDistance < knownDistance) {
-                    visitedDistances.put(neighbor, nextDistance);
-                    queue.add(new MovementNode(neighbor, nextDistance));
+                    visitedDistances.put(neighborTile, nextDistance);
+                    queue.add(new MovementNode(neighborTile, nextDistance));
                 }
             }
         }
@@ -195,6 +186,4 @@ public class MovementManager implements ITurnListener {
         return tile.getEntities().stream()
                 .anyMatch(entity -> entity instanceof TroopUnit && entity != movingTroop);
     }
-
-
 }
