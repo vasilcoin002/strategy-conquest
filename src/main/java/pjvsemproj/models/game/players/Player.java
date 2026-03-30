@@ -42,12 +42,12 @@ public abstract class Player {
         return troops;
     }
 
-    public void addTroopUnit(TroopUnit troopUnit) {
-        troops.add(troopUnit);
+    public boolean addTroopUnit(TroopUnit troopUnit) {
+        return troops.add(troopUnit);
     }
 
-    public void removeTroopUnit(TroopUnit troopUnit) {
-        troops.remove(troopUnit);
+    public boolean removeTroopUnit(TroopUnit troopUnit) {
+        return troops.remove(troopUnit);
     }
 
     public int getBalance() {

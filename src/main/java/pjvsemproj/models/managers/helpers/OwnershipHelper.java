@@ -24,13 +24,13 @@ public class OwnershipHelper {
     }
 
     /**
-     * Safely transfers a TroopUnit to a new player.
+     * Safely transfers a TroopUnit to a new player. Also used for adding a new unit to player
      */
-    public static void transferTroopUnit(TroopUnit troopUnit, Player newOwner) {
-        if (troopUnit == null || newOwner == null) return;
+    public static boolean addTroopUnitToPlayer(TroopUnit troopUnit, Player newOwner) {
+        if (troopUnit == null || newOwner == null) return false;
 
         Player oldOwner = troopUnit.getOwner();
-        if (oldOwner == newOwner) return;
+        if (oldOwner == newOwner) return false;
 
         if (oldOwner != null) {
             oldOwner.removeTroopUnit(troopUnit);
@@ -38,5 +38,15 @@ public class OwnershipHelper {
 
         troopUnit.setOwner(newOwner);
         newOwner.addTroopUnit(troopUnit);
+        return true;
+    }
+
+    public static boolean removeTroopUnitFromPlayer(TroopUnit troopUnit, Player player) {
+        if (troopUnit == null || player == null) return false;
+        return player.removeTroopUnit(troopUnit);
+    }
+
+    public static boolean removeTroopUnitFromPlayer(TroopUnit troopUnit) {
+        return removeTroopUnitFromPlayer(troopUnit, troopUnit.getOwner());
     }
 }

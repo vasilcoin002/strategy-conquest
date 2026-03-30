@@ -56,7 +56,7 @@ public class EconomyManager implements ITurnListener {
 
         currentPlayer.spendGold(troopType.getPrice());
         TroopUnit troopUnit = new TroopUnit(troopType, city);
-        OwnershipHelper.transferTroopUnit(troopUnit, currentPlayer);
+        OwnershipHelper.addTroopUnitToPlayer(troopUnit, currentPlayer);
         return true;
     }
 

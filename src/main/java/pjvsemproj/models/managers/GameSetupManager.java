@@ -19,7 +19,7 @@ public class GameSetupManager {
         GridPositionHelper.placeEntity(p1City, p1CityTile);
 
         TroopUnit p1StartUnit = new TroopUnit(TroopType.Militia, p1City);
-        OwnershipHelper.transferTroopUnit(p1StartUnit, p1);
+        OwnershipHelper.addTroopUnitToPlayer(p1StartUnit, p1);
         GridPositionHelper.placeEntity(p1StartUnit, p1CityTile);
 
 
@@ -30,7 +30,7 @@ public class GameSetupManager {
         GridPositionHelper.placeEntity(p2City, p2CityTile);
 
         TroopUnit p2StartUnit = new TroopUnit(TroopType.Militia, p2City);
-        OwnershipHelper.transferTroopUnit(p2StartUnit, p2);
+        OwnershipHelper.addTroopUnitToPlayer(p2StartUnit, p2);
         GridPositionHelper.placeEntity(p2StartUnit, p2CityTile);
 
 
