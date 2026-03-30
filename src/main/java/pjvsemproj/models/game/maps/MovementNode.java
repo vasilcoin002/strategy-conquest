@@ -1,4 +1,3 @@
 package pjvsemproj.models.game.maps;
 
-public record MovementNode() {
-}
+public record MovementNode(Tile tile, int distance) {}
