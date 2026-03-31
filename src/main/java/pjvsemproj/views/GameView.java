@@ -5,8 +5,14 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import pjvsemproj.models.entities.cities.City;
 import pjvsemproj.models.game.Game;
+import pjvsemproj.models.game.players.Player;
 import pjvsemproj.views.renderers.GameRenderer;
+
+import java.util.List;
+
+import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
 public class GameView {
 
@@ -30,11 +36,23 @@ public class GameView {
         BorderPane root = new BorderPane(canvas);
         scene = new Scene(root, gameAreaWidth, gameAreaHeight);
 
-        GameRenderer mapRenderer = new GameRenderer(gc);
-        mapRenderer.setBackground(root);
+        GameRenderer gameRenderer = new GameRenderer(gc);
+        gameRenderer.setBackground(root);
+
+        System.out.println();
+//        // TODO remove later
+        List<Player> players = game.getPlayers();
+        Player player1 = players.getFirst();
+        City city = player1.getCities().getFirst();
+        gameRenderer.renderCity(city, getPlayerColor(game, player1));
     }
 
     public void show() {
         stage.setScene(scene);
+    }
+
+    public Color getPlayerColor(Game game, Player player) {
+        if (game.getPlayers().getFirst() == player) return Color.BLUE;
+        return Color.RED;
     }
 }

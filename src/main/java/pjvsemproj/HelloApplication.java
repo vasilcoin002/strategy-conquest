@@ -8,6 +8,9 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import pjvsemproj.models.game.Game;
 import pjvsemproj.models.game.maps.GameMap;
+import pjvsemproj.models.game.players.BotPlayer;
+import pjvsemproj.models.game.players.HumanPlayer;
+import pjvsemproj.models.managers.GameSetupManager;
 import pjvsemproj.views.GameView;
 
 import java.io.IOException;
@@ -21,9 +24,13 @@ public class HelloApplication extends Application {
         root.setAlignment(Pos.CENTER);
 
         // TODO remove test game
-        GameView gameView = new GameView(
-                stage, new Game(new GameMap(15, 10))
+        GameSetupManager gsm = new GameSetupManager();
+        Game game = gsm.setupTestMatch(
+                new GameMap(15, 10),
+                new HumanPlayer("Vasya", 0),
+                new BotPlayer("Ivan", 0)
         );
+        GameView gameView = new GameView(stage, game);
         gameView.show();
 
         stage.show();
