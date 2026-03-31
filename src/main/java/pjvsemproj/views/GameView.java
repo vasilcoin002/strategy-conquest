@@ -10,8 +10,6 @@ import pjvsemproj.views.renderers.GameRenderer;
 
 public class GameView {
 
-    // TODO move constant to separate class
-    private static final int TILE_SIZE = 64;
     private final int gameAreaWidth;
     private final int gameAreaHeight;
 
