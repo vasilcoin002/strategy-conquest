@@ -51,7 +51,9 @@ public class CombatManager implements ITurnListener{
         return troopsToHeal;
     }
 
-
+    /**
+     * Returns all enemy troop units that attacker can hit this turn.
+     */
     public Set<TroopUnit> getAttackableTroops(TroopUnit attacker) {
         Set<TroopUnit> result = new HashSet<>();
 
