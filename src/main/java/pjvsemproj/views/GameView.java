@@ -3,13 +3,14 @@ package pjvsemproj.views;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import pjvsemproj.models.game.Game;
+import pjvsemproj.views.renderers.GameRenderer;
 
 public class GameView {
 
+    // TODO move constant to separate class
     private static final int TILE_SIZE = 64;
     private final int gameAreaWidth;
     private final int gameAreaHeight;
@@ -31,17 +32,8 @@ public class GameView {
         BorderPane root = new BorderPane(canvas);
         scene = new Scene(root, gameAreaWidth, gameAreaHeight);
 
-//        MapRenderer mapRenderer = new MapRenderer(gc, TILE_SIZE);
-        Image grassTexture = new Image("grass.png");
-
-        BackgroundImage backgroundImage = new BackgroundImage(
-                grassTexture,
-                BackgroundRepeat.REPEAT,   // horizontally
-                BackgroundRepeat.REPEAT,   // vertically
-                BackgroundPosition.DEFAULT,
-                BackgroundSize.DEFAULT     // keep the exact 64x64 pixel size (don't stretch)
-        );
-        root.setBackground(new Background(backgroundImage));
+        GameRenderer mapRenderer = new GameRenderer(gc);
+        mapRenderer.setBackground(root);
     }
 
     public void show() {
