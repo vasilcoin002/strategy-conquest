@@ -27,5 +27,6 @@ public class HelloApplication extends Application {
         gameView.show();
 
         stage.show();
+
     }
 }
