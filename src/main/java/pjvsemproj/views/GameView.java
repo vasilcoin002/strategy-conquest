@@ -39,12 +39,12 @@ public class GameView {
         GameRenderer gameRenderer = new GameRenderer(gc);
         gameRenderer.setBackground(root);
 
-        System.out.println();
 //        // TODO remove later
         List<Player> players = game.getPlayers();
-        Player player1 = players.getFirst();
-        City city = player1.getCities().getFirst();
-        gameRenderer.renderCity(city, getPlayerColor(game, player1));
+        for (Player player: players) {
+            Color color = getPlayerColor(game, player);
+            gameRenderer.renderCities(player.getCities(), color);
+        }
     }
 
     public void show() {

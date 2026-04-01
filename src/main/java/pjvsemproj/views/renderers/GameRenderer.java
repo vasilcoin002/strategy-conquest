@@ -9,6 +9,8 @@ import pjvsemproj.models.game.maps.Tile;
 import pjvsemproj.models.game.players.Player;
 import pjvsemproj.views.Color;
 
+import java.util.List;
+
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
 public class GameRenderer {
@@ -49,4 +51,10 @@ public class GameRenderer {
     }
 
     // TODO add method renderCities which will use renderCity method
+
+    public void renderCities(List<City> cities, Color color) {
+        for (City city: cities) {
+            renderCity(city, color);
+        }
+    }
 }
