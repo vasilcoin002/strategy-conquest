@@ -1,24 +1,21 @@
 package pjvsemproj.views.renderers;
 
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import pjvsemproj.models.entities.cities.City;
-import pjvsemproj.models.game.Game;
 import pjvsemproj.models.game.maps.Tile;
-import pjvsemproj.models.game.players.Player;
-import pjvsemproj.views.Color;
 
 import java.util.List;
 
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
-public class GameRenderer {
+public class GameRenderer extends Renderer {
 
-    private final GraphicsContext gc;
-
-    public GameRenderer(GraphicsContext gc) {
-        this.gc = gc;
+    public GameRenderer(Canvas canvas) {
+        super(canvas);
     }
 
     public Background getBackground() {
@@ -45,12 +42,10 @@ public class GameRenderer {
         int screenPosY = cityTile.getY() * TILE_SIZE;
 
         String cityColor = color.toString().toLowerCase();
-        Image cityImage = new Image("city_" + cityColor + ".png");
+        Image cityImage = new Image("city.png");
 
         gc.drawImage(cityImage, screenPosX, screenPosY);
     }
-
-    // TODO add method renderCities which will use renderCity method
 
     public void renderCities(List<City> cities, Color color) {
         for (City city: cities) {

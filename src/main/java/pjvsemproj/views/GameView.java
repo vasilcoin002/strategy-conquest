@@ -4,11 +4,15 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import pjvsemproj.models.entities.cities.City;
 import pjvsemproj.models.game.Game;
 import pjvsemproj.models.game.players.Player;
 import pjvsemproj.views.renderers.GameRenderer;
+import pjvsemproj.views.renderers.OwnershipRenderer;
 
 import java.util.List;
 
@@ -22,7 +26,6 @@ public class GameView {
     private final Stage stage;
     private final Scene scene;
     private final Game game;
-    private final GraphicsContext gc;
 
     public GameView(Stage stage, Game game) {
         this.stage = stage;
@@ -30,20 +33,22 @@ public class GameView {
 
         gameAreaWidth = game.getMap().getWidth() * TILE_SIZE;
         gameAreaHeight = game.getMap().getHeight() * TILE_SIZE;
-
-        Canvas canvas = new Canvas(gameAreaWidth, gameAreaHeight);
-        gc = canvas.getGraphicsContext2D();
-        BorderPane root = new BorderPane(canvas);
+        Canvas citiesCanvas = new Canvas(gameAreaWidth, gameAreaHeight);
+        Canvas ownershipCanvas = new Canvas(gameAreaWidth, gameAreaHeight);
+        Pane root = new StackPane(citiesCanvas, ownershipCanvas);
         scene = new Scene(root, gameAreaWidth, gameAreaHeight);
 
-        GameRenderer gameRenderer = new GameRenderer(gc);
+        GameRenderer gameRenderer = new GameRenderer(citiesCanvas);
+        OwnershipRenderer ownershipRenderer = new OwnershipRenderer(ownershipCanvas);
         gameRenderer.setBackground(root);
 
 //        // TODO remove later
         List<Player> players = game.getPlayers();
         for (Player player: players) {
             Color color = getPlayerColor(game, player);
-            gameRenderer.renderCities(player.getCities(), color);
+            List<City> cities = player.getCities();
+            gameRenderer.renderCities(cities, color);
+            ownershipRenderer.renderEntitiesOwner(cities, color);
         }
     }
 
@@ -53,6 +58,6 @@ public class GameView {
 
     public Color getPlayerColor(Game game, Player player) {
         if (game.getPlayers().getFirst() == player) return Color.BLUE;
-        return Color.RED;
+        return Color.YELLOW;
     }
 }
