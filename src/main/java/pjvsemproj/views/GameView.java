@@ -13,6 +13,7 @@ import pjvsemproj.models.entities.troopUnits.TroopUnit;
 import pjvsemproj.models.game.Game;
 import pjvsemproj.models.game.players.Player;
 import pjvsemproj.views.renderers.GameRenderer;
+import pjvsemproj.views.renderers.HpRenderer;
 import pjvsemproj.views.renderers.OwnershipRenderer;
 
 import java.util.List;
@@ -36,11 +37,13 @@ public class GameView {
         gameAreaHeight = game.getMap().getHeight() * TILE_SIZE;
         Canvas citiesCanvas = new Canvas(gameAreaWidth, gameAreaHeight);
         Canvas ownershipCanvas = new Canvas(gameAreaWidth, gameAreaHeight);
-        Pane root = new StackPane(citiesCanvas, ownershipCanvas);
+        Canvas hpCanvas = new Canvas(gameAreaWidth, gameAreaHeight);
+        Pane root = new StackPane(citiesCanvas, ownershipCanvas, hpCanvas);
         scene = new Scene(root, gameAreaWidth, gameAreaHeight);
 
         GameRenderer gameRenderer = new GameRenderer(citiesCanvas);
         OwnershipRenderer ownershipRenderer = new OwnershipRenderer(ownershipCanvas);
+        HpRenderer hpRenderer = new HpRenderer(hpCanvas);
         gameRenderer.setBackground(root);
 
 //        // TODO remove later
@@ -52,6 +55,7 @@ public class GameView {
             gameRenderer.renderCities(cities, color);
             ownershipRenderer.renderEntitiesOwner(cities, color);
             ownershipRenderer.renderEntitiesOwner(troops, color);
+            hpRenderer.renderEntitiesHp(troops);
         }
     }
 
