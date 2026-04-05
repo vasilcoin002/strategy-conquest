@@ -9,6 +9,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import pjvsemproj.models.entities.cities.City;
+import pjvsemproj.models.entities.troopUnits.TroopUnit;
 import pjvsemproj.models.game.Game;
 import pjvsemproj.models.game.players.Player;
 import pjvsemproj.views.renderers.GameRenderer;
@@ -47,8 +48,10 @@ public class GameView {
         for (Player player: players) {
             Color color = getPlayerColor(game, player);
             List<City> cities = player.getCities();
+            List<TroopUnit> troops = player.getTroops();
             gameRenderer.renderCities(cities, color);
             ownershipRenderer.renderEntitiesOwner(cities, color);
+            ownershipRenderer.renderEntitiesOwner(troops, color);
         }
     }
 

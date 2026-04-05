@@ -3,7 +3,6 @@ package pjvsemproj.views.renderers;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 import pjvsemproj.models.entities.IGridEntity;
-import pjvsemproj.models.entities.cities.City;
 
 import java.util.List;
 
@@ -16,11 +15,8 @@ public class OwnershipRenderer extends Renderer {
     }
 
     public void renderEntityOwner(IGridEntity entity, Color color) {
-        int gameX = getEntityX(entity);
-        int gameY = getEntityY(entity);
-
-        int viewX = gameX * TILE_SIZE;
-        int viewY = gameY * TILE_SIZE;
+        int viewX = getEntityViewX(entity);
+        int viewY = getEntityViewY(entity);
 
         gc.setFill(color);
         gc.fillRect(viewX+16, viewY + TILE_SIZE - 4, TILE_SIZE-32, 4);
