@@ -12,7 +12,16 @@ import java.util.*;
 public class MovementManager implements ITurnListener {
 
     private Player currentPlayer;
-    private GameMap gameMap;
+    private final GameMap gameMap;
+
+    public MovementManager(GameMap gameMap) {
+        this(null, gameMap);
+    }
+
+    public MovementManager(Player currentPlayer, GameMap gameMap) {
+        this.currentPlayer = currentPlayer;
+        this.gameMap = gameMap;
+    }
 
     @Override
     public void onTurnStart(Player activePlayer) {
@@ -185,5 +194,17 @@ public class MovementManager implements ITurnListener {
     private boolean containsAnotherTroopUnit(Tile tile, TroopUnit movingTroop) {
         return tile.getEntities().stream()
                 .anyMatch(entity -> entity instanceof TroopUnit && entity != movingTroop);
+    }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+
+    public GameMap getGameMap() {
+        return gameMap;
     }
 }
