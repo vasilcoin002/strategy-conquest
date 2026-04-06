@@ -3,6 +3,7 @@ package pjvsemproj.views.renderers;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
 import pjvsemproj.models.entities.IGridEntity;
+import pjvsemproj.models.entities.Ownable;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class OwnershipRenderer extends Renderer {
         super(canvas);
     }
 
-    public void renderEntityOwner(IGridEntity entity, Color color) {
+    public <T extends Ownable & IGridEntity> void renderEntityOwner(T entity, Color color) {
         int viewX = getEntityViewX(entity);
         int viewY = getEntityViewY(entity);
 
@@ -28,21 +29,21 @@ public class OwnershipRenderer extends Renderer {
         gc.fillRect(boxXPos, boxYPos, boxXSize, boxYSize);
     }
 
-    public void renderEntitiesOwner(List<? extends IGridEntity> entities, Color color) {
+    public <T extends Ownable & IGridEntity> void renderEntitiesOwner(List<T> entities, Color color) {
         for (IGridEntity entity: entities) {
             renderEntityOwner(entity, color);
         }
     }
 
-    public void clearEntityOwner(IGridEntity entity) {
+    public <T extends Ownable & IGridEntity> void clearEntityOwner(T entity) {
         int viewX = getEntityViewX(entity);
         int viewY = getEntityViewY(entity);
 
         gc.clearRect(viewX, viewY, TILE_SIZE, TILE_SIZE);
     }
 
-    public void clearEntitiesOwner(List<? extends IGridEntity> entities) {
-        for (IGridEntity entity: entities) {
+    public <T extends Ownable & IGridEntity> void clearEntitiesOwner(List<T> entities) {
+        for (T entity: entities) {
             clearEntityOwner(entity);
         }
     }
