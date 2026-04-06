@@ -6,14 +6,12 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import pjvsemproj.models.entities.IGridEntity;
 import pjvsemproj.models.entities.cities.City;
 import pjvsemproj.models.entities.troopUnits.TroopUnit;
 import pjvsemproj.models.game.Game;
 import pjvsemproj.models.game.players.Player;
-import pjvsemproj.views.renderers.CitiesRenderer;
-import pjvsemproj.views.renderers.HpRenderer;
-import pjvsemproj.views.renderers.OwnershipRenderer;
-import pjvsemproj.views.renderers.TroopsRenderer;
+import pjvsemproj.views.renderers.*;
 
 import java.util.List;
 
@@ -26,7 +24,15 @@ public class GameView {
 
     private final Stage stage;
     private final Scene scene;
+    // TODO transfer game to controller
     private final Game game;
+    private IGridEntity selectedEntity;
+
+    private final CitiesRenderer citiesRenderer;
+    private final TroopsRenderer troopsRenderer;
+    private final OwnershipRenderer ownershipRenderer;
+    private final HpRenderer hpRenderer;
+    private final SelectionRenderer selectionRenderer;
 
     public GameView(Stage stage, Game game) {
         this.stage = stage;
@@ -38,14 +44,19 @@ public class GameView {
         Canvas troopsCanvas = new Canvas(gameAreaWidth, gameAreaHeight);
         Canvas ownershipCanvas = new Canvas(gameAreaWidth, gameAreaHeight);
         Canvas hpCanvas = new Canvas(gameAreaWidth, gameAreaHeight);
-        Pane root = new StackPane(citiesCanvas, troopsCanvas, ownershipCanvas, hpCanvas);
+        Canvas selectionCanvas = new Canvas(gameAreaWidth, gameAreaHeight);
+        Pane root = new StackPane(
+                citiesCanvas, troopsCanvas, ownershipCanvas,
+                hpCanvas, selectionCanvas
+        );
+        setBackground(root);
         scene = new Scene(root, gameAreaWidth, gameAreaHeight);
 
-        CitiesRenderer citiesRenderer = new CitiesRenderer(citiesCanvas);
-        TroopsRenderer troopsRenderer = new TroopsRenderer(troopsCanvas);
-        OwnershipRenderer ownershipRenderer = new OwnershipRenderer(ownershipCanvas);
-        HpRenderer hpRenderer = new HpRenderer(hpCanvas);
-        setBackground(root);
+        citiesRenderer = new CitiesRenderer(citiesCanvas);
+        troopsRenderer = new TroopsRenderer(troopsCanvas);
+        ownershipRenderer = new OwnershipRenderer(ownershipCanvas);
+        hpRenderer = new HpRenderer(hpCanvas);
+        selectionRenderer = new SelectionRenderer(selectionCanvas);
 
 //        // TODO remove later
         List<Player> players = game.getPlayers();
@@ -59,6 +70,8 @@ public class GameView {
             ownershipRenderer.renderEntitiesOwner(troops, color);
             hpRenderer.renderEntitiesHp(troops);
         }
+
+        setSelectedEntity(players.getFirst().getTroops().getFirst());
     }
 
     public void show() {
@@ -86,5 +99,16 @@ public class GameView {
 
     public void setBackground(Pane pane) {
         pane.setBackground(getBackground());
+    }
+
+    public IGridEntity getSelectedEntity() {
+        return selectedEntity;
+    }
+
+    public void setSelectedEntity(IGridEntity selectedEntity) {
+        this.selectedEntity = selectedEntity;
+
+        if (selectedEntity == null) selectionRenderer.clear();
+        else selectionRenderer.renderSelection(selectedEntity);
     }
 }
