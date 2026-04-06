@@ -43,4 +43,8 @@ public abstract class Renderer {
     public int getEntityViewY(IGridEntity entity) {
         return getEntityGameY(entity) * TILE_SIZE;
     }
+
+    public void clear() {
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+    }
 }

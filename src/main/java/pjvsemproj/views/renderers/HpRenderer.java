@@ -11,8 +11,8 @@ import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
 public class HpRenderer extends Renderer {
 
-    int boxXSize = 4;
-    int boxYSize = 40;
+    private static final int boxXSize = 4;
+    private static final int boxYSize = 40;
 
     public HpRenderer(Canvas canvas) {
         super(canvas);
@@ -53,9 +53,5 @@ public class HpRenderer extends Renderer {
         for (T entity: entities) {
             clearEntityHp(entity);
         }
-    }
-
-    public void clear() {
-        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
     }
 }
