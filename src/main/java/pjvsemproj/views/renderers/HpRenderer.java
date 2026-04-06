@@ -28,9 +28,7 @@ public class HpRenderer extends Renderer {
         gc.setFill(Color.RED);
         gc.fillRect(boxXPos, boxYPos, boxXSize, boxYSize);
 
-        // TODO finish later when entity.getMaxHealth will be in interface
-//        double percentHpLeft = entity.getHealth() / entity.getMaxHealth();
-        double percentHpLeft = 0.25;
+        double percentHpLeft = (double) entity.getHealth() / entity.getMaxHealth();
 
         gc.setFill(Color.GRAY);
         gc.fillRect(boxXPos, boxYPos, boxXSize, (1 - percentHpLeft) * boxYSize);
