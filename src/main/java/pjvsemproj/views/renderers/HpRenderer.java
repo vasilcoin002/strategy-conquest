@@ -41,4 +41,21 @@ public class HpRenderer extends Renderer {
             renderEntityHp(entity);
         }
     }
+
+    public <T extends Damageable & IGridEntity> void clearEntityHp(T entity) {
+        int viewX = getEntityViewX(entity);
+        int viewY = getEntityViewY(entity);
+
+        gc.clearRect(viewX, viewY, TILE_SIZE, TILE_SIZE);
+    }
+
+    public <T extends Damageable & IGridEntity> void clearEntitiesHp(List<T> entities) {
+        for (T entity: entities) {
+            clearEntityHp(entity);
+        }
+    }
+
+    public void clear() {
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+    }
 }
