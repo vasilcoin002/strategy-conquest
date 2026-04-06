@@ -30,7 +30,7 @@ public class OwnershipRenderer extends Renderer {
     }
 
     public <T extends Ownable & IGridEntity> void renderEntitiesOwner(List<T> entities, Color color) {
-        for (IGridEntity entity: entities) {
+        for (T entity: entities) {
             renderEntityOwner(entity, color);
         }
     }
