@@ -7,9 +7,9 @@ import java.util.List;
 
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
-public class CityRenderer extends EntityRenderer {
+public class CitiesRenderer extends EntityRenderer {
 
-    public CityRenderer(Canvas canvas) {
+    public CitiesRenderer(Canvas canvas) {
         super(canvas);
     }
 

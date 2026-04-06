@@ -10,9 +10,10 @@ import pjvsemproj.models.entities.cities.City;
 import pjvsemproj.models.entities.troopUnits.TroopUnit;
 import pjvsemproj.models.game.Game;
 import pjvsemproj.models.game.players.Player;
-import pjvsemproj.views.renderers.CityRenderer;
+import pjvsemproj.views.renderers.CitiesRenderer;
 import pjvsemproj.views.renderers.HpRenderer;
 import pjvsemproj.views.renderers.OwnershipRenderer;
+import pjvsemproj.views.renderers.TroopsRenderer;
 
 import java.util.List;
 
@@ -40,8 +41,8 @@ public class GameView {
         Pane root = new StackPane(citiesCanvas, troopsCanvas, ownershipCanvas, hpCanvas);
         scene = new Scene(root, gameAreaWidth, gameAreaHeight);
 
-        CityRenderer citiesRenderer = new CityRenderer(citiesCanvas);
-//        EntityRenderer troopsRenderer = new EntityRenderer(troopsCanvas);
+        CitiesRenderer citiesRenderer = new CitiesRenderer(citiesCanvas);
+        TroopsRenderer troopsRenderer = new TroopsRenderer(troopsCanvas);
         OwnershipRenderer ownershipRenderer = new OwnershipRenderer(ownershipCanvas);
         HpRenderer hpRenderer = new HpRenderer(hpCanvas);
         setBackground(root);
@@ -53,7 +54,7 @@ public class GameView {
             List<City> cities = player.getCities();
             List<TroopUnit> troops = player.getTroops();
             citiesRenderer.renderCities(cities);
-//            troopsRenderer.renderEntities(troops,  TILE_SIZE * 3 / 4, TILE_SIZE * 3 / 4, "cavalry.png");
+            troopsRenderer.renderTroops(troops);
             ownershipRenderer.renderEntitiesOwner(cities, color);
             ownershipRenderer.renderEntitiesOwner(troops, color);
             hpRenderer.renderEntitiesHp(troops);
