@@ -44,6 +44,11 @@ public abstract class DamageableEntity extends Entity implements Damageable {
     }
 
     @Override
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    @Override
     public boolean isDead() {
         return health == 0;
     }

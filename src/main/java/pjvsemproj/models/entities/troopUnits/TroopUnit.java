@@ -80,18 +80,17 @@ public class TroopUnit extends DamageableEntity implements Movable, IDamager, Ow
         this.hasAttackedThisTurn = hasAttackedThisTurn;
     }
 
-    public int getMaxHealth() {
-        return maxHealth;
-    }
-
+    @Override
     public int getMinDamage() {
         return minDamage;
     }
 
+    @Override
     public int getMaxDamage() {
         return maxDamage;
     }
 
+    @Override
     public int getAttackRange() {
         return attackRange;
     }
