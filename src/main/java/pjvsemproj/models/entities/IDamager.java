@@ -5,4 +5,7 @@ public interface IDamager {
     int getAttackRange();
     boolean hasAttackedThisTurn();
     void setHasAttackedThisTurn(boolean attacked);
+
+    int getMinDamage();
+    int getMaxDamage();
 }
