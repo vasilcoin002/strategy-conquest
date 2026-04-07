@@ -10,10 +10,12 @@ import pjvsemproj.models.entities.IGridEntity;
 import pjvsemproj.models.entities.cities.City;
 import pjvsemproj.models.entities.troopUnits.TroopUnit;
 import pjvsemproj.models.game.Game;
+import pjvsemproj.models.game.maps.Tile;
 import pjvsemproj.models.game.players.Player;
 import pjvsemproj.views.renderers.*;
 
 import java.util.List;
+import java.util.Set;
 
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
@@ -33,6 +35,7 @@ public class GameView {
     private final OwnershipRenderer ownershipRenderer;
     private final HpRenderer hpRenderer;
     private final SelectionRenderer selectionRenderer;
+    private final MovementRenderer movementRenderer;
 
     public GameView(Stage stage, Game game) {
         this.stage = stage;
@@ -45,9 +48,10 @@ public class GameView {
         Canvas ownershipCanvas = new Canvas(gameAreaWidth, gameAreaHeight);
         Canvas hpCanvas = new Canvas(gameAreaWidth, gameAreaHeight);
         Canvas selectionCanvas = new Canvas(gameAreaWidth, gameAreaHeight);
+        Canvas movementCanvas = new Canvas(gameAreaWidth, gameAreaHeight);
         Pane root = new StackPane(
                 citiesCanvas, troopsCanvas, ownershipCanvas,
-                hpCanvas, selectionCanvas
+                hpCanvas, selectionCanvas, movementCanvas
         );
         setBackground(root);
         scene = new Scene(root, gameAreaWidth, gameAreaHeight);
@@ -57,7 +61,7 @@ public class GameView {
         ownershipRenderer = new OwnershipRenderer(ownershipCanvas);
         hpRenderer = new HpRenderer(hpCanvas);
         selectionRenderer = new SelectionRenderer(selectionCanvas);
-
+        movementRenderer = new MovementRenderer(movementCanvas);
 //        // TODO remove later
         List<Player> players = game.getPlayers();
         for (Player player : players) {
@@ -71,7 +75,7 @@ public class GameView {
             hpRenderer.renderEntitiesHp(troops);
         }
 
-        setSelectedEntity(players.getFirst().getTroops().getFirst());
+        setSelectedEntity(players.getLast().getTroops().getFirst());
     }
 
     public void show() {
@@ -80,7 +84,7 @@ public class GameView {
 
     public Color getPlayerColor(Game game, Player player) {
         if (game.getPlayers().getFirst() == player) return Color.BLUE;
-        return Color.YELLOW;
+        return Color.ORANGE;
     }
 
     public Background getBackground() {
@@ -110,5 +114,9 @@ public class GameView {
 
         if (selectedEntity == null) selectionRenderer.clear();
         else selectionRenderer.renderSelection(selectedEntity);
+    }
+
+    public void showSelectedEntityAvailableMoves(Set<Tile> availableTiles) {
+        movementRenderer.renderAvailableTiles(availableTiles);
     }
 }
