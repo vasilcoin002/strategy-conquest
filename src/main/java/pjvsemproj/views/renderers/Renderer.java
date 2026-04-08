@@ -8,21 +8,6 @@ import pjvsemproj.models.game.maps.Tile;
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
 public abstract class Renderer {
-    protected final Canvas canvas;
-    protected final GraphicsContext gc;
-
-    public Renderer(Canvas canvas) {
-        this.canvas = canvas;
-        this.gc = canvas.getGraphicsContext2D();
-    }
-
-    public Canvas getCanvas() {
-        return canvas;
-    }
-
-    public GraphicsContext getGc() {
-        return gc;
-    }
 
     public Tile getTile(IGridEntity entity) {
         return entity.getTile();
@@ -44,7 +29,17 @@ public abstract class Renderer {
         return getEntityGameY(entity) * TILE_SIZE;
     }
 
-    public void clear() {
-        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+    public void clear(GraphicsContext gc) {
+        Canvas canvas = gc.getCanvas();
+        double width = canvas.getWidth();
+        double height = canvas.getHeight();
+
+        clear(gc, 0, 0, width, height);
     }
+
+    public void clear(GraphicsContext gc, double x1, double y1, double x2, double y2) {
+        gc.clearRect(x1, y1, x2, y2);
+    }
+
+
 }
