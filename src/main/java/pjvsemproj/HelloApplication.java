@@ -3,11 +3,9 @@ package pjvsemproj;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import pjvsemproj.models.entities.IGridEntity;
-import pjvsemproj.models.entities.Movable;
+import pjvsemproj.models.entities.cities.City;
 import pjvsemproj.models.entities.troopUnits.TroopUnit;
 import pjvsemproj.models.game.Game;
 import pjvsemproj.models.game.maps.GameMap;
@@ -45,15 +43,19 @@ public class HelloApplication extends Application {
 
         Player player1 = game.getPlayers().getFirst();
         Player player2 = game.getPlayers().getLast();
-        TroopUnit troopUnit = (TroopUnit) gameView.getSelectedEntity();
+        TroopUnit troopUnit = player1.getTroops().getFirst();
+        City city1 = player1.getCities().getFirst();
+        gameView.setSelectedEntity(city1);
 
         TurnManager turnManager = new TurnManager(player1, player2);
         MovementManager movementManager = new MovementManager(game.getMap());
         turnManager.addTurnListener(movementManager);
 
         turnManager.endTurn();
+        turnManager.endTurn();
 
-        Set<Tile> availableTiles = movementManager.getAvailableTilesForMovement(troopUnit);
-        gameView.showSelectedEntityAvailableMoves(availableTiles);
+
+//        Set<Tile> availableTiles = movementManager.getAvailableTilesForMovement(troopUnit);
+//        gameView.showSelectedEntityAvailableMoves(availableTiles);
     }
 }

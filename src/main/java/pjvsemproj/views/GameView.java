@@ -3,6 +3,7 @@ package pjvsemproj.views;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -18,6 +19,7 @@ import pjvsemproj.views.renderers.*;
 import java.util.List;
 import java.util.Set;
 
+import static pjvsemproj.views.ViewConstants.GAME_SIDE_PANEL_WIDTH;
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
 public class GameView {
@@ -33,6 +35,8 @@ public class GameView {
     private final GraphicsContext overlaysGc;
 
     private final MapRenderer mapRenderer;
+
+    private final SidePanelView sidePanel;
 
     // TODO transfer game to controller
     private final Game game;
@@ -52,11 +56,17 @@ public class GameView {
         dynamicEntitiesGc = dynamicEntitesCanvas.getGraphicsContext2D();
         overlaysGc = overlaysCanvas.getGraphicsContext2D();
 
-        Pane root = new StackPane(
-                staticEntitesCanvas, dynamicEntitesCanvas, overlaysCanvas
-        );
-        setBackground(root);
-        scene = new Scene(root, gameAreaWidth, gameAreaHeight);
+        StackPane mapPane = new StackPane(staticEntitesCanvas, dynamicEntitesCanvas, overlaysCanvas);
+        setBackground(mapPane);
+
+        sidePanel = new SidePanelView();
+
+        BorderPane root = new BorderPane();
+        root.setCenter(mapPane);
+        root.setRight(sidePanel.getView());
+
+        setBackground(mapPane);
+        scene = new Scene(root, gameAreaWidth + GAME_SIDE_PANEL_WIDTH, gameAreaHeight);
 
         mapRenderer = new MapRenderer();
 //        // TODO remove later
@@ -70,8 +80,9 @@ public class GameView {
             mapRenderer.renderTroops(dynamicEntitiesGc, troops, ownerColor);
         }
 
-        TroopUnit troopUnit1 = players.getLast().getTroops().getFirst();
-        setSelectedEntity(troopUnit1);
+        Player player1 = players.getFirst();
+        sidePanel.updatePlayersBalance(players);
+        sidePanel.updateCurrentPlayer(player1);
     }
 
     public void show() {
@@ -108,8 +119,14 @@ public class GameView {
     public void setSelectedEntity(IGridEntity selectedEntity) {
         this.selectedEntity = selectedEntity;
 
-        if (selectedEntity == null) mapRenderer.clear(overlaysGc);
-        else mapRenderer.renderSelection(overlaysGc, selectedEntity);
+        if (selectedEntity == null) {
+            mapRenderer.clear(overlaysGc);
+            sidePanel.clearEntityInfo();
+        }
+        else {
+            mapRenderer.renderSelection(overlaysGc, selectedEntity);
+            sidePanel.updateEntityInfo(selectedEntity);
+        }
     }
 
     public void showSelectedEntityAvailableMoves(Set<Tile> availableTiles) {
