@@ -70,7 +70,8 @@ public class GameView {
             mapRenderer.renderTroops(dynamicEntitiesGc, troops, ownerColor);
         }
 
-        setSelectedEntity(players.getLast().getTroops().getFirst());
+        TroopUnit troopUnit1 = players.getLast().getTroops().getFirst();
+        setSelectedEntity(troopUnit1);
     }
 
     public void show() {
@@ -113,5 +114,22 @@ public class GameView {
 
     public void showSelectedEntityAvailableMoves(Set<Tile> availableTiles) {
         mapRenderer.renderAvailableMoves(overlaysGc ,availableTiles);
+    }
+
+    public void updateTroopUnit(TroopUnit troopUnit) {
+        int hp = troopUnit.getHealth();
+
+        if (hp <= 0) {
+            mapRenderer.clearTroopUnit(dynamicEntitiesGc ,troopUnit);
+            if (selectedEntity == troopUnit) {
+                setSelectedEntity(null);
+            }
+        } else {
+            mapRenderer.renderTroop(
+                    dynamicEntitiesGc,
+                    troopUnit,
+                    getPlayerColor(game, troopUnit.getOwner())
+            );
+        }
     }
 }
