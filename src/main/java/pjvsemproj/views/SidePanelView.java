@@ -4,6 +4,8 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import pjvsemproj.models.entities.IGridEntity;
 import pjvsemproj.models.entities.cities.City;
@@ -26,8 +28,10 @@ public class SidePanelView {
     // TODO add entity switcher (if there is more than one entity on one tile)
     private final Label entityInfoLabel;
     private final VBox actionMenuBox;
+    private final Button nextTurnBtn;
 
     private Consumer<IGridEntity> onEntitySelectedCallback;
+    private Runnable onNextTurnAction;
 
     public SidePanelView() {
         root = new VBox(15);
@@ -47,7 +51,19 @@ public class SidePanelView {
 
         actionMenuBox = new VBox(10);
 
-        root.getChildren().addAll(currentPlayerLabel, ballanceLabel, switcherBox, entityInfoLabel, actionMenuBox);
+        Region spacer = new Region();
+        VBox.setVgrow(spacer, Priority.ALWAYS);
+
+        // --- THE NEXT TURN BUTTON ---
+        nextTurnBtn = new Button("Next Turn");
+        nextTurnBtn.setMaxWidth(Double.MAX_VALUE);
+        // Style it to stand out! Making the base a nice warm color and padding it makes it feel important.
+        nextTurnBtn.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-base: #ff7e67; -fx-padding: 8px;");
+
+        // For now, it just prints to the console when clicked
+        nextTurnBtn.setOnAction(e -> onNextTurnAction.run());
+
+        root.getChildren().addAll(currentPlayerLabel, ballanceLabel, switcherBox, entityInfoLabel, actionMenuBox, spacer, nextTurnBtn);
     }
 
     /**
@@ -153,7 +169,15 @@ public class SidePanelView {
         }
     }
 
+    public void setNextTurnButtonDisabled(boolean disabled) {
+        nextTurnBtn.setDisable(disabled);
+    }
+
     public void setOnEntitySelectedCallback(Consumer<IGridEntity> onEntitySelectedCallback) {
         this.onEntitySelectedCallback = onEntitySelectedCallback;
+    }
+
+    public void setOnNextTurnAction(Runnable action) {
+        this.onNextTurnAction = action;
     }
 }
