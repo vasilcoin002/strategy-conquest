@@ -43,9 +43,8 @@ public class HelloApplication extends Application {
 
         Player player1 = game.getPlayers().getFirst();
         Player player2 = game.getPlayers().getLast();
-        TroopUnit troopUnit = player1.getTroops().getFirst();
+        TroopUnit troopUnit1 = player1.getTroops().getFirst();
         City city1 = player1.getCities().getFirst();
-        gameView.setSelectedEntity(city1);
 
         TurnManager turnManager = new TurnManager(player1, player2);
         MovementManager movementManager = new MovementManager(game.getMap());
@@ -54,8 +53,11 @@ public class HelloApplication extends Application {
         turnManager.endTurn();
         turnManager.endTurn();
 
-
-//        Set<Tile> availableTiles = movementManager.getAvailableTilesForMovement(troopUnit);
+        gameView.setSelectedEntity(city1);
+//        gameView.setSelectedEntity(null);
+//        gameView.setSelectedEntity(troopUnit1);
+//
+//        Set<Tile> availableTiles = movementManager.getAvailableTilesForMovement(troopUnit1);
 //        gameView.showSelectedEntityAvailableMoves(availableTiles);
     }
 }

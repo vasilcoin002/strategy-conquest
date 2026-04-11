@@ -3,14 +3,17 @@ package pjvsemproj.views;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import pjvsemproj.models.entities.IGridEntity;
 import pjvsemproj.models.entities.cities.City;
 import pjvsemproj.models.entities.troopUnits.TroopType;
 import pjvsemproj.models.entities.troopUnits.TroopUnit;
+import pjvsemproj.models.game.maps.Tile;
 import pjvsemproj.models.game.players.Player;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import static pjvsemproj.views.ViewConstants.GAME_SIDE_PANEL_WIDTH;
 
@@ -19,9 +22,12 @@ public class SidePanelView {
     private final VBox root;
     private final Label currentPlayerLabel;
     private final Label ballanceLabel;
+    private final HBox switcherBox;
     // TODO add entity switcher (if there is more than one entity on one tile)
     private final Label entityInfoLabel;
     private final VBox actionMenuBox;
+
+    private Consumer<IGridEntity> onEntitySelectedCallback;
 
     public SidePanelView() {
         root = new VBox(15);
@@ -34,15 +40,57 @@ public class SidePanelView {
 
         ballanceLabel = new Label("Balance: ");
 
+        switcherBox = new HBox(10);
+
         entityInfoLabel = new Label("Selected: None");
         entityInfoLabel.setWrapText(true);
 
         actionMenuBox = new VBox(10);
 
-        root.getChildren().addAll(currentPlayerLabel, ballanceLabel, entityInfoLabel, actionMenuBox);
+        root.getChildren().addAll(currentPlayerLabel, ballanceLabel, switcherBox, entityInfoLabel, actionMenuBox);
     }
 
-    // --- Public Methods for the GameView / Controller to call ---
+    /**
+     * Reads the tile's getEntities() list and builds the switcher if anything is there.
+     */
+    public void updateForTile(Tile tile) {
+        // Clear previous buttons and text
+        switcherBox.getChildren().clear();
+        actionMenuBox.getChildren().clear();
+
+        // If the tile is empty or null, show nothing
+        if (tile == null || tile.getEntities().isEmpty()) {
+            entityInfoLabel.setText("Selected: none");
+            return;
+        }
+
+        City foundCity = null;
+        TroopUnit foundTroop = null;
+
+        for (IGridEntity entity : tile.getEntities()) {
+            if (entity instanceof City) {
+                foundCity = (City) entity;
+            } else if (entity instanceof TroopUnit) {
+                foundTroop = (TroopUnit) entity;
+            }
+        }
+
+        if (foundCity != null) {
+            final City cityRef = foundCity; // 'effectively final' for the button action
+            Button viewCityBtn = new Button("View City");
+            viewCityBtn.setMaxWidth(Double.MAX_VALUE);
+            viewCityBtn.setOnAction(e -> onEntitySelectedCallback.accept(cityRef));
+            switcherBox.getChildren().add(viewCityBtn);
+        }
+
+        if (foundTroop != null) {
+            final TroopUnit troopRef = foundTroop;
+            Button viewTroopBtn = new Button("View Troop");
+            viewTroopBtn.setMaxWidth(Double.MAX_VALUE);
+            viewTroopBtn.setOnAction(e -> onEntitySelectedCallback.accept(troopRef));
+            switcherBox.getChildren().add(viewTroopBtn);
+        }
+    }
 
     public VBox getView() {
         return root;
@@ -103,5 +151,9 @@ public class SidePanelView {
                     "\nDamage: " + troop.getMinDamage() + "-" + troop.getMaxDamage() +
                     "\nMoved: " + (troop.hasMovedThisTurn() ? "Yes" : "No"));
         }
+    }
+
+    public void setOnEntitySelectedCallback(Consumer<IGridEntity> onEntitySelectedCallback) {
+        this.onEntitySelectedCallback = onEntitySelectedCallback;
     }
 }

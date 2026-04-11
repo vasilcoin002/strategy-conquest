@@ -60,6 +60,7 @@ public class GameView {
         setBackground(mapPane);
 
         sidePanel = new SidePanelView();
+        sidePanel.setOnEntitySelectedCallback(this::setSelectedEntity);
 
         BorderPane root = new BorderPane();
         root.setCenter(mapPane);
@@ -122,10 +123,12 @@ public class GameView {
         if (selectedEntity == null) {
             mapRenderer.clear(overlaysGc);
             sidePanel.clearEntityInfo();
+            sidePanel.updateForTile(null);
         }
         else {
             mapRenderer.renderSelection(overlaysGc, selectedEntity);
             sidePanel.updateEntityInfo(selectedEntity);
+            sidePanel.updateForTile(selectedEntity.getTile());
         }
     }
 
