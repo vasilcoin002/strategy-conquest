@@ -61,6 +61,10 @@ public class HelloApplication extends Application {
         );
         gameView.setSelectedEntity(city1);
 
+        // TODO transfer action settings to controller
+        gameView.setOnEntitySelectedAction(gameView::setSelectedEntity);
+        gameView.setOnQuitGameAction(() -> stage.setScene(null));
+
         gameView.show();
         stage.show();
 //

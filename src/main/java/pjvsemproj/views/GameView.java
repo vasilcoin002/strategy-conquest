@@ -16,6 +16,7 @@ import pjvsemproj.views.renderers.*;
 
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import static pjvsemproj.views.ViewConstants.GAME_SIDE_PANEL_WIDTH;
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
@@ -54,9 +55,6 @@ public class GameView {
         setBackground(mapPane);
 
         sidePanel = new SidePanelView();
-        // TODO transfer action settings to controller
-        sidePanel.setOnEntitySelectedAction(this::setSelectedEntity);
-        sidePanel.setOnQuitGameAction(() -> stage.setScene(null));
 
         BorderPane root = new BorderPane();
         root.setCenter(mapPane);
@@ -145,5 +143,21 @@ public class GameView {
 
     public void updateCity(City city, Color ownerColor) {
         mapRenderer.renderCity(staticEntitiesGc, city, ownerColor);
+    }
+
+    public void setOnEntitySelectedAction(Consumer<IGridEntity> onEntitySelectedAction) {
+        sidePanel.setOnEntitySelectedAction(onEntitySelectedAction);
+    }
+
+    public void setOnQuitGameAction(Runnable onQuitGameAction) {
+        sidePanel.setOnQuitGameAction(onQuitGameAction);
+    }
+
+    public void setOnNextTurnAction(Runnable onNextTurnAction) {
+        sidePanel.setOnNextTurnAction(onNextTurnAction);
+    }
+
+    public void setNextTurnButtonDisabled(boolean disabled) {
+        sidePanel.setNextTurnButtonDisabled(disabled);
     }
 }
