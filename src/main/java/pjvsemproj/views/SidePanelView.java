@@ -22,6 +22,7 @@ import static pjvsemproj.views.ViewConstants.GAME_SIDE_PANEL_WIDTH;
 public class SidePanelView {
 
     private final VBox root;
+    private final Button quitBtn;
     private final Label currentPlayerLabel;
     private final Label ballanceLabel;
     private final HBox switcherBox;
@@ -30,7 +31,8 @@ public class SidePanelView {
     private final VBox actionMenuBox;
     private final Button nextTurnBtn;
 
-    private Consumer<IGridEntity> onEntitySelectedCallback;
+    private Runnable onQuitGameAction;
+    private Consumer<IGridEntity> onEntitySelectedAction;
     private Runnable onNextTurnAction;
 
     public SidePanelView() {
@@ -38,6 +40,9 @@ public class SidePanelView {
         root.setPadding(new Insets(20));
         root.setPrefWidth(GAME_SIDE_PANEL_WIDTH);
         root.setStyle("-fx-background-color: #f4f4f4; -fx-border-color: #ccc; -fx-border-width: 0 0 0 1;");
+
+        quitBtn = new Button("Quit game");
+        quitBtn.setOnAction(e -> onQuitGameAction.run());
 
         currentPlayerLabel = new Label("Current Player: ");
         currentPlayerLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
@@ -54,16 +59,13 @@ public class SidePanelView {
         Region spacer = new Region();
         VBox.setVgrow(spacer, Priority.ALWAYS);
 
-        // --- THE NEXT TURN BUTTON ---
         nextTurnBtn = new Button("Next Turn");
         nextTurnBtn.setMaxWidth(Double.MAX_VALUE);
-        // Style it to stand out! Making the base a nice warm color and padding it makes it feel important.
         nextTurnBtn.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-base: #ff7e67; -fx-padding: 8px;");
 
-        // For now, it just prints to the console when clicked
         nextTurnBtn.setOnAction(e -> onNextTurnAction.run());
 
-        root.getChildren().addAll(currentPlayerLabel, ballanceLabel, switcherBox, entityInfoLabel, actionMenuBox, spacer, nextTurnBtn);
+        root.getChildren().addAll(quitBtn ,currentPlayerLabel, ballanceLabel, switcherBox, entityInfoLabel, actionMenuBox, spacer, nextTurnBtn);
     }
 
     /**
@@ -95,7 +97,7 @@ public class SidePanelView {
             final City cityRef = foundCity; // 'effectively final' for the button action
             Button viewCityBtn = new Button("View City");
             viewCityBtn.setMaxWidth(Double.MAX_VALUE);
-            viewCityBtn.setOnAction(e -> onEntitySelectedCallback.accept(cityRef));
+            viewCityBtn.setOnAction(e -> onEntitySelectedAction.accept(cityRef));
             switcherBox.getChildren().add(viewCityBtn);
         }
 
@@ -103,7 +105,7 @@ public class SidePanelView {
             final TroopUnit troopRef = foundTroop;
             Button viewTroopBtn = new Button("View Troop");
             viewTroopBtn.setMaxWidth(Double.MAX_VALUE);
-            viewTroopBtn.setOnAction(e -> onEntitySelectedCallback.accept(troopRef));
+            viewTroopBtn.setOnAction(e -> onEntitySelectedAction.accept(troopRef));
             switcherBox.getChildren().add(viewTroopBtn);
         }
     }
@@ -173,11 +175,15 @@ public class SidePanelView {
         nextTurnBtn.setDisable(disabled);
     }
 
-    public void setOnEntitySelectedCallback(Consumer<IGridEntity> onEntitySelectedCallback) {
-        this.onEntitySelectedCallback = onEntitySelectedCallback;
+    public void setOnEntitySelectedAction(Consumer<IGridEntity> onEntitySelectedAction) {
+        this.onEntitySelectedAction = onEntitySelectedAction;
     }
 
     public void setOnNextTurnAction(Runnable action) {
         this.onNextTurnAction = action;
+    }
+
+    public void setOnQuitGameAction(Runnable onQuitGameAction) {
+        this.onQuitGameAction = onQuitGameAction;
     }
 }

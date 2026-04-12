@@ -3,7 +3,6 @@ package pjvsemproj.views;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -60,7 +59,9 @@ public class GameView {
         setBackground(mapPane);
 
         sidePanel = new SidePanelView();
-        sidePanel.setOnEntitySelectedCallback(this::setSelectedEntity);
+        // TODO transfer action settings to controller
+        sidePanel.setOnEntitySelectedAction(this::setSelectedEntity);
+        sidePanel.setOnQuitGameAction(() -> stage.setScene(null));
 
         BorderPane root = new BorderPane();
         root.setCenter(mapPane);
@@ -136,6 +137,7 @@ public class GameView {
         mapRenderer.renderAvailableMoves(overlaysGc ,availableTiles);
     }
 
+    // TODO add ownerColor arg to updateTroopUnit method
     public void updateTroopUnit(TroopUnit troopUnit) {
         int hp = troopUnit.getHealth();
 
@@ -151,5 +153,10 @@ public class GameView {
                     getPlayerColor(game, troopUnit.getOwner())
             );
         }
+    }
+
+    // TODO implement method updateCity
+    public void updateCity(City city, Color ownerColor) {
+
     }
 }
