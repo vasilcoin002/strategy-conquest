@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import pjvsemproj.models.entities.cities.City;
 import pjvsemproj.models.entities.troopUnits.TroopUnit;
@@ -36,10 +37,6 @@ public class HelloApplication extends Application {
                 new HumanPlayer("Vasya", 0),
                 new BotPlayer("Ivan", 0)
         );
-        GameView gameView = new GameView(stage, game);
-        gameView.show();
-
-        stage.show();
 
         Player player1 = game.getPlayers().getFirst();
         Player player2 = game.getPlayers().getLast();
@@ -53,9 +50,19 @@ public class HelloApplication extends Application {
         turnManager.endTurn();
         turnManager.endTurn();
 
+        GameView gameView = new GameView(
+                stage,
+                game.getMap().getWidth(),
+                game.getMap().getHeight(),
+                game.getPlayers(),
+                turnManager.getCurrentPlayer(),
+                Color.BLUE,
+                Color.ORANGE
+        );
         gameView.setSelectedEntity(city1);
-//        gameView.setSelectedEntity(null);
-//        gameView.setSelectedEntity(troopUnit1);
+
+        gameView.show();
+        stage.show();
 //
 //        Set<Tile> availableTiles = movementManager.getAvailableTilesForMovement(troopUnit1);
 //        gameView.showSelectedEntityAvailableMoves(availableTiles);
