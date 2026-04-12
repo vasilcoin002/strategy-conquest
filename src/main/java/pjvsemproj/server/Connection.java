@@ -146,4 +146,8 @@ public class Connection implements Runnable{
             LOGGER.severe(ex.getMessage());
         }
     }
+
+    public Player getPlayer() {
+        return player;
+    }
 }
