@@ -16,6 +16,7 @@ import pjvsemproj.views.renderers.*;
 
 import java.util.List;
 import java.util.Set;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static pjvsemproj.views.ViewConstants.GAME_SIDE_PANEL_WIDTH;
@@ -37,6 +38,8 @@ public class GameView {
 
     private IGridEntity selectedEntity;
 
+    private BiConsumer<Integer, Integer> onGameAreaClickedAction;
+
     public GameView(Stage stage, int mapModelWidth, int mapModelHeight,
             List<Player> players, Player currentPlayer, Color player1Color, Color player2Color) {
         this.stage = stage;
@@ -46,6 +49,10 @@ public class GameView {
         Canvas staticEntitesCanvas = new Canvas(gameAreaWidth, gameAreaHeight);
         Canvas dynamicEntitesCanvas = new Canvas(gameAreaWidth, gameAreaHeight);
         Canvas overlaysCanvas = new Canvas(gameAreaWidth, gameAreaHeight);
+
+        overlaysCanvas.setOnMouseClicked(e -> {
+            onGameAreaClickedAction.accept((int)e.getX(), (int)e.getY());
+        });
 
         staticEntitiesGc = staticEntitesCanvas.getGraphicsContext2D();
         dynamicEntitiesGc = dynamicEntitesCanvas.getGraphicsContext2D();
@@ -143,6 +150,10 @@ public class GameView {
 
     public void updateCity(City city, Color ownerColor) {
         mapRenderer.renderCity(staticEntitiesGc, city, ownerColor);
+    }
+
+    public void setOnGameAreaClickedAction(BiConsumer<Integer, Integer> onGameAreaClickedAction) {
+        this.onGameAreaClickedAction = onGameAreaClickedAction;
     }
 
     public void setOnEntitySelectedAction(Consumer<IGridEntity> onEntitySelectedAction) {
