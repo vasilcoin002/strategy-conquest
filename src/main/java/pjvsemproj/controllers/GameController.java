@@ -3,12 +3,15 @@ package pjvsemproj.controllers;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import pjvsemproj.models.entities.IGridEntity;
+import pjvsemproj.models.entities.troopUnits.TroopUnit;
 import pjvsemproj.models.game.Game;
 import pjvsemproj.models.game.maps.Tile;
 import pjvsemproj.models.game.players.Player;
 import pjvsemproj.models.managers.MovementManager;
 import pjvsemproj.models.managers.TurnManager;
 import pjvsemproj.views.GameView;
+
+import java.util.Set;
 
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
@@ -18,6 +21,9 @@ public class GameController {
     // TODO add services instead of changing game directly through the GameController
     private final Game game;
     private final GameView view;
+
+    private TurnManager turnManager;
+    private MovementManager movementManager;
 
     private IGridEntity selectedEntity;
 
@@ -37,8 +43,8 @@ public class GameController {
         Player player1 = game.getPlayers().getFirst();
         Player player2 = game.getPlayers().getLast();
 
-        TurnManager turnManager = new TurnManager(player1, player2);
-        MovementManager movementManager = new MovementManager(game.getMap());
+        turnManager = new TurnManager(player1, player2);
+        movementManager = new MovementManager(game.getMap());
         turnManager.addTurnListener(movementManager);
 
         turnManager.endTurn();
@@ -67,12 +73,16 @@ public class GameController {
 
         IGridEntity entity = tile.getEntities().getFirst();
         setSelectedEntity(entity);
-
         // TODO extend method handleGameAreaClick that it handles movement clicks
     }
 
     public void setSelectedEntity(IGridEntity selectedEntity) {
         this.selectedEntity = selectedEntity;
         view.setSelectedEntity(selectedEntity);
+
+        if (selectedEntity instanceof TroopUnit troopUnit) {
+            Set<Tile> availableTilesForMovement = movementManager.getAvailableTilesForMovement(troopUnit);
+            view.showSelectedEntityAvailableMoves(availableTilesForMovement);
+        }
     }
 }
