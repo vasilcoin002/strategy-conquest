@@ -8,6 +8,8 @@ import pjvsemproj.models.entities.troopUnits.TroopUnit;
 import pjvsemproj.models.game.Game;
 import pjvsemproj.models.game.maps.Tile;
 import pjvsemproj.models.game.players.Player;
+import pjvsemproj.models.managers.CombatManager;
+import pjvsemproj.models.managers.EconomyManager;
 import pjvsemproj.models.managers.MovementManager;
 import pjvsemproj.models.managers.TurnManager;
 import pjvsemproj.models.managers.helpers.OwnershipHelper;
@@ -17,15 +19,18 @@ import java.util.Set;
 
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
+// TODO implement attacking
 public class GameController {
 
     private final Stage stage;
-    // TODO add services instead of changing game directly through the GameController
-    private final Game game;
     private final GameView view;
 
+    // TODO add services instead of changing game directly through the GameController
+    private final Game game;
     private TurnManager turnManager;
     private MovementManager movementManager;
+    private EconomyManager economyManager;
+    private CombatManager combatManager;
 
     private IGridEntity selectedEntity;
 
@@ -45,10 +50,14 @@ public class GameController {
         Player player1 = game.getPlayers().getFirst();
         Player player2 = game.getPlayers().getLast();
 
-        // TODO add gameView to turn listeners to update next turn button to be enabled
+        // TODO add GameController to turn listeners to update next turn button to be enabled
         turnManager = new TurnManager(player1, player2);
         movementManager = new MovementManager(game.getMap());
+        economyManager = new EconomyManager();
+        combatManager = new CombatManager();
         turnManager.addTurnListener(movementManager);
+        turnManager.addTurnListener(economyManager);
+        turnManager.addTurnListener(combatManager);
 
         turnManager.endTurn();
         turnManager.endTurn();
@@ -87,7 +96,8 @@ public class GameController {
             return;
         }
         else if (tile.getEntities().getFirst() instanceof City city
-                && selectedEntity instanceof TroopUnit troopUnit) {
+                && selectedEntity instanceof TroopUnit troopUnit
+                && !tile.isBlocked()) {
             moveSelectedTroop(tile);
             // TODO change conquering city manually to conquering through movement manager in service
             conquerCity(troopUnit, city);
