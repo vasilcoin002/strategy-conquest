@@ -115,12 +115,11 @@ public class GameView {
     public void setSelectedEntity(IGridEntity selectedEntity) {
         this.selectedEntity = selectedEntity;
 
-        if (selectedEntity == null) {
-            mapRenderer.clear(overlaysGc);
-            sidePanel.clearEntityInfo();
-            sidePanel.updateForTile(null);
-        }
-        else {
+        mapRenderer.clear(overlaysGc);
+        sidePanel.clearEntityInfo();
+        sidePanel.updateForTile(null);
+
+        if (selectedEntity != null) {
             mapRenderer.renderSelection(overlaysGc, selectedEntity);
             sidePanel.updateEntityInfo(selectedEntity);
             sidePanel.updateForTile(selectedEntity.getTile());
