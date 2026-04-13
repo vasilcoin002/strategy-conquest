@@ -3,12 +3,14 @@ package pjvsemproj.controllers;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import pjvsemproj.models.entities.IGridEntity;
+import pjvsemproj.models.entities.cities.City;
 import pjvsemproj.models.entities.troopUnits.TroopUnit;
 import pjvsemproj.models.game.Game;
 import pjvsemproj.models.game.maps.Tile;
 import pjvsemproj.models.game.players.Player;
 import pjvsemproj.models.managers.MovementManager;
 import pjvsemproj.models.managers.TurnManager;
+import pjvsemproj.models.managers.helpers.OwnershipHelper;
 import pjvsemproj.views.GameView;
 
 import java.util.Set;
@@ -43,6 +45,7 @@ public class GameController {
         Player player1 = game.getPlayers().getFirst();
         Player player2 = game.getPlayers().getLast();
 
+        // TODO add gameView to turn listeners to update next turn button to be enabled
         turnManager = new TurnManager(player1, player2);
         movementManager = new MovementManager(game.getMap());
         turnManager.addTurnListener(movementManager);
@@ -53,10 +56,19 @@ public class GameController {
         view.setOnQuitGameAction(() -> stage.setScene(null));
         view.setOnGameAreaClickedAction(this::handleGameAreaClick);
         view.setOnEntitySelectedAction(this::setSelectedEntity);
+        view.setOnNextTurnAction(() -> {
+//            view.setNextTurnButtonDisabled(true);
+            turnManager.endTurn();
+        });
     }
 
     public void showView() {
         view.show();
+    }
+
+    public Color getPlayerColor(Player player) {
+        if (game.getPlayers().getFirst() == player) return Color.BLUE;
+        else return Color.ORANGE;
     }
 
     private void handleGameAreaClick(int viewX, int viewY) {
@@ -67,13 +79,36 @@ public class GameController {
         Tile tile = game.getMap().getTile(x, y);
 
         if (tile.getEntities().isEmpty()) {
+            // TODO extend method handleGameAreaClick that it handles movement clicks
+            if (selectedEntity instanceof TroopUnit troopUnit) {
+                moveSelectedTroop(tile);
+            }
             setSelectedEntity(null);
             return;
         }
+        else if (tile.getEntities().getFirst() instanceof City city
+                && selectedEntity instanceof TroopUnit troopUnit) {
+            moveSelectedTroop(tile);
+            // TODO change conquering city manually to conquering through movement manager in service
+            conquerCity(troopUnit, city);
+        }
+
 
         IGridEntity entity = tile.getEntities().getFirst();
         setSelectedEntity(entity);
-        // TODO extend method handleGameAreaClick that it handles movement clicks
+    }
+
+    private void moveSelectedTroop(Tile toTile) {
+        if (selectedEntity instanceof TroopUnit troopUnit) {
+            view.clearTroopUnit(troopUnit);
+            movementManager.moveTroopUnit(troopUnit, toTile);
+            view.updateTroopUnit(troopUnit, getPlayerColor(troopUnit.getOwner()));
+        }
+    }
+
+    private void conquerCity(TroopUnit conquerer, City city) {
+        OwnershipHelper.transferCity(city, conquerer.getOwner());
+        view.updateCity(city, getPlayerColor(conquerer.getOwner()));
     }
 
     public void setSelectedEntity(IGridEntity selectedEntity) {

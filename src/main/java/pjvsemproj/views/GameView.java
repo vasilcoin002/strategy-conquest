@@ -147,6 +147,10 @@ public class GameView {
         }
     }
 
+    public void clearTroopUnit(TroopUnit troopUnit) {
+        mapRenderer.clearTroopUnit(dynamicEntitiesGc, troopUnit);
+    }
+
     public void updateCity(City city, Color ownerColor) {
         mapRenderer.renderCity(staticEntitiesGc, city, ownerColor);
     }
