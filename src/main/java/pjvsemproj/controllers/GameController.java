@@ -108,7 +108,7 @@ public class GameController {
         }
 
 
-        IGridEntity entity = tile.getEntities().getFirst();
+        IGridEntity entity = tile.getEntities().getLast();
         setSelectedEntity(entity);
     }
 
