@@ -90,6 +90,14 @@ public class GameView {
         stage.setScene(scene);
     }
 
+    public void updatePlayersBalance(List<Player> players) {
+        sidePanel.updatePlayersBalance(players);
+    }
+
+    public void updateCurrentPlayer(Player currentPlayer) {
+        sidePanel.updateCurrentPlayer(currentPlayer);
+    }
+
     public Background getBackground() {
         Image grassTexture = new Image("grass.png");
 

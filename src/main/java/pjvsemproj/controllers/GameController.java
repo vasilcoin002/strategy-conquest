@@ -20,6 +20,7 @@ import java.util.Set;
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
 // TODO implement attacking
+// TODO add movement and attack range info to side panel entity info
 public class GameController {
 
     private final Stage stage;
@@ -68,6 +69,9 @@ public class GameController {
         view.setOnNextTurnAction(() -> {
 //            view.setNextTurnButtonDisabled(true);
             turnManager.endTurn();
+            view.updatePlayersBalance(game.getPlayers());
+            view.updateCurrentPlayer(turnManager.getCurrentPlayer());
+            setSelectedEntity(selectedEntity);
         });
     }
 
