@@ -103,7 +103,7 @@ public class GameController {
                 && selectedEntity instanceof TroopUnit troopUnit
                 && !tile.isBlocked()) {
             moveSelectedTroop(tile);
-            // TODO change conquering city manually to conquering through movement manager in service
+            // TODO change conquering city manually to conquering through conquering manager in service
             conquerCity(troopUnit, city);
         }
 
