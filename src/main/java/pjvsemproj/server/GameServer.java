@@ -28,7 +28,7 @@ public class GameServer implements Runnable {
     public void run() {
         try {
             serverSocket = new ServerSocket(PORT_NUMBER);
-            while (true){
+            while (true) {
                 socket = serverSocket.accept();
                 Connection connection = new Connection(this, socket);
 
@@ -40,7 +40,7 @@ public class GameServer implements Runnable {
     }
 
     public synchronized boolean registerConnection(Connection connection, String name) {
-        if(isNameTaken(name)){
+        if (isNameTaken(name)) {
             LOGGER.info("Adding connection for" + name);
             connectionsByName.put(name, connection);
             return true;
@@ -48,16 +48,23 @@ public class GameServer implements Runnable {
         return false;
     }
 
-    public synchronized boolean isNameTaken(String name){
-        if(connectionsByName.containsKey(name)){
+    public synchronized boolean isNameTaken(String name) {
+        if (connectionsByName.containsKey(name)) {
             return false;
         }
         return true;
     }
 
-    public synchronized void unregisterConnection(){}
-    public synchronized void stopServer(){}
-    public synchronized void tryAssignToSession(){}
-    public synchronized void removeSession(){}
+    public synchronized void unregisterConnection() {
+    }
+
+    public synchronized void stopServer() {
+    }
+
+    public synchronized void tryAssignToSession() {
+    }
+
+    public synchronized void removeSession() {
+    }
 
 }

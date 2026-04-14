@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.logging.Logger;
 
-public class Client implements Runnable{
+public class Client implements Runnable {
 
     private static final Logger LOGGER = Logger.getLogger(Client.class.getName());
 
@@ -28,14 +28,34 @@ public class Client implements Runnable{
     public void run() {
     }
 
-    private boolean processIncomingMessage(String msg){}
-    public void close(){}
-    public void send(){}
-    public void moveUnit(){}
-    public void attack(){}
-    public void buyUnit(){}
-    public void upgradeCity(){}
-    public void endTurn(){}
-    public void ready(){}
-    public void quit(){}
+    private boolean processIncomingMessage(String msg) {
+        return false;
+    }
+
+    public void close() {
+    }
+
+    public void send() {
+    }
+
+    public void moveUnit() {
+    }
+
+    public void attack() {
+    }
+
+    public void buyUnit() {
+    }
+
+    public void upgradeCity() {
+    }
+
+    public void endTurn() {
+    }
+
+    public void ready() {
+    }
+
+    public void quit() {
+    }
 }

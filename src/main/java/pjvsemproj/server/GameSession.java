@@ -46,16 +46,32 @@ public class GameSession {
 
     }
 
-    public void startGame(){}
-    public synchronized void handleReady(Connection connection){}
-    public synchronized void onMove(Connection connection, String unitId, int x, int y){}
-    public synchronized void onAttack(Connection connection, String attackerId, String targetId){}
-    public synchronized void onUnitPurchase(Connection connection, String cityId, String troopType){}
-    public synchronized void onCityUpgrade(Connection connection, String cityId){}
-    public synchronized void onEndTurn(Connection connection){}
-    public synchronized void onPlayerQuit(Connection connection){}
-    public synchronized void onPlayerDisconnect(Connection connection){}
+    public void startGame() {
+    }
 
+    public synchronized void handleReady(Connection connection) {
+    }
+
+    public synchronized void onMove(Connection connection, String unitId, int x, int y) {
+    }
+
+    public synchronized void onAttack(Connection connection, String attackerId, String targetId) {
+    }
+
+    public synchronized void onUnitPurchase(Connection connection, String cityId, String troopType) {
+    }
+
+    public synchronized void onCityUpgrade(Connection connection, String cityId) {
+    }
+
+    public synchronized void onEndTurn(Connection connection) {
+    }
+
+    public synchronized void onPlayerQuit(Connection connection) {
+    }
+
+    public synchronized void onPlayerDisconnect(Connection connection) {
+    }
 
 
 }

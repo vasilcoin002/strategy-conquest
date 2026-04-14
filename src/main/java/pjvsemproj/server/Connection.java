@@ -10,7 +10,7 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Connection implements Runnable{
+public class Connection implements Runnable {
 
     // TODO handleMove, handleAttack, handleBuyUnit, handleUpgradeCity, handleEndTurn
 
@@ -30,16 +30,16 @@ public class Connection implements Runnable{
 
     @Override
     public void run() {
-        try{
+        try {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream(), true);
 
             boolean running = true;
-            while (running){
+            while (running) {
                 String msg = in.readLine();
                 LOGGER.log(Level.INFO, "Server received from {0}: >>>{1}<<<",
                         new Object[]{playerName, msg});
-                if(msg != null){
+                if (msg != null) {
                     running = processIncomingMessage(msg);
                 } else {
                     running = false;
@@ -53,17 +53,19 @@ public class Connection implements Runnable{
         }
     }
 
-    private boolean processIncomingMessage(String msg){
+    private boolean processIncomingMessage(String msg) {
         String[] tokens = msg.split("\\|", -1);
         Protocol actionCode = Protocol.valueOf(tokens[0]);
 
-        switch(actionCode){
+        switch (actionCode) {
             case LOGIN:
 
         }
+        // TODO remove and add normal return
+        return true;
     }
 
-    public void sendToClient(Protocol code, String... args){
+    public void sendToClient(Protocol code, String... args) {
         StringBuilder msg = new StringBuilder(code.toString());
 
         for (String arg : args) {
@@ -73,8 +75,8 @@ public class Connection implements Runnable{
         out.println(msg);
     }
 
-    private boolean handleLogin(String[] tokens){
-        if (tokens.length < 2){
+    private boolean handleLogin(String[] tokens) {
+        if (tokens.length < 2) {
             sendToClient(Protocol.ERROR, "LOGIN_REQUIRES_NAME");
             return true;
         }
@@ -103,9 +105,9 @@ public class Connection implements Runnable{
         return true;
     }
 
-    private boolean handleMove(String[] tokens){
+    private boolean handleMove(String[] tokens) {
 
-        if(!isLoggedIn()){
+        if (!isLoggedIn()) {
             sendToClient(Protocol.ERROR, "NOT_LOGGED_IN");
         }
 
@@ -115,22 +117,37 @@ public class Connection implements Runnable{
         }
         String unitId = tokens[1];
 
-        try{
+        try {
             int x = Integer.parseInt(tokens[2]);
             int y = Integer.parseInt(tokens[3]);
-            session.handleMove();
-        } catch (NumberFormatException ex){
+            // TODO uncomment
+//            session.handleMove();
+        } catch (NumberFormatException ex) {
             sendToClient(Protocol.ERROR, "INVALID_COORDINATES");
         }
 
         return true;
     }
 
-    private boolean handleMove(){}
-    private boolean handleAttack(){}
-    private boolean handleBuyUnit(){}
-    private boolean handleUpgradeCity(){}
-    private boolean handleEndTurn(){}
+    private boolean handleMove() {
+        return false;
+    }
+
+    private boolean handleAttack() {
+        return false;
+    }
+
+    private boolean handleBuyUnit() {
+        return false;
+    }
+
+    private boolean handleUpgradeCity() {
+        return false;
+    }
+
+    private boolean handleEndTurn() {
+        return false;
+    }
 
     private boolean isLoggedIn() {
         return player != null;
