@@ -28,6 +28,7 @@ public class GameView {
     private final int gameAreaHeight;
     private final Stage stage;
     private final Scene scene;
+    private final BorderPane root;
 
     private final GraphicsContext staticEntitiesGc;
     private final GraphicsContext dynamicEntitiesGc;
@@ -63,7 +64,7 @@ public class GameView {
 
         sidePanel = new SidePanelView();
 
-        BorderPane root = new BorderPane();
+        root = new BorderPane();
         root.setCenter(mapPane);
         root.setRight(sidePanel.getView());
 
@@ -181,5 +182,9 @@ public class GameView {
 
     public void setNextTurnButtonDisabled(boolean disabled) {
         sidePanel.setNextTurnButtonDisabled(disabled);
+    }
+
+    public BorderPane getRoot() {
+        return root;
     }
 }

@@ -1,5 +1,6 @@
 package pjvsemproj.models.managers;
 
+import pjvsemproj.config.GameConfigParser;
 import pjvsemproj.models.entities.cities.City;
 import pjvsemproj.models.entities.cities.CityType;
 import pjvsemproj.models.entities.troopUnits.TroopType;
@@ -12,6 +13,16 @@ import pjvsemproj.models.game.maps.GameMap;
 import pjvsemproj.models.game.maps.Tile;
 
 public class GameSetupManager {
+
+    private final GameConfigParser parser;
+
+    public GameSetupManager() {
+        this.parser = new GameConfigParser();
+    }
+
+    /**
+     * Sets up a match with 1 city and 1 Militia unit for each player
+     */
     public Game setupTestMatch(GameMap map, Player p1, Player p2) {
         City p1City = new City(CityType.LEVEL_1);
         OwnershipHelper.transferCity(p1City, p1);
@@ -34,10 +45,10 @@ public class GameSetupManager {
         GridPositionHelper.placeEntity(p2StartUnit, p2CityTile);
 
 
-        City neutralCity = new City(CityType.LEVEL_1); // No owner
-        // Middle of the map
-        Tile neutralTile = map.getTile(map.getWidth() / 2, map.getHeight() / 2);
-        GridPositionHelper.placeEntity(neutralCity, neutralTile);
+//        City neutralCity = new City(CityType.LEVEL_1); // No owner
+//        // Middle of the map
+//        Tile neutralTile = map.getTile(map.getWidth() / 2, map.getHeight() / 2);
+//        GridPositionHelper.placeEntity(neutralCity, neutralTile);
 
         Game game = new Game(map);
         game.addPlayer(p1);
@@ -46,5 +57,10 @@ public class GameSetupManager {
         return game;
     }
 
-    // TODO add method which returns a game set up by parsed from config file data (use GameConfigurationParser to generate those data)
+    /**
+     * Reads a level file and creates a game from those data.
+     */
+    public Game loadGame(String levelFilePath) {
+        return null;
+    }
 }

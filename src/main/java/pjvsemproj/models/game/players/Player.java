@@ -5,6 +5,7 @@ import pjvsemproj.models.entities.troopUnits.TroopUnit;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public abstract class Player {
     protected final String name;

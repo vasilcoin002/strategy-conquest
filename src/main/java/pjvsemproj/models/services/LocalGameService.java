@@ -75,6 +75,10 @@ public class LocalGameService implements GameService {
 
     }
 
+    public void saveGame() {
+
+    }
+
     @Override
     public void quit() {
 

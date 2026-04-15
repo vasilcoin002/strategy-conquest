@@ -6,6 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import pjvsemproj.controllers.GameController;
+import pjvsemproj.controllers.SceneDirector;
 import pjvsemproj.models.game.Game;
 import pjvsemproj.models.game.maps.GameMap;
 import pjvsemproj.models.game.players.BotPlayer;
@@ -16,26 +17,36 @@ import pjvsemproj.models.services.LocalGameService;
 import java.io.IOException;
 
 public class HelloApplication extends Application {
+//    @Override
+//    public void start(Stage stage) throws IOException {
+//
+//        HBox root = new HBox();
+//        root.setPadding(new Insets(10));
+//        root.setAlignment(Pos.CENTER);
+//
+//        // TODO remove test game
+//        GameSetupManager gsm = new GameSetupManager();
+//        Game game = gsm.setupTestMatch(
+//                new GameMap(15, 10),
+//                new HumanPlayer("Vasya", 0),
+//                new HumanPlayer("Ivan", 0)
+////                new BotPlayer("Ivan", 0)
+//        );
+//
+//        LocalGameService lgs = new LocalGameService(game);
+//
+//        GameController gameController = new GameController(stage, lgs);
+//
+//        gameController.showView();
+//        stage.show();
+//    }
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) {
+        SceneDirector director = new SceneDirector(stage);
+        director.showMainMenu();
+    }
 
-        HBox root = new HBox();
-        root.setPadding(new Insets(10));
-        root.setAlignment(Pos.CENTER);
-
-        // TODO remove test game
-        GameSetupManager gsm = new GameSetupManager();
-        Game game = gsm.setupTestMatch(
-                new GameMap(15, 10),
-                new HumanPlayer("Vasya", 0),
-                new BotPlayer("Ivan", 0)
-        );
-
-        LocalGameService lgs = new LocalGameService(game);
-
-        GameController gameController = new GameController(stage, lgs);
-
-        gameController.showView();
-        stage.show();
+    public static void main(String[] args) {
+        launch();
     }
 }
