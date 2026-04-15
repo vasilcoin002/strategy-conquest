@@ -25,11 +25,22 @@ public class AIPlayer {
         this.turnManager = turnManager;
     }
 
-    private void makeTurn(){}
-    private void tryAttack(){}
-    private void tryMove(){}
-    private void endAiTurn(){}
-    private void tryBuyUnit(){}
-    private void tryUpgradeCity(){}
+    private void makeTurn() {
+    }
+
+    private void tryAttack() {
+    }
+
+    private void tryMove() {
+    }
+
+    private void endAiTurn() {
+    }
+
+    private void tryBuyUnit() {
+    }
+
+    private void tryUpgradeCity() {
+    }
 
 }
