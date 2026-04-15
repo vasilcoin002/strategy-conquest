@@ -7,7 +7,12 @@ import pjvsemproj.models.game.players.Player;
 import pjvsemproj.models.managers.helpers.OwnershipHelper;
 
 public class EconomyManager implements ITurnListener {
+
     private Player currentPlayer;
+
+    public EconomyManager(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
 
     @Override
     public void onTurnStart(Player activePlayer) {

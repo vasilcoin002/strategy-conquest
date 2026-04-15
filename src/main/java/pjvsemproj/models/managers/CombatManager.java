@@ -16,7 +16,12 @@ import java.util.Set;
 public class CombatManager implements ITurnListener{
 
     private Player currentPlayer;
-    private GameMap gameMap;
+    private final GameMap gameMap;
+
+    public CombatManager(GameMap gameMap, Player currentPlayer) {
+        this.gameMap = gameMap;
+        this.currentPlayer = currentPlayer;
+    }
 
     @Override
     public void onTurnStart(Player activePlayer) {

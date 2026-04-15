@@ -11,6 +11,7 @@ import pjvsemproj.models.game.maps.GameMap;
 import pjvsemproj.models.game.players.BotPlayer;
 import pjvsemproj.models.game.players.HumanPlayer;
 import pjvsemproj.models.managers.GameSetupManager;
+import pjvsemproj.models.services.LocalGameService;
 
 import java.io.IOException;
 
@@ -30,7 +31,9 @@ public class HelloApplication extends Application {
                 new BotPlayer("Ivan", 0)
         );
 
-        GameController gameController = new GameController(stage, game);
+        LocalGameService lgs = new LocalGameService(game);
+
+        GameController gameController = new GameController(stage, lgs);
 
         gameController.showView();
         stage.show();

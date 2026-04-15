@@ -1,8 +1,21 @@
 package pjvsemproj.models.services;
 
+import pjvsemproj.models.game.maps.GameMap;
+import pjvsemproj.models.game.maps.Tile;
+import pjvsemproj.models.game.players.Player;
+import pjvsemproj.server.Client;
+
+import java.util.List;
+import java.util.Set;
+
 public class NetworkGameService implements GameService {
 
     private final Client client;
+
+    public NetworkGameService(Client client) {
+        this.client = client;
+    }
+
     @Override
     public void login(String playerName) {
 
@@ -14,7 +27,7 @@ public class NetworkGameService implements GameService {
     }
 
     @Override
-    public void moveUnit(String unitId, int x, int y) {
+    public void moveTroopUnit(String unitId, int x, int y) {
 
     }
 
@@ -41,5 +54,25 @@ public class NetworkGameService implements GameService {
     @Override
     public void quit() {
 
+    }
+
+    @Override
+    public GameMap getMap() {
+        return null;
+    }
+
+    @Override
+    public List<Player> getPlayers() {
+        return List.of();
+    }
+
+    @Override
+    public Player getCurrentPlayer() {
+        return null;
+    }
+
+    @Override
+    public Set<Tile> getAvailableTilesForMovement(String unitId) {
+        return Set.of();
     }
 }

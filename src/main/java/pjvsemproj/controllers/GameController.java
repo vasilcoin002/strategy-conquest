@@ -13,6 +13,7 @@ import pjvsemproj.models.managers.EconomyManager;
 import pjvsemproj.models.managers.MovementManager;
 import pjvsemproj.models.managers.TurnManager;
 import pjvsemproj.models.managers.helpers.OwnershipHelper;
+import pjvsemproj.models.services.GameService;
 import pjvsemproj.views.GameView;
 
 import java.util.Set;
@@ -27,50 +28,34 @@ public class GameController {
     private final GameView view;
 
     // TODO add services instead of changing game directly through the GameController
-    private final Game game;
-    private TurnManager turnManager;
-    private MovementManager movementManager;
-    private EconomyManager economyManager;
-    private CombatManager combatManager;
+    private final GameService gameService;
 
     private IGridEntity selectedEntity;
 
-    public GameController(Stage stage, Game game) {
+    public GameController(Stage stage, GameService gameService) {
         this.stage = stage;
-        this.game = game;
+        this.gameService = gameService;
         this.view = new GameView(
                 stage,
-                game.getMap().getWidth(),
-                game.getMap().getHeight(),
-                game.getPlayers(),
-                game.getPlayers().getFirst(),
+                gameService.getMap().getWidth(),
+                gameService.getMap().getHeight(),
+                gameService.getPlayers(),
+                gameService.getPlayers().getFirst(),
                 Color.BLUE,
                 Color.ORANGE
         );
 
-        Player player1 = game.getPlayers().getFirst();
-        Player player2 = game.getPlayers().getLast();
-
-        // TODO add GameController to turn listeners to update next turn button to be enabled
-        turnManager = new TurnManager(player1, player2);
-        movementManager = new MovementManager(game.getMap());
-        economyManager = new EconomyManager();
-        combatManager = new CombatManager();
-        turnManager.addTurnListener(movementManager);
-        turnManager.addTurnListener(economyManager);
-        turnManager.addTurnListener(combatManager);
-
-        turnManager.endTurn();
-        turnManager.endTurn();
+        Player player1 = gameService.getPlayers().getFirst();
+        Player player2 = gameService.getPlayers().getLast();
 
         view.setOnQuitGameAction(() -> stage.setScene(null));
         view.setOnGameAreaClickedAction(this::handleGameAreaClick);
         view.setOnEntitySelectedAction(this::setSelectedEntity);
         view.setOnNextTurnAction(() -> {
 //            view.setNextTurnButtonDisabled(true);
-            turnManager.endTurn();
-            view.updatePlayersBalance(game.getPlayers());
-            view.updateCurrentPlayer(turnManager.getCurrentPlayer());
+            gameService.endTurn();
+            view.updatePlayersBalance(gameService.getPlayers());
+            view.updateCurrentPlayer(gameService.getCurrentPlayer());
             setSelectedEntity(selectedEntity);
         });
     }
@@ -80,7 +65,7 @@ public class GameController {
     }
 
     public Color getPlayerColor(Player player) {
-        if (game.getPlayers().getFirst() == player) return Color.BLUE;
+        if (gameService.getPlayers().getFirst() == player) return Color.BLUE;
         else return Color.ORANGE;
     }
 
@@ -89,7 +74,7 @@ public class GameController {
         int x = viewX / TILE_SIZE;
         int y = viewY / TILE_SIZE;
 
-        Tile tile = game.getMap().getTile(x, y);
+        Tile tile = gameService.getMap().getTile(x, y);
 
         if (tile.getEntities().isEmpty()) {
             // TODO extend method handleGameAreaClick that it handles movement clicks
@@ -115,7 +100,7 @@ public class GameController {
     private void moveSelectedTroop(Tile toTile) {
         if (selectedEntity instanceof TroopUnit troopUnit) {
             view.clearTroopUnit(troopUnit);
-            movementManager.moveTroopUnit(troopUnit, toTile);
+            gameService.moveTroopUnit(troopUnit.getId(), toTile.getX(), toTile.getY());
             view.updateTroopUnit(troopUnit, getPlayerColor(troopUnit.getOwner()));
         }
     }
@@ -130,7 +115,7 @@ public class GameController {
         view.setSelectedEntity(selectedEntity);
 
         if (selectedEntity instanceof TroopUnit troopUnit) {
-            Set<Tile> availableTilesForMovement = movementManager.getAvailableTilesForMovement(troopUnit);
+            Set<Tile> availableTilesForMovement = gameService.getAvailableTilesForMovement(troopUnit.getId());
             view.showSelectedEntityAvailableMoves(availableTilesForMovement);
         }
     }
