@@ -4,6 +4,13 @@ import pjvsemproj.models.entities.*;
 import pjvsemproj.models.entities.cities.City;
 import pjvsemproj.models.game.players.Player;
 
+
+/**
+ * Represents a troop unit controlled by a player.
+ *
+ * A troop unit has health, damage range, movement range,
+ * attack range and per-turn movement and attack state.
+ */
 public class TroopUnit extends DamageableEntity implements Movable, IDamager, Ownable {
 
     private final String name;
@@ -33,6 +40,13 @@ public class TroopUnit extends DamageableEntity implements Movable, IDamager, Ow
         this.hasMovedThisTurn = true;
         this.hasAttackedThisTurn = true;
     }
+
+
+    /**
+     * Calculates random damage within the unit's damage interval.
+     *
+     * @return generated damage value
+     */
 
     @Override
     public int calculateDamage() {

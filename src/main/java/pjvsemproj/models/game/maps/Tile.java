@@ -5,6 +5,12 @@ import pjvsemproj.models.entities.IGridEntity;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a single map tile.
+ *
+ * A tile stores its coordinates and all entities currently placed on it.
+ */
+
 public class Tile {
     private final int x;
     private final int y;

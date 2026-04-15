@@ -19,6 +19,13 @@ import java.util.function.Consumer;
 
 import static pjvsemproj.views.ViewConstants.GAME_SIDE_PANEL_WIDTH;
 
+
+/**
+ * UI panel displaying player info and actions.
+ *
+ * Allows interaction with selected entities.
+ */
+
 public class SidePanelView {
 
     private final VBox root;

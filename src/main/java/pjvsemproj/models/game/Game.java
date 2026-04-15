@@ -6,6 +6,12 @@ import pjvsemproj.models.game.maps.GameMap;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Represents a complete game state.
+ *
+ * Contains the list of players and the map on which the match is played.
+ */
 public class Game {
     private final List<Player> players;
     private final GameMap map;
@@ -23,6 +29,12 @@ public class Game {
         return players;
     }
 
+    /**
+     * Adds a player to the game.
+     *
+     * @param player player to add
+     * @return {@code true} if the player was added successfully
+     */
     public boolean addPlayer(Player player) {
         if (players.contains(player)) return false;
         return players.add(player);

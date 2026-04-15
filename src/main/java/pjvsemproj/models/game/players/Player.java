@@ -7,6 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+
+/**
+ * Base abstract class for all players in the game.
+ *
+ * A player owns cities and troop units and manages a gold balance.
+ */
 public abstract class Player {
     protected final String name;
     protected final List<City> cities;
@@ -35,6 +41,13 @@ public abstract class Player {
         return false;
     }
 
+    /**
+     * Removes a city from this player's ownership.
+     *
+     * @param city city to remove
+     * @return {@code true} if the city was removed
+     */
+
     public boolean removeCity(City city) {
         return cities.remove(city);
     }
@@ -43,10 +56,24 @@ public abstract class Player {
         return troops;
     }
 
+    /**
+     * Adds a troop unit to the player.
+     *
+     * @param troopUnit unit to add
+     * @return {@code true} if the unit was added successfully
+     */
+
     public boolean addTroopUnit(TroopUnit troopUnit) {
         return troops.add(troopUnit);
     }
 
+
+    /**
+     * Removes a troop unit from the player.
+     *
+     * @param troopUnit unit to remove
+     * @return {@code true} if the unit was removed
+     */
     public boolean removeTroopUnit(TroopUnit troopUnit) {
         return troops.remove(troopUnit);
     }

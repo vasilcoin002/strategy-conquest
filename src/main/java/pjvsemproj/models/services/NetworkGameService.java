@@ -8,6 +8,13 @@ import pjvsemproj.server.Client;
 import java.util.List;
 import java.util.Set;
 
+
+/**
+ * Network-based implementation of GameService.
+ *
+ * Sends commands to the server instead of executing them locally.
+ */
+
 public class NetworkGameService implements GameService {
 
     private final Client client;

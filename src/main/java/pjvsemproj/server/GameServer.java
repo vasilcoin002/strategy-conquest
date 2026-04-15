@@ -9,6 +9,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+
+/**
+ * Main server class responsible for accepting client connections.
+ *
+ * Manages active connections and game sessions.
+ */
+
+
 public class GameServer implements Runnable {
     // TODO unregisterConnection, stopServer, tryAssignToSession, removeSession
 

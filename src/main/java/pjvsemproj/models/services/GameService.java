@@ -8,6 +8,13 @@ import pjvsemproj.models.game.players.Player;
 import java.util.List;
 import java.util.Set;
 
+
+/**
+ * Defines the interface for interacting with the game.
+ *
+ * Acts as an abstraction layer between UI/network and game logic.
+ */
+
 public interface GameService {
 
     void login(String playerName);

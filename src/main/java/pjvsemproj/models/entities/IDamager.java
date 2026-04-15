@@ -1,5 +1,9 @@
 package pjvsemproj.models.entities;
 
+/**
+ * Represents an entity capable of dealing combat damage.
+ */
+
 public interface IDamager {
     int calculateDamage();
     int getAttackRange();

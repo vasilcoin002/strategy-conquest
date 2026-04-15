@@ -12,6 +12,13 @@ import pjvsemproj.models.managers.TurnManager;
 import java.util.List;
 import java.util.Set;
 
+
+/**
+ * Local (single-player) implementation of GameService.
+ *
+ * Directly interacts with managers to execute game actions.
+ */
+
 public class LocalGameService implements GameService {
     private final Game game;
     private final GameMap map;

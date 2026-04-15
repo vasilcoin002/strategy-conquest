@@ -8,6 +8,14 @@ import pjvsemproj.models.managers.EconomyManager;
 import pjvsemproj.models.managers.MovementManager;
 import pjvsemproj.models.managers.TurnManager;
 
+
+/**
+ * Represents a multiplayer game session between two players.
+ *
+ * Coordinates game logic and synchronizes state between clients.
+ */
+
+
 public class GameSession {
 
     private final GameServer gameServer;

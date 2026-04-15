@@ -5,6 +5,14 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.logging.Logger;
 
+
+
+/**
+ * Client-side networking class.
+ *
+ * Sends commands to the server and processes responses.
+ */
+
 public class Client implements Runnable {
 
     private static final Logger LOGGER = Logger.getLogger(Client.class.getName());

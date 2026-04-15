@@ -2,6 +2,10 @@ package pjvsemproj.models.entities.troopUnits;
 
 import pjvsemproj.models.entities.Purchasable;
 
+
+/**
+ * Defines available troop types and their combat, movement and cost attributes.
+ */
 public enum TroopType implements Purchasable {
     Militia(3, 20, 1, 5, 10, 10),
     Infantry(2, 50, 1, 15, 20, 20),

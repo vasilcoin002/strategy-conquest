@@ -18,6 +18,13 @@ import java.util.Set;
 
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
+
+/**
+ * Responsible for rendering map entities (cities, troops, overlays).
+ *
+ * Uses JavaFX GraphicsContext for drawing.
+ */
+
 public class MapRenderer extends Renderer {
 
     private final Map<TroopType, String> troopsImageNames = new HashMap<>();

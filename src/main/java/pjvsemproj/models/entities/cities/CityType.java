@@ -1,5 +1,9 @@
 package pjvsemproj.models.entities.cities;
 
+/**
+ * Defines available city levels and their economic properties.
+ */
+
 public enum CityType {
     LEVEL_3(40, 0, null),
     LEVEL_2(30, 70, CityType.LEVEL_3),

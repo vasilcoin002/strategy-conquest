@@ -6,6 +6,13 @@ import pjvsemproj.models.entities.Upgradable;
 import pjvsemproj.models.game.players.Player;
 import pjvsemproj.models.game.maps.Tile;
 
+
+/**
+ * Represents a city placed on the map.
+ *
+ * A city may belong to a player, generate gold every turn,
+ * and be upgraded to stronger economic levels.
+ */
 public class City extends Entity implements Upgradable<CityType>, Ownable {
 
     private Player owner;
@@ -20,11 +27,22 @@ public class City extends Entity implements Upgradable<CityType>, Ownable {
         this(null, cityType);
     }
 
+    /**
+     * Checks whether the city can be upgraded.
+     *
+     * @return {@code true} if a next city level exists
+     */
+
     @Override
     public boolean canBeUpgraded() {
         return this.cityType.nextCityType != null;
     }
 
+
+    /**
+     * Upgrades the city to the next available level.
+     * Does nothing if the city is already at maximum level.
+     */
     public void upgrade() {
         if (canBeUpgraded()) {
             this.cityType = this.cityType.nextCityType;

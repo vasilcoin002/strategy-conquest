@@ -22,6 +22,13 @@ import java.util.function.Consumer;
 import static pjvsemproj.views.ViewConstants.GAME_SIDE_PANEL_WIDTH;
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
+
+/**
+ * Main game UI class.
+ *
+ * Responsible for rendering the map, entities, and handling user interaction.
+ */
+
 public class GameView {
 
     private final int gameAreaWidth;

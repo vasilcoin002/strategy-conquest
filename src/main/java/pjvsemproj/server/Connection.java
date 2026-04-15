@@ -10,6 +10,13 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
+/**
+ * Represents a single client connection to the server.
+ *
+ * Handles incoming messages and communicates with GameSession.
+ */
+
 public class Connection implements Runnable {
 
     // TODO handleMove, handleAttack, handleBuyUnit, handleUpgradeCity, handleEndTurn
