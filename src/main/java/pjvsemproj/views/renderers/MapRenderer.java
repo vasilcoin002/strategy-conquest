@@ -161,4 +161,14 @@ public class MapRenderer extends Renderer {
             renderAvailableMove(gc, tile);
         }
     }
+
+    // TODO implement
+    public void renderAvailableAttacks(GraphicsContext gc, Set<Tile> tiles) {
+
+    }
+
+    // TODO implement
+    public void renderAvailableAttack(GraphicsContext gc, Tile tile) {
+
+    }
 }

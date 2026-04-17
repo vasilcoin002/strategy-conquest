@@ -135,8 +135,13 @@ public class GameView {
         }
     }
 
-    public void showSelectedEntityAvailableMoves(Set<Tile> availableTiles) {
-        mapRenderer.renderAvailableMoves(overlaysGc ,availableTiles);
+    public void showSelectedEntityAvailableMoves(Set<Tile> tilesToMove) {
+        mapRenderer.renderAvailableMoves(overlaysGc, tilesToMove);
+    }
+
+    // TODO implement
+    public void showSelectedEntityAvailableAttacks(Set<Tile> tilesToAttack) {
+
     }
 
     public void updateTroopUnit(TroopUnit troopUnit, Color ownerColor) {
