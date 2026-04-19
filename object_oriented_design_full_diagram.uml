@@ -1,0 +1,1280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>/Users/vasklu/CVUT/Java/pjvsemproj/src/main/java</OriginalElement>
+  <nodes>
+    <node x="539.8155264954676" y="988.7789118871215">pjvsemproj.models.entities.cities.CityType</node>
+    <node x="-873.5572394084791" y="4732.123877069969">pjvsemproj.models.managers.ITurnListener</node>
+    <node x="1004.3155264954676" y="1013.7789118871215">pjvsemproj.models.entities.Ownable</node>
+    <node x="-1488.557239408479" y="917.431209441841">pjvsemproj.models.game.players.BotPlayer</node>
+    <node x="1213.8155264954676" y="1728.7789118871215">pjvsemproj.models.entities.Movable</node>
+    <node x="4976.692854584478" y="4401.123877069969">pjvsemproj.server.Connection</node>
+    <node x="1232.3155264954676" y="5814.827199471352">pjvsemproj.controllers.SceneDirector</node>
+    <node x="767.3155264954676" y="2022.7789118871215">pjvsemproj.models.entities.troopUnits.TroopUnit</node>
+    <node x="1099.8155264954676" y="1126.7789118871215">pjvsemproj.models.game.maps.GameMap</node>
+    <node x="3141.301386878429" y="5816.027669595267">pjvsemproj.views.MainMenuView</node>
+    <node x="760.3155264954676" y="1442.7789118871215">pjvsemproj.models.entities.troopUnits.TroopType</node>
+    <node x="-796.9587071145279" y="2969.027301901506">pjvsemproj.config.GameConfigParser</node>
+    <node x="1315.8155264954676" y="1013.7789118871215">pjvsemproj.models.entities.Purchasable</node>
+    <node x="137.81552649546757" y="1164.7789118871215">pjvsemproj.models.entities.Damageable</node>
+    <node x="1246.3155264954676" y="6226.827199471352">pjvsemproj.Launcher</node>
+    <node x="-866.4587071145279" y="2802.027301901506">pjvsemproj.config.GameConfigDTO</node>
+    <node x="-1192.057239408479" y="3962.0252705465336">pjvsemproj.models.managers.ConquestManager</node>
+    <node x="1240.8155264954676" y="6014.827199471352">pjvsemproj.HelloApplication</node>
+    <node x="4522.558456686948" y="2723.530521872737">pjvsemproj.models.services.LocalGameService</node>
+    <node x="1170.8155264954676" y="409.77891188712147">pjvsemproj.models.entities.IGridEntity</node>
+    <node x="-823.4587071145279" y="2642.027301901506">pjvsemproj.config.EntityConfigDTO</node>
+    <node x="766.3155264954676" y="2727.027301901506">pjvsemproj.models.game.Game</node>
+    <node x="-751.5572394084791" y="4535.123877069969">pjvsemproj.models.managers.helpers.OwnershipHelper</node>
+    <node x="-1403.557239408479" y="1299.431209441841">pjvsemproj.models.game.players.Player</node>
+    <node x="3520.301386878429" y="1707.5305218727372">pjvsemproj.views.SidePanelView</node>
+    <node x="-502.5193457933699" y="386.75107393610506">pjvsemproj.models.GameConstants</node>
+    <node x="-874.4587071145279" y="3157.027301901506">pjvsemproj.models.managers.GameSetupManager</node>
+    <node x="3568.801386878429" y="2819.530521872737">pjvsemproj.controllers.GameController</node>
+    <node x="182.81552649546757" y="1666.7789118871215">pjvsemproj.models.entities.DamageableEntity</node>
+    <node x="-210.05723940847906" y="4707.123877069969">pjvsemproj.models.managers.helpers.GridPositionHelper</node>
+    <node x="1160.3155264954676" y="622.7789118871215">pjvsemproj.models.game.maps.Tile</node>
+    <node x="-15.557239408479063" y="4559.123877069969">pjvsemproj.models.game.maps.MovementNode</node>
+    <node x="3076.301386878429" y="1685.5305218727372">pjvsemproj.views.renderers.MapRenderer</node>
+    <node x="541.8155264954676" y="1630.7789118871215">pjvsemproj.models.entities.cities.City</node>
+    <node x="5234.692854584478" y="4035.1238770699692">pjvsemproj.server.GameSession</node>
+    <node x="4952.192854584478" y="4119.123877069969">pjvsemproj.server.Protocol</node>
+    <node x="-854.0572394084791" y="4993.123877069969">pjvsemproj.models.managers.EconomyManager</node>
+    <node x="381.31552649546757" y="1139.7789118871215">pjvsemproj.models.entities.Entity</node>
+    <node x="-1125.557239408479" y="3811.0252705465336">pjvsemproj.models.managers.IWinListener</node>
+    <node x="-287.7300520061351" y="386.75107393610506">pjvsemproj.views.ViewConstants</node>
+    <node x="4762.558456686948" y="1573.5305218727372">pjvsemproj.server.Client</node>
+    <node x="-1008.5572394084791" y="5349.123877069969">pjvsemproj.models.managers.TurnManager</node>
+    <node x="823.3155264954676" y="1200.7789118871215">pjvsemproj.models.entities.Upgradable</node>
+    <node x="4522.558456686948" y="1933.5305218727372">pjvsemproj.models.services.GameService</node>
+    <node x="3180.801386878429" y="1361.5305218727372">pjvsemproj.views.renderers.Renderer</node>
+    <node x="4722.558456686948" y="2340.530521872737">pjvsemproj.models.services.NetworkGameService</node>
+    <node x="927.3155264954676" y="1692.7789118871215">pjvsemproj.models.entities.IDamager</node>
+    <node x="3444.801386878429" y="2227.530521872737">pjvsemproj.views.GameView</node>
+    <node x="5179.692854584478" y="3679.1238770699692">pjvsemproj.server.GameServer</node>
+    <node x="3102.801386878429" y="6210.027669595267">pjvsemproj.controllers.MainMenuController</node>
+    <node x="-509.55723940847906" y="5410.123877069969">pjvsemproj.models.managers.CombatManager</node>
+    <node x="-1624.057239408479" y="1150.431209441841">pjvsemproj.models.game.players.HumanPlayer</node>
+    <node x="-209.55723940847906" y="4933.123877069969">pjvsemproj.models.managers.MovementManager</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="pjvsemproj.controllers.MainMenuController" target="pjvsemproj.controllers.SceneDirector" relationship="TO_ONE">
+      <point x="-167.0" y="-76.5" />
+      <point x="3123.801386878429" y="5866.827199471352" />
+      <point x="97.0" y="0.0" />
+    </edge>
+    <edge source="pjvsemproj.models.services.LocalGameService" target="pjvsemproj.models.managers.EconomyManager" relationship="CREATE">
+      <point x="0.0" y="210.5" />
+      <point x="4697.558456686948" y="5222.6243019015055" />
+      <point x="1920.1598771581866" y="5222.6243019015055" />
+      <point x="1920.1598771581866" y="5630.623877069969" />
+      <point x="-607.5577071145278" y="5630.623877069969" />
+      <point x="44.99953229395123" y="138.5" />
+    </edge>
+    <edge source="pjvsemproj.models.entities.Entity" target="pjvsemproj.models.game.maps.Tile" relationship="TO_ONE">
+      <point x="-2.336099955755344E-4" y="-101.49960998561528" />
+      <point x="469.315292885472" y="944.5273019015058" />
+      <point x="1289.315292885472" y="944.5273019015058" />
+      <point x="-2.336099955755344E-4" y="138.50039001438427" />
+    </edge>
+    <edge source="pjvsemproj.models.services.LocalGameService" target="pjvsemproj.models.managers.CombatManager" relationship="TO_ONE">
+      <point x="-60.0" y="210.5" />
+      <point x="4637.558456686948" y="4471.623877069969" />
+      <point x="1755.1598771581866" y="4471.623877069969" />
+      <point x="1755.1598771581866" y="5585.6243019015055" />
+      <point x="177.0" y="75.0004248315363" />
+    </edge>
+    <edge source="pjvsemproj.server.GameSession" target="pjvsemproj.server.GameServer" relationship="TO_ONE">
+      <point x="-236.99956169900543" y="4.2483153629291337E-4" />
+      <point x="5193.041292885472" y="4171.1243019015055" />
+      <point x="5193.041292885472" y="4152.527301901506" />
+      <point x="5217.193292885472" y="4152.527301901506" />
+      <point x="-134.49956169900543" y="112.5004248315363" />
+    </edge>
+    <edge source="pjvsemproj.models.services.LocalGameService" target="pjvsemproj.models.managers.MovementManager" relationship="CREATE">
+      <point x="-75.0" y="210.5" />
+      <point x="4622.558456686948" y="4456.623877069969" />
+      <point x="1480.3155264954676" y="4456.623877069969" />
+      <point x="1480.3155264954676" y="5145.1243019015055" />
+      <point x="196.99999999999977" y="15.000424831536293" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.helpers.OwnershipHelper" target="pjvsemproj.models.entities.cities.City" relationship="DEPENDENCY">
+      <point x="-199.00046770604877" y="4.2483153629291337E-4" />
+      <point x="-1213.958707114528" y="4611.1243019015055" />
+      <point x="-1213.958707114528" y="2161.279301901506" />
+      <point x="-324.9587071145279" y="2161.279301901506" />
+      <point x="-324.9587071145279" y="1926.7793019015062" />
+      <point x="-107.50023360999558" y="147.00039001438472" />
+    </edge>
+    <edge source="pjvsemproj.models.entities.DamageableEntity" target="pjvsemproj.models.entities.Entity" relationship="GENERALIZATION">
+      <point x="126.49976639000442" y="-23.251609985615687" />
+      <point x="490.0412928854721" y="1756.5273019015058" />
+      <point x="490.0412928854721" y="1564.5273019015058" />
+      <point x="549.315292885472" y="1564.5273019015058" />
+      <point x="79.99976639000442" y="101.50039001438472" />
+    </edge>
+    <edge source="pjvsemproj.views.GameView" target="pjvsemproj.models.entities.troopUnits.TroopUnit" relationship="DEPENDENCY">
+      <point x="-9.399295686307596E-5" y="-246.50021997123167" />
+      <point x="3650.8012928854723" y="2165.527301901506" />
+      <point x="1181.315292885472" y="2165.527301901506" />
+      <point x="1181.315292885472" y="2264.779301901506" />
+      <point x="121.99976639000442" y="-14.99960998561528" />
+    </edge>
+    <edge source="pjvsemproj.models.services.GameService" target="pjvsemproj.models.game.players.Player" relationship="DEPENDENCY">
+      <point x="-175.00016380147645" y="-2.1997123167238897E-4" />
+      <point x="4413.041292885472" y="2093.5303019015055" />
+      <point x="4413.041292885472" y="1344.0303019015055" />
+      <point x="3056.541292885472" y="1344.0303019015055" />
+      <point x="3056.541292885472" y="1423.7793019015062" />
+      <point x="140.99953229395112" y="-72.65190754033483" />
+    </edge>
+    <edge source="pjvsemproj.server.Connection" target="pjvsemproj.models.game.players.Player" relationship="TO_ONE">
+      <point x="4.3830099457409233E-4" y="-210.4995751684637" />
+      <point x="5131.693292885472" y="4342.527301901506" />
+      <point x="-1359.958707114528" y="4342.527301901506" />
+      <point x="-97.40146770604883" y="198.5000924596652" />
+    </edge>
+    <edge source="pjvsemproj.views.renderers.MapRenderer" target="pjvsemproj.models.entities.Damageable" relationship="DEPENDENCY">
+      <point x="214.5" y="-204.0" />
+      <point x="3735.8012928854723" y="1689.5305218727372" />
+      <point x="3735.8012928854723" y="1104.2793019015062" />
+      <point x="229.31552649546757" y="1104.2793019015062" />
+      <point x="0.0" y="-76.5" />
+    </edge>
+    <edge source="pjvsemproj.models.services.LocalGameService" target="pjvsemproj.models.game.Game" relationship="TO_ONE">
+      <point x="-175.0" y="155.49678002876863" />
+      <point x="2706.041292885472" y="3088.027301901506" />
+      <point x="2706.041292885472" y="2874.6243019015055" />
+      <point x="123.0" y="46.59699999999975" />
+    </edge>
+    <edge source="pjvsemproj.models.services.LocalGameService" target="pjvsemproj.models.managers.TurnManager" relationship="CREATE">
+      <point x="60.0" y="210.5" />
+      <point x="4757.558456686948" y="4486.623877069969" />
+      <point x="1770.1598771581866" y="4486.623877069969" />
+      <point x="1770.1598771581866" y="5659.123877069969" />
+      <point x="136.0" y="149.0" />
+    </edge>
+    <edge source="pjvsemproj.views.renderers.Renderer" target="pjvsemproj.models.entities.IGridEntity" relationship="DEPENDENCY">
+      <point x="14.999906007043137" y="112.49978002876833" />
+      <point x="3405.8012928854723" y="1614.5273019015058" />
+      <point x="2526.041292885472" y="1614.5273019015058" />
+      <point x="2526.041292885472" y="461.2793019015062" />
+      <point x="78.49976639000442" y="3.900143847204163E-4" />
+    </edge>
+    <edge source="pjvsemproj.views.GameView" target="pjvsemproj.models.game.maps.Tile" relationship="DEPENDENCY">
+      <point x="-206.00009399295686" y="7.000780028768531" />
+      <point x="2876.188292885472" y="2479.5313019015057" />
+      <point x="2876.188292885472" y="1636.5273019015058" />
+      <point x="2511.041292885472" y="1636.5273019015058" />
+      <point x="2511.041292885472" y="729.7793019015062" />
+      <point x="128.99976639000442" y="-29.99960998561528" />
+    </edge>
+    <edge source="pjvsemproj.models.services.NetworkGameService" target="pjvsemproj.models.game.maps.Tile" relationship="DEPENDENCY">
+      <point x="-175.00016380147645" y="14.999780028768328" />
+      <point x="4466.041292885472" y="2528.0303019015055" />
+      <point x="4466.041292885472" y="759.7793019015062" />
+      <point x="128.99976639000442" y="3.900143847204163E-4" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.ConquestManager" target="pjvsemproj.models.entities.cities.City" relationship="DEPENDENCY">
+      <point x="-149.50046770604888" y="-14.999968645028275" />
+      <point x="-1213.958707114528" y="4023.0253019015054" />
+      <point x="-1213.958707114528" y="2161.279301901506" />
+      <point x="-324.9587071145279" y="2161.279301901506" />
+      <point x="-324.9587071145279" y="1926.7793019015062" />
+      <point x="-107.50023360999558" y="147.00039001438472" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.GameSetupManager" target="pjvsemproj.models.game.players.Player" relationship="DEPENDENCY">
+      <point x="-176.5" y="15.0" />
+      <point x="-1262.557707114528" y="3224.027301901506" />
+      <point x="-4.6770604888024536E-4" y="198.50039001438427" />
+    </edge>
+    <edge source="pjvsemproj.views.GameView" target="pjvsemproj.views.SidePanelView" relationship="CREATE">
+      <point x="99.99990600704314" y="-246.5" />
+      <point x="59.99990600704314" y="186.5" />
+    </edge>
+    <edge source="pjvsemproj.views.SidePanelView" target="pjvsemproj.models.game.players.Player" relationship="DEPENDENCY">
+      <point x="14.999906007043137" y="186.49978002876833" />
+      <point x="3705.8012928854723" y="2195.527301901506" />
+      <point x="3305.8012928854723" y="2195.527301901506" />
+      <point x="3305.8012928854723" y="2568.527301901506" />
+      <point x="-1292.557707114528" y="2568.527301901506" />
+      <point x="-30.00046770604888" y="198.5000924596652" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.GameSetupManager" target="pjvsemproj.models.game.Game" relationship="CREATE">
+      <point x="176.5" y="15.0" />
+      <point x="874.3155264954676" y="3224.027301901506" />
+      <point x="-15.0" y="102.5" />
+    </edge>
+    <edge source="pjvsemproj.server.GameSession" target="pjvsemproj.models.game.players.Player" relationship="TO_ONE">
+      <point x="4.3830099457409233E-4" y="136.5004248315363" />
+      <point x="5471.693292885472" y="4342.527301901506" />
+      <point x="-1359.958707114528" y="4342.527301901506" />
+      <point x="-97.40146770604883" y="198.5000924596652" />
+    </edge>
+    <edge source="pjvsemproj.views.GameView" target="pjvsemproj.models.game.players.Player" relationship="DEPENDENCY">
+      <point x="-206.00009399295686" y="22.00078002876853" />
+      <point x="3305.8012928854723" y="2494.5313019015057" />
+      <point x="3305.8012928854723" y="2568.527301901506" />
+      <point x="-1292.557707114528" y="2568.527301901506" />
+      <point x="-30.00046770604888" y="198.5000924596652" />
+    </edge>
+    <edge source="pjvsemproj.controllers.GameController" target="pjvsemproj.models.managers.helpers.OwnershipHelper" relationship="DEPENDENCY">
+      <point x="14.999906007043137" y="114.5" />
+      <point x="3725.8012928854723" y="3672.5278962096354" />
+      <point x="-552.5572394084791" y="3672.5278962096354" />
+      <point x="0.0" y="-76.5" />
+    </edge>
+    <edge source="pjvsemproj.views.SidePanelView" target="pjvsemproj.models.entities.troopUnits.TroopUnit" relationship="DEPENDENCY">
+      <point x="-9.399295686307596E-5" y="186.49978002876833" />
+      <point x="3690.8012928854723" y="2165.527301901506" />
+      <point x="1181.315292885472" y="2165.527301901506" />
+      <point x="1181.315292885472" y="2264.779301901506" />
+      <point x="121.99976639000442" y="-14.99960998561528" />
+    </edge>
+    <edge source="pjvsemproj.views.SidePanelView" target="pjvsemproj.models.game.maps.Tile" relationship="DEPENDENCY">
+      <point x="-9.399295686307596E-5" y="-186.50021997123167" />
+      <point x="3690.8012928854723" y="1636.5273019015058" />
+      <point x="2511.041292885472" y="1636.5273019015058" />
+      <point x="2511.041292885472" y="729.7793019015062" />
+      <point x="128.99976639000442" y="-29.99960998561528" />
+    </edge>
+    <edge source="pjvsemproj.models.services.LocalGameService" target="pjvsemproj.models.game.maps.Tile" relationship="DEPENDENCY">
+      <point x="-175.00016380147645" y="14.999780028768328" />
+      <point x="4466.041292885472" y="2947.5303019015055" />
+      <point x="4466.041292885472" y="759.7793019015062" />
+      <point x="128.99976639000442" y="3.900143847204163E-4" />
+    </edge>
+    <edge source="pjvsemproj.server.GameSession" target="pjvsemproj.server.Connection" relationship="TO_ONE">
+      <point x="-236.99956169900543" y="15.000424831536293" />
+      <point x="5175.041292885472" y="4186.1243019015055" />
+      <point x="5175.041292885472" y="4289.027301901506" />
+      <point x="5116.693292885472" y="4289.027301901506" />
+      <point x="-14.999561699005426" y="-210.4995751684637" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.MovementManager" target="pjvsemproj.models.entities.Entity" relationship="DEPENDENCY">
+      <point x="-135.90146770604883" y="-198.4995751684637" />
+      <point x="-148.4587071145279" y="4907.527301901506" />
+      <point x="304.315292885472" y="4907.527301901506" />
+      <point x="304.315292885472" y="6214.6243019015055" />
+      <point x="-1731.5577071145278" y="6214.6243019015055" />
+      <point x="-1731.5577071145278" y="892.2793019015062" />
+      <point x="454.315292885472" y="892.2793019015062" />
+      <point x="-15.000233609995576" y="-101.49960998561528" />
+    </edge>
+    <edge source="pjvsemproj.server.Connection" target="pjvsemproj.server.GameSession" relationship="TO_ONE">
+      <point x="61.34843830099453" y="-210.4995751684637" />
+      <point x="5193.041292885472" y="4372.527301901506" />
+      <point x="5212.041292885472" y="4372.527301901506" />
+      <point x="5212.041292885472" y="4273.527301901506" />
+      <point x="-236.99956169900543" y="102.40342483153654" />
+    </edge>
+    <edge source="pjvsemproj.models.entities.troopUnits.TroopUnit" target="pjvsemproj.models.game.players.Player" relationship="TO_ONE">
+      <point x="-122.00023360999558" y="15.00039001438472" />
+      <point x="720.0412928854721" y="2294.779301901506" />
+      <point x="720.0412928854721" y="4262.948473165658" />
+      <point x="-1397.557707114528" y="4262.948473165658" />
+      <point x="-1397.557707114528" y="4219.979450678866" />
+      <point x="-1277.557707114528" y="4219.979450678866" />
+      <point x="-15.00046770604888" y="198.50039001438427" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.EconomyManager" target="pjvsemproj.models.entities.Entity" relationship="DEPENDENCY">
+      <point x="14.999532293951233" y="-138.4995751684637" />
+      <point x="-637.5577071145278" y="4907.527301901506" />
+      <point x="304.315292885472" y="4907.527301901506" />
+      <point x="304.315292885472" y="6214.6243019015055" />
+      <point x="-1731.5577071145278" y="6214.6243019015055" />
+      <point x="-1731.5577071145278" y="892.2793019015062" />
+      <point x="454.315292885472" y="892.2793019015062" />
+      <point x="-15.000233609995576" y="-101.49960998561528" />
+    </edge>
+    <edge source="pjvsemproj.server.Connection" target="pjvsemproj.server.GameServer" relationship="TO_ONE">
+      <point x="110.50043830099457" y="-210.4995751684637" />
+      <point x="5242.193292885472" y="4357.527301901506" />
+      <point x="5193.041292885472" y="4357.527301901506" />
+      <point x="5193.041292885472" y="4152.527301901506" />
+      <point x="5217.193292885472" y="4152.527301901506" />
+      <point x="-134.49956169900543" y="112.5004248315363" />
+    </edge>
+    <edge source="pjvsemproj.models.services.LocalGameService" target="pjvsemproj.models.managers.IWinListener" relationship="DEPENDENCY">
+      <point x="75.0" y="210.5" />
+      <point x="4772.558456686948" y="5691.623877069969" />
+      <point x="-1247.557707114528" y="5691.623877069969" />
+      <point x="-1247.557707114528" y="3838.5252705465336" />
+      <point x="-83.0" y="0.0" />
+    </edge>
+    <edge source="pjvsemproj.Launcher" target="pjvsemproj.HelloApplication" relationship="DEPENDENCY">
+      <point x="0.0" y="-40.5" />
+      <point x="0.0" y="52.5" />
+    </edge>
+    <edge source="pjvsemproj.models.game.Game" target="pjvsemproj.models.game.maps.GameMap" relationship="TO_ONE">
+      <point x="123.0" y="0.0" />
+      <point x="1570.3155264954676" y="2828.027301901506" />
+      <point x="1570.3155264954676" y="1269.7793019015062" />
+      <point x="129.5" y="30.00039001438472" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.CombatManager" target="pjvsemproj.models.entities.troopUnits.TroopUnit" relationship="DEPENDENCY">
+      <point x="14.999532293951233" y="-101.4995751684637" />
+      <point x="-317.55770711452783" y="5356.6243019015055" />
+      <point x="-243.9587071145279" y="5356.6243019015055" />
+      <point x="-243.9587071145279" y="2028.7793019015062" />
+      <point x="-122.00023360999558" y="-250.99960998561528" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.GameSetupManager" target="pjvsemproj.config.GameConfigParser" relationship="CREATE">
+      <point x="20.0" y="-52.5" />
+      <point x="0.0" y="40.5" />
+    </edge>
+    <edge source="pjvsemproj.models.entities.troopUnits.TroopUnit" target="pjvsemproj.models.entities.Ownable" relationship="REALIZATION">
+      <point x="14.999766390004424" y="-258.4996099856153" />
+      <point x="904.315292885472" y="1665.0273019015058" />
+      <point x="1068.041292885472" y="1665.0273019015058" />
+      <point x="1068.041292885472" y="1119.2793019015062" />
+      <point x="1107.315292885472" y="1119.2793019015062" />
+      <point x="37.999766390004424" y="27.50039001438472" />
+    </edge>
+    <edge source="pjvsemproj.models.services.LocalGameService" target="pjvsemproj.models.services.GameService" relationship="REALIZATION">
+      <point x="-1.6380147644667886E-4" y="-210.50021997123167" />
+      <point x="-1.6380147644667886E-4" y="160.49978002876833" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.CombatManager" target="pjvsemproj.models.game.maps.Tile" relationship="DEPENDENCY">
+      <point x="176.99953229395123" y="4.2483153629291337E-4" />
+      <point x="289.315292885472" y="5510.6243019015055" />
+      <point x="289.315292885472" y="6199.6243019015055" />
+      <point x="-1716.5577071145278" y="6199.6243019015055" />
+      <point x="-1716.5577071145278" y="744.7793019015062" />
+      <point x="-129.00023360999558" y="-14.99960998561528" />
+    </edge>
+    <edge source="pjvsemproj.models.entities.cities.City" target="pjvsemproj.models.entities.cities.CityType" relationship="TO_ONE">
+      <point x="0.0" y="-150.5" />
+      <point x="0.0" y="52.5" />
+    </edge>
+    <edge source="pjvsemproj.server.GameSession" target="pjvsemproj.models.managers.EconomyManager" relationship="CREATE">
+      <point x="-74.99956169900543" y="136.5" />
+      <point x="5396.693292885472" y="4868.623877069969" />
+      <point x="-679.0572394084791" y="4868.623877069969" />
+      <point x="-26.5" y="-138.5" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.EconomyManager" target="pjvsemproj.models.entities.troopUnits.TroopUnit" relationship="CREATE">
+      <point x="201.5" y="45.00042483153629" />
+      <point x="-228.9587071145279" y="5175.1243019015055" />
+      <point x="-228.9587071145279" y="2309.779301901506" />
+      <point x="-122.0" y="30.00039001438472" />
+    </edge>
+    <edge source="pjvsemproj.models.entities.cities.City" target="pjvsemproj.models.entities.Entity" relationship="GENERALIZATION">
+      <point x="-107.50023360999558" y="-142.99960998561528" />
+      <point x="490.0412928854721" y="1636.7793019015062" />
+      <point x="490.0412928854721" y="1564.5273019015058" />
+      <point x="549.315292885472" y="1564.5273019015058" />
+      <point x="79.99976639000442" y="101.50039001438472" />
+    </edge>
+    <edge source="pjvsemproj.server.GameSession" target="pjvsemproj.models.game.maps.GameMap" relationship="TO_ONE">
+      <point x="237.0" y="15.0" />
+      <point x="5756.192854584478" y="4186.123877069969" />
+      <point x="5756.192854584478" y="1086.2789118871215" />
+      <point x="1323.3155264954676" y="1086.2789118871215" />
+      <point x="94.0" y="-114.5" />
+    </edge>
+    <edge source="pjvsemproj.server.GameSession" target="pjvsemproj.models.managers.MovementManager" relationship="CREATE">
+      <point x="-29.999561699005426" y="136.5" />
+      <point x="5441.693292885472" y="5175.1243019015055" />
+      <point x="196.99999999999977" y="45.00042483153629" />
+    </edge>
+    <edge source="pjvsemproj.server.GameSession" target="pjvsemproj.models.managers.TurnManager" relationship="CREATE">
+      <point x="15.000438300994574" y="136.5" />
+      <point x="5486.693292885472" y="5391.123877069969" />
+      <point x="136.0" y="-119.0" />
+    </edge>
+    <edge source="pjvsemproj.models.game.players.Player" target="pjvsemproj.models.entities.troopUnits.TroopUnit" relationship="TO_MANY">
+      <point x="14.99953229395112" y="198.5" />
+      <point x="-1247.557707114528" y="2174.779301901506" />
+      <point x="-122.0" y="-104.99960998561528" />
+    </edge>
+    <edge source="pjvsemproj.models.game.Game" target="pjvsemproj.models.game.players.Player" relationship="TO_MANY">
+      <point x="-123.0" y="-15.0" />
+      <point x="-211.9587071145279" y="2813.027301901506" />
+      <point x="-211.9587071145279" y="2045.2789118871215" />
+      <point x="-1217.557707114528" y="2045.2789118871215" />
+      <point x="44.99953229395112" y="198.5" />
+    </edge>
+    <edge source="pjvsemproj.server.GameServer" target="pjvsemproj.server.GameSession" relationship="TO_MANY">
+      <point x="-171.99956169900543" y="4.2483153629291337E-4" />
+      <point x="4934.693292885472" y="3791.1243019015055" />
+      <point x="4934.693292885472" y="4273.527301901506" />
+      <point x="-236.99956169900543" y="102.40342483153654" />
+    </edge>
+    <edge source="pjvsemproj.models.services.NetworkGameService" target="pjvsemproj.models.game.players.Player" relationship="DEPENDENCY">
+      <point x="-175.00016380147645" y="-2.1997123167238897E-4" />
+      <point x="4413.041292885472" y="2513.0303019015055" />
+      <point x="4413.041292885472" y="1344.0303019015055" />
+      <point x="3056.541292885472" y="1344.0303019015055" />
+      <point x="3056.541292885472" y="1423.7793019015062" />
+      <point x="140.99953229395112" y="-72.65190754033483" />
+    </edge>
+    <edge source="pjvsemproj.views.renderers.MapRenderer" target="pjvsemproj.views.renderers.Renderer" relationship="GENERALIZATION">
+      <point x="84.99990600704314" y="-208.5" />
+      <point x="-15.000093992956863" y="112.5" />
+    </edge>
+    <edge source="pjvsemproj.models.game.players.HumanPlayer" target="pjvsemproj.models.game.players.Player" relationship="GENERALIZATION">
+      <point x="-4.6770604882340194E-4" y="27.500390014384266" />
+      <point x="-1522.5577071145278" y="1252.1795994562253" />
+      <point x="-1262.557707114528" y="1252.1795994562253" />
+      <point x="-4.6770604888024536E-4" y="-198.49960998561573" />
+    </edge>
+    <edge source="pjvsemproj.models.entities.Entity" target="pjvsemproj.models.entities.IGridEntity" relationship="REALIZATION">
+      <point x="14.999766390004424" y="-101.5" />
+      <point x="484.315292885472" y="476.27930190150573" />
+      <point x="-78.5" y="15.000390014384266" />
+    </edge>
+    <edge source="pjvsemproj.controllers.MainMenuController" target="pjvsemproj.views.MainMenuView" relationship="TO_ONE">
+      <point x="0.0" y="-76.5" />
+      <point x="0.0" y="150.5" />
+    </edge>
+    <edge source="pjvsemproj.controllers.SceneDirector" target="pjvsemproj.views.MainMenuView" relationship="CREATE">
+      <point x="97.0" y="-15.0" />
+      <point x="-149.5" y="-114.20047012391478" />
+    </edge>
+    <edge source="pjvsemproj.models.game.maps.MovementNode" target="pjvsemproj.models.game.maps.Tile" relationship="TO_ONE">
+      <point x="102.99999999999977" y="7.0" />
+      <point x="1053.030961332086" y="4618.123877069969" />
+      <point x="1053.030961332086" y="4253.525270546534" />
+      <point x="866.8933956826468" y="4253.525270546534" />
+      <point x="866.8933956826468" y="3861.804106301661" />
+      <point x="851.0703060430392" y="3861.804106301661" />
+      <point x="851.0703060430392" y="774.7793019015062" />
+      <point x="129.0" y="15.00039001438472" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.EconomyManager" target="pjvsemproj.models.game.maps.Tile" relationship="DEPENDENCY">
+      <point x="-4.677060487665585E-4" y="-138.4995751684637" />
+      <point x="-652.5577071145278" y="4885.527301901506" />
+      <point x="289.315292885472" y="4885.527301901506" />
+      <point x="289.315292885472" y="6199.6243019015055" />
+      <point x="-1716.5577071145278" y="6199.6243019015055" />
+      <point x="-1716.5577071145278" y="744.7793019015062" />
+      <point x="-129.00023360999558" y="-14.99960998561528" />
+    </edge>
+    <edge source="pjvsemproj.config.GameConfigParser" target="pjvsemproj.config.GameConfigDTO" relationship="DEPENDENCY">
+      <point x="0.0" y="-40.5" />
+      <point x="0.0" y="27.5" />
+    </edge>
+    <edge source="pjvsemproj.config.GameConfigDTO" target="pjvsemproj.config.EntityConfigDTO" relationship="TO_MANY">
+      <point x="0.0" y="-27.5" />
+      <point x="0.0" y="27.5" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.MovementManager" target="pjvsemproj.models.game.maps.Tile" relationship="DEPENDENCY">
+      <point x="-4.677060487665585E-4" y="-198.4995751684637" />
+      <point x="-12.55770711452783" y="4885.527301901506" />
+      <point x="289.315292885472" y="4885.527301901506" />
+      <point x="289.315292885472" y="6199.6243019015055" />
+      <point x="-1716.5577071145278" y="6199.6243019015055" />
+      <point x="-1716.5577071145278" y="744.7793019015062" />
+      <point x="-129.00023360999558" y="-14.99960998561528" />
+    </edge>
+    <edge source="pjvsemproj.views.renderers.Renderer" target="pjvsemproj.models.game.maps.Tile" relationship="DEPENDENCY">
+      <point x="-9.399295686307596E-5" y="112.49978002876833" />
+      <point x="3390.8012928854723" y="1636.5273019015058" />
+      <point x="2511.041292885472" y="1636.5273019015058" />
+      <point x="2511.041292885472" y="729.7793019015062" />
+      <point x="128.99976639000442" y="-29.99960998561528" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.GameSetupManager" target="pjvsemproj.models.game.maps.GameMap" relationship="DEPENDENCY">
+      <point x="0.0" y="52.5" />
+      <point x="-697.9587071145279" y="3294.2070953454795" />
+      <point x="2131.291292885472" y="3294.2070953454795" />
+      <point x="2131.291292885472" y="1224.7793019015062" />
+      <point x="129.49976639000442" y="-14.99960998561528" />
+    </edge>
+    <edge source="pjvsemproj.views.SidePanelView" target="pjvsemproj.models.entities.Entity" relationship="DEPENDENCY">
+      <point x="170.49990600704314" y="-2.1997123167238897E-4" />
+      <point x="3909.541292885472" y="1892.5303019015055" />
+      <point x="3909.541292885472" y="2994.0303019015055" />
+      <point x="3878.8012928854723" y="2994.0303019015055" />
+      <point x="3878.8012928854723" y="3074.527301901506" />
+      <point x="529.0412928854721" y="3074.527301901506" />
+      <point x="59.72576639000454" y="101.50039001438472" />
+    </edge>
+    <edge source="pjvsemproj.models.services.GameService" target="pjvsemproj.models.game.maps.GameMap" relationship="DEPENDENCY">
+      <point x="-1.6380147644667886E-4" y="-160.50021997123167" />
+      <point x="4697.558292885472" y="1135.5273019015058" />
+      <point x="1404.315292885472" y="1135.5273019015058" />
+      <point x="1404.315292885472" y="1164.7793019015062" />
+      <point x="129.49976639000442" y="-74.99960998561528" />
+    </edge>
+    <edge source="pjvsemproj.views.SidePanelView" target="pjvsemproj.models.entities.DamageableEntity" relationship="DEPENDENCY">
+      <point x="-15.000093992956863" y="186.49978002876833" />
+      <point x="3675.8012928854723" y="2137.527301901506" />
+      <point x="1163.815292885472" y="2137.527301901506" />
+      <point x="1163.815292885472" y="1962.5273019015058" />
+      <point x="384.315292885472" y="1962.5273019015058" />
+      <point x="74.99976639000442" y="114.50039001438472" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.CombatManager" target="pjvsemproj.models.game.maps.GameMap" relationship="TO_ONE">
+      <point x="176.99953229395123" y="30.000424831536293" />
+      <point x="221.0412928854721" y="5540.6243019015055" />
+      <point x="221.0412928854721" y="1947.5273019015058" />
+      <point x="120.31529288547199" y="1947.5273019015058" />
+      <point x="120.31529288547199" y="1388.2793019015062" />
+      <point x="1229.315292885472" y="1388.2793019015062" />
+      <point x="-2.336099955755344E-4" y="114.50039001438472" />
+    </edge>
+    <edge source="pjvsemproj.models.entities.cities.City" target="pjvsemproj.models.entities.Ownable" relationship="REALIZATION">
+      <point x="107.49976639000442" y="-116.25160998561569" />
+      <point x="1068.041292885472" y="1663.5273019015058" />
+      <point x="1068.041292885472" y="1119.2793019015062" />
+      <point x="1107.315292885472" y="1119.2793019015062" />
+      <point x="37.999766390004424" y="27.50039001438472" />
+    </edge>
+    <edge source="pjvsemproj.models.entities.troopUnits.TroopUnit" target="pjvsemproj.models.entities.DamageableEntity" relationship="GENERALIZATION">
+      <point x="-122.0" y="-89.99960998561528" />
+      <point x="339.315292885472" y="2189.779301901506" />
+      <point x="29.999766390004424" y="114.5" />
+    </edge>
+    <edge source="pjvsemproj.controllers.GameController" target="pjvsemproj.models.entities.cities.City" relationship="DEPENDENCY">
+      <point x="-142.00009399295686" y="-104.50321997123137" />
+      <point x="2891.188292885472" y="2833.027301901506" />
+      <point x="2891.188292885472" y="1659.5273019015058" />
+      <point x="1181.315292885472" y="1659.5273019015058" />
+      <point x="1181.315292885472" y="1635.0273019015058" />
+      <point x="107.49976639000442" y="-144.7516099856157" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.GameSetupManager" target="pjvsemproj.models.entities.cities.CityType" relationship="DEPENDENCY">
+      <point x="-176.5" y="0.0" />
+      <point x="-1701.5577071145278" y="3209.027301901506" />
+      <point x="-1701.5577071145278" y="2077.931209441841" />
+      <point x="-647.6210903095302" y="2077.931209441841" />
+      <point x="-647.6210903095302" y="1040.7789118871215" />
+      <point x="-109.5" y="0.0" />
+    </edge>
+    <edge source="pjvsemproj.controllers.GameController" target="pjvsemproj.models.entities.troopUnits.TroopUnit" relationship="DEPENDENCY">
+      <point x="-9.399295686307596E-5" y="-114.50021997123167" />
+      <point x="3710.8012928854723" y="2768.0303019015055" />
+      <point x="3241.188292885472" y="2768.0303019015055" />
+      <point x="3241.188292885472" y="2165.527301901506" />
+      <point x="1181.315292885472" y="2165.527301901506" />
+      <point x="1181.315292885472" y="2264.779301901506" />
+      <point x="121.99976639000442" y="-14.99960998561528" />
+    </edge>
+    <edge source="pjvsemproj.controllers.GameController" target="pjvsemproj.models.services.GameService" relationship="TO_ONE">
+      <point x="142.0" y="29.999780028768328" />
+      <point x="4134.541292885472" y="2967.5303019015055" />
+      <point x="4134.541292885472" y="2072.530521872737" />
+      <point x="-175.0" y="-21.0" />
+    </edge>
+    <edge source="pjvsemproj.server.GameSession" target="pjvsemproj.models.managers.CombatManager" relationship="TO_ONE">
+      <point x="30.000438300994574" y="136.5" />
+      <point x="5501.693292885472" y="5570.6243019015055" />
+      <point x="177.0" y="60.00042483153629" />
+    </edge>
+    <edge source="pjvsemproj.models.entities.troopUnits.TroopUnit" target="pjvsemproj.models.entities.Entity" relationship="DEPENDENCY">
+      <point x="-2.336099955755344E-4" y="-258.4996099856153" />
+      <point x="889.315292885472" y="1998.5273019015058" />
+      <point x="514.0412928854721" y="1998.5273019015058" />
+      <point x="514.0412928854721" y="1649.2793019015062" />
+      <point x="466.0412928854721" y="1649.2793019015062" />
+      <point x="-3.2742336099954628" y="101.50039001438472" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.CombatManager" target="pjvsemproj.models.entities.IGridEntity" relationship="DEPENDENCY">
+      <point x="176.99953229395123" y="15.000424831536293" />
+      <point x="354.315292885472" y="5525.6243019015055" />
+      <point x="354.315292885472" y="4401.700301901506" />
+      <point x="42.0412928854721" y="4401.700301901506" />
+      <point x="42.0412928854721" y="446.2793019015062" />
+      <point x="-78.50023360999558" y="-14.99960998561528" />
+    </edge>
+    <edge source="pjvsemproj.controllers.GameController" target="pjvsemproj.views.GameView" relationship="CREATE">
+      <point x="-142.00009399295686" y="-2.1997123167238897E-4" />
+      <point x="3487.041292885472" y="2937.5303019015055" />
+      <point x="3487.041292885472" y="2753.0303019015055" />
+      <point x="3650.8012928854723" y="2753.0303019015055" />
+      <point x="-9.399295686307596E-5" y="246.49978002876833" />
+    </edge>
+    <edge source="pjvsemproj.models.entities.cities.City" target="pjvsemproj.models.entities.Upgradable" relationship="REALIZATION">
+      <point x="15.0" y="-150.5" />
+      <point x="664.3155264954676" y="1240.7789118871215" />
+      <point x="-106.0" y="0.0" />
+    </edge>
+    <edge source="pjvsemproj.models.services.LocalGameService" target="pjvsemproj.models.managers.ConquestManager" relationship="CREATE">
+      <point x="90.0" y="210.5" />
+      <point x="4787.558456686948" y="5706.623877069969" />
+      <point x="-1042.557239408479" y="5706.623877069969" />
+      <point x="0.0" y="76.5" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.MovementManager" target="pjvsemproj.models.game.maps.GameMap" relationship="TO_ONE">
+      <point x="196.999532293951" y="-14.999575168463707" />
+      <point x="221.0412928854721" y="5115.1243019015055" />
+      <point x="221.0412928854721" y="1947.5273019015058" />
+      <point x="120.31529288547199" y="1947.5273019015058" />
+      <point x="120.31529288547199" y="1388.2793019015062" />
+      <point x="1229.315292885472" y="1388.2793019015062" />
+      <point x="-2.336099955755344E-4" y="114.50039001438472" />
+    </edge>
+    <edge source="pjvsemproj.models.entities.cities.City" target="pjvsemproj.models.game.maps.Tile" relationship="DEPENDENCY">
+      <point x="-2.336099955755344E-4" y="150.50039001438472" />
+      <point x="649.315292885472" y="1977.5273019015058" />
+      <point x="-294.9587071145279" y="1977.5273019015058" />
+      <point x="-294.9587071145279" y="759.7793019015057" />
+      <point x="-129.00023360999558" y="3.900143842656689E-4" />
+    </edge>
+    <edge source="pjvsemproj.controllers.GameController" target="pjvsemproj.models.game.players.Player" relationship="DEPENDENCY">
+      <point x="14.999906007043137" y="-114.50021997123167" />
+      <point x="3725.8012928854723" y="2738.0303019015055" />
+      <point x="3256.188292885472" y="2738.0303019015055" />
+      <point x="3256.188292885472" y="2568.527301901506" />
+      <point x="-1292.557707114528" y="2568.527301901506" />
+      <point x="-30.00046770604888" y="198.5000924596652" />
+    </edge>
+    <edge source="pjvsemproj.server.GameSession" target="pjvsemproj.models.managers.MovementManager" relationship="TO_ONE">
+      <point x="-59.999561699005426" y="136.5" />
+      <point x="5411.693292885472" y="5160.1243019015055" />
+      <point x="196.99999999999977" y="30.000424831536293" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.GameSetupManager" target="pjvsemproj.models.entities.troopUnits.TroopType" relationship="DEPENDENCY">
+      <point x="176.5" y="0.0" />
+      <point x="-386.4587071145279" y="3209.027301901506" />
+      <point x="-386.4587071145279" y="2591.527301901506" />
+      <point x="1196.315292885472" y="2591.527301901506" />
+      <point x="1196.315292885472" y="1519.7793019015062" />
+      <point x="128.99976639000442" y="3.900143847204163E-4" />
+    </edge>
+    <edge source="pjvsemproj.models.entities.troopUnits.TroopType" target="pjvsemproj.models.entities.Purchasable" relationship="REALIZATION">
+      <point x="129.0" y="-29.99960998561528" />
+      <point x="1389.3155264954676" y="1489.7793019015062" />
+      <point x="0.0" y="27.5" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.helpers.GridPositionHelper" target="pjvsemproj.models.game.maps.Tile" relationship="DEPENDENCY">
+      <point x="-4.677060487665585E-4" y="64.5004248315363" />
+      <point x="-72.55770711452783" y="4885.527301901506" />
+      <point x="289.315292885472" y="4885.527301901506" />
+      <point x="289.315292885472" y="6199.6243019015055" />
+      <point x="-1716.5577071145278" y="6199.6243019015055" />
+      <point x="-1716.5577071145278" y="744.7793019015062" />
+      <point x="-129.00023360999558" y="-14.99960998561528" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.helpers.OwnershipHelper" target="pjvsemproj.models.entities.troopUnits.TroopUnit" relationship="DEPENDENCY">
+      <point x="198.99953229395123" y="4.2483153629291337E-4" />
+      <point x="-243.9587071145279" y="4611.1243019015055" />
+      <point x="-243.9587071145279" y="2028.7793019015062" />
+      <point x="-122.00023360999558" y="-250.99960998561528" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.CombatManager" target="pjvsemproj.models.managers.ITurnListener" relationship="REALIZATION">
+      <point x="-140.40146770604883" y="-101.4995751684637" />
+      <point x="-472.9587071145279" y="5335.527301901506" />
+      <point x="-418.55770711452783" y="5335.527301901506" />
+      <point x="-418.55770711452783" y="4771.6243019015055" />
+      <point x="100.99953229395123" y="4.2483153629291337E-4" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.CombatManager" target="pjvsemproj.models.entities.DamageableEntity" relationship="DEPENDENCY">
+      <point x="177.0" y="45.00042483153629" />
+      <point x="369.315292885472" y="5555.6243019015055" />
+      <point x="59.999766390004424" y="114.5" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.TurnManager" target="pjvsemproj.models.game.players.Player" relationship="TO_ONE">
+      <point x="-4.677060487665585E-4" y="-162.4995751684637" />
+      <point x="-872.5577071145278" y="5310.527301901506" />
+      <point x="-1344.958707114528" y="5310.527301901506" />
+      <point x="-1344.958707114528" y="2045.2793019015062" />
+      <point x="-1322.557707114528" y="2045.2793019015062" />
+      <point x="-60.00046770604888" y="198.5000924596652" />
+    </edge>
+    <edge source="pjvsemproj.server.GameSession" target="pjvsemproj.models.managers.EconomyManager" relationship="TO_ONE">
+      <point x="-14.999561699005426" y="136.5" />
+      <point x="5456.693292885472" y="5356.6243019015055" />
+      <point x="-228.9587071145279" y="5356.6243019015055" />
+      <point x="-228.9587071145279" y="5190.1243019015055" />
+      <point x="201.5" y="60.00042483153629" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.MovementManager" target="pjvsemproj.models.game.maps.MovementNode" relationship="CREATE">
+      <point x="100.0" y="-198.5" />
+      <point x="0.0" y="52.5" />
+    </edge>
+    <edge source="pjvsemproj.models.entities.Ownable" target="pjvsemproj.models.game.players.Player" relationship="DEPENDENCY">
+      <point x="-2.336099955755344E-4" y="-27.49960998561528" />
+      <point x="1069.315292885472" y="392.2793019015062" />
+      <point x="-1382.557707114528" y="392.2793019015062" />
+      <point x="-1382.557707114528" y="3789.9794506788658" />
+      <point x="-1262.557707114528" y="3789.9794506788658" />
+      <point x="-4.6770604888024536E-4" y="198.50039001438427" />
+    </edge>
+    <edge source="pjvsemproj.models.entities.DamageableEntity" target="pjvsemproj.models.entities.Damageable" relationship="REALIZATION">
+      <point x="-80.0" y="-114.5" />
+      <point x="0.0" y="76.5" />
+    </edge>
+    <edge source="pjvsemproj.views.renderers.MapRenderer" target="pjvsemproj.models.entities.IGridEntity" relationship="DEPENDENCY">
+      <point x="-15.000093992956863" y="-208.50021997123167" />
+      <point x="3275.8012928854723" y="1614.5273019015058" />
+      <point x="2526.041292885472" y="1614.5273019015058" />
+      <point x="2526.041292885472" y="461.2793019015062" />
+      <point x="78.49976639000442" y="3.900143847204163E-4" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.ConquestManager" target="pjvsemproj.models.managers.IWinListener" relationship="TO_MANY">
+      <point x="0.0" y="-76.5" />
+      <point x="0.0" y="27.5" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.GameSetupManager" target="pjvsemproj.config.GameConfigParser" relationship="TO_ONE">
+      <point x="35.0" y="-52.5" />
+      <point x="15.0" y="40.5" />
+    </edge>
+    <edge source="pjvsemproj.models.services.LocalGameService" target="pjvsemproj.models.managers.TurnManager" relationship="TO_ONE">
+      <point x="120.0" y="210.5" />
+      <point x="4817.558456686948" y="5736.623877069969" />
+      <point x="-842.5577071145278" y="5736.623877069969" />
+      <point x="29.999532293951233" y="162.5" />
+    </edge>
+    <edge source="pjvsemproj.server.GameServer" target="pjvsemproj.server.Connection" relationship="CREATE">
+      <point x="-172.0" y="-16.64442639110348" />
+      <point x="4919.693292885472" y="3774.4794506788658" />
+      <point x="4919.693292885472" y="4617.123877069969" />
+      <point x="-155.0" y="7.0" />
+    </edge>
+    <edge source="pjvsemproj.views.SidePanelView" target="pjvsemproj.models.entities.cities.City" relationship="DEPENDENCY">
+      <point x="14.999906007043137" y="-186.50021997123167" />
+      <point x="3705.8012928854723" y="1659.5273019015058" />
+      <point x="1181.315292885472" y="1659.5273019015058" />
+      <point x="1181.315292885472" y="1635.0273019015058" />
+      <point x="107.49976639000442" y="-144.7516099856157" />
+    </edge>
+    <edge source="pjvsemproj.views.GameView" target="pjvsemproj.models.entities.IGridEntity" relationship="TO_ONE">
+      <point x="89.99990600704314" y="246.49978002876833" />
+      <point x="3740.8012928854723" y="2791.527301901506" />
+      <point x="2496.041292885472" y="2791.527301901506" />
+      <point x="2496.041292885472" y="446.2793019015062" />
+      <point x="78.49976639000442" y="-14.99960998561528" />
+    </edge>
+    <edge source="pjvsemproj.models.services.LocalGameService" target="pjvsemproj.models.managers.ConquestManager" relationship="TO_ONE">
+      <point x="-105.0" y="210.5" />
+      <point x="4592.558456686948" y="4023.0253019015054" />
+      <point x="149.5" y="-14.999968645028275" />
+    </edge>
+    <edge source="pjvsemproj.models.entities.Movable" target="pjvsemproj.models.entities.IGridEntity" relationship="INTERFACE_GENERALIZATION">
+      <point x="115.5" y="0.0" />
+      <point x="1480.3155264954676" y="1780.7789118871215" />
+      <point x="1480.3155264954676" y="476.27930190150573" />
+      <point x="78.5" y="15.000390014384266" />
+    </edge>
+    <edge source="pjvsemproj.controllers.SceneDirector" target="pjvsemproj.views.GameView" relationship="CREATE">
+      <point x="49.72576639000454" y="-52.5" />
+      <point x="1379.041292885472" y="4307.948473165658" />
+      <point x="3472.041292885472" y="4307.948473165658" />
+      <point x="-178.76009399295708" y="246.5" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.EconomyManager" target="pjvsemproj.models.entities.troopUnits.TroopType" relationship="DEPENDENCY">
+      <point x="29.999532293951233" y="138.5" />
+      <point x="-622.5577071145278" y="4127.250497501351" />
+      <point x="1349.041292885472" y="4127.250497501351" />
+      <point x="1349.041292885472" y="1534.7793019015062" />
+      <point x="129.0" y="15.00039001438472" />
+    </edge>
+    <edge source="pjvsemproj.controllers.SceneDirector" target="pjvsemproj.controllers.MainMenuController" relationship="CREATE">
+      <point x="97.0" y="15.0" />
+      <point x="3108.801386878429" y="5881.827199471352" />
+      <point x="-182.0" y="-76.5" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.helpers.OwnershipHelper" target="pjvsemproj.models.game.players.Player" relationship="DEPENDENCY">
+      <point x="-4.677060487665585E-4" y="76.5004248315363" />
+      <point x="-552.5577071145278" y="4710.527301901506" />
+      <point x="-1428.557707114528" y="4710.527301901506" />
+      <point x="-1428.557707114528" y="1496.4313019015062" />
+      <point x="-141.00046770604888" y="9.245966521120863E-5" />
+    </edge>
+    <edge source="pjvsemproj.models.entities.cities.City" target="pjvsemproj.models.game.players.Player" relationship="TO_ONE">
+      <point x="90.22576639000454" y="150.50039001438472" />
+      <point x="739.5412928854721" y="1983.5273019015058" />
+      <point x="720.0412928854721" y="1983.5273019015058" />
+      <point x="720.0412928854721" y="4262.948473165658" />
+      <point x="-1397.557707114528" y="4262.948473165658" />
+      <point x="-1397.557707114528" y="4219.979450678866" />
+      <point x="-1277.557707114528" y="4219.979450678866" />
+      <point x="-15.00046770604888" y="198.50039001438427" />
+    </edge>
+    <edge source="pjvsemproj.models.game.players.Player" target="pjvsemproj.models.entities.cities.City" relationship="TO_MANY">
+      <point x="141.0" y="3.900143842656689E-4" />
+      <point x="-674.9587071145279" y="1496.4315994562253" />
+      <point x="-674.9587071145279" y="1119.2793019015062" />
+      <point x="634.3155264954676" y="1119.2793019015062" />
+      <point x="-15.0" y="-150.5" />
+    </edge>
+    <edge source="pjvsemproj.models.entities.troopUnits.TroopUnit" target="pjvsemproj.models.entities.Movable" relationship="REALIZATION">
+      <point x="122.0" y="0.0" />
+      <point x="1329.3155264954676" y="2279.7789118871215" />
+      <point x="0.0" y="52.5" />
+    </edge>
+    <edge source="pjvsemproj.models.services.LocalGameService" target="pjvsemproj.models.managers.EconomyManager" relationship="TO_ONE">
+      <point x="-15.0" y="210.5" />
+      <point x="4682.558456686948" y="5207.6243019015055" />
+      <point x="2078.6451179616397" y="5207.6243019015055" />
+      <point x="2078.6451179616397" y="5645.623877069969" />
+      <point x="-667.5577071145278" y="5645.623877069969" />
+      <point x="-15.000467706048767" y="138.5" />
+    </edge>
+    <edge source="pjvsemproj.server.GameSession" target="pjvsemproj.models.managers.TurnManager" relationship="TO_ONE">
+      <point x="60.000438300994574" y="136.5" />
+      <point x="5531.693292885472" y="5681.623877069969" />
+      <point x="-699.0572394084791" y="5681.623877069969" />
+      <point x="-699.0572394084791" y="5510.123877069969" />
+      <point x="136.0" y="0.0" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.TurnManager" target="pjvsemproj.models.managers.ITurnListener" relationship="TO_MANY">
+      <point x="-28.0" y="-162.5" />
+      <point x="-900.5572394084791" y="4771.623877069969" />
+      <point x="-101.0" y="0.0" />
+    </edge>
+    <edge source="pjvsemproj.models.game.maps.GameMap" target="pjvsemproj.models.game.maps.Tile" relationship="CREATE">
+      <point x="14.999766390004424" y="-114.5" />
+      <point x="-45.000233609995576" y="138.5" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.GameSetupManager" target="pjvsemproj.models.entities.cities.City" relationship="CREATE">
+      <point x="-176.5" y="-15.0" />
+      <point x="-1029.958707114528" y="3194.027301901506" />
+      <point x="-1029.958707114528" y="1911.7789118871215" />
+      <point x="-107.5" y="132.0" />
+    </edge>
+    <edge source="pjvsemproj.server.GameSession" target="pjvsemproj.models.managers.ConquestManager" relationship="CREATE">
+      <point x="-237.0" y="-118.09857516846387" />
+      <point x="149.5" y="15.000031354971725" />
+    </edge>
+    <edge source="pjvsemproj.models.services.LocalGameService" target="pjvsemproj.models.managers.CombatManager" relationship="CREATE">
+      <point x="105.0" y="210.5" />
+      <point x="4802.558456686948" y="5721.623877069969" />
+      <point x="-317.55770711452783" y="5721.623877069969" />
+      <point x="14.999532293951233" y="101.5" />
+    </edge>
+    <edge source="pjvsemproj.views.renderers.MapRenderer" target="pjvsemproj.models.entities.troopUnits.TroopType" relationship="TO_MANY">
+      <point x="-214.5" y="0.0" />
+      <point x="2078.6451179616397" y="1893.5305218727372" />
+      <point x="2078.6451179616397" y="1504.7793019015062" />
+      <point x="129.0" y="-14.99960998561528" />
+    </edge>
+    <edge source="pjvsemproj.models.services.NetworkGameService" target="pjvsemproj.server.Client" relationship="TO_ONE">
+      <point x="20.0" y="-173.5" />
+      <point x="0.0" y="160.5" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.CombatManager" target="pjvsemproj.models.entities.Entity" relationship="DEPENDENCY">
+      <point x="176.99953229395123" y="-14.999575168463707" />
+      <point x="201.94229288547194" y="5495.6243019015055" />
+      <point x="201.94229288547194" y="4907.527301901506" />
+      <point x="304.315292885472" y="4907.527301901506" />
+      <point x="304.315292885472" y="6214.6243019015055" />
+      <point x="-1731.5577071145278" y="6214.6243019015055" />
+      <point x="-1731.5577071145278" y="892.2793019015062" />
+      <point x="454.315292885472" y="892.2793019015062" />
+      <point x="-15.000233609995576" y="-101.49960998561528" />
+    </edge>
+    <edge source="pjvsemproj.views.renderers.MapRenderer" target="pjvsemproj.models.game.maps.Tile" relationship="DEPENDENCY">
+      <point x="-9.399295686307596E-5" y="-208.50021997123167" />
+      <point x="3290.8012928854723" y="1636.5273019015058" />
+      <point x="2511.041292885472" y="1636.5273019015058" />
+      <point x="2511.041292885472" y="729.7793019015062" />
+      <point x="128.99976639000442" y="-29.99960998561528" />
+    </edge>
+    <edge source="pjvsemproj.models.entities.IGridEntity" target="pjvsemproj.models.game.maps.Tile" relationship="DEPENDENCY">
+      <point x="-78.50023360999558" y="3.900143842656689E-4" />
+      <point x="-294.9587071145279" y="461.27930190150573" />
+      <point x="-294.9587071145279" y="759.7793019015057" />
+      <point x="-129.00023360999558" y="3.900143842656689E-4" />
+    </edge>
+    <edge source="pjvsemproj.views.GameView" target="pjvsemproj.views.renderers.Renderer" relationship="DEPENDENCY">
+      <point x="-206.0" y="-22.99921997123147" />
+      <point x="3056.541292885472" y="2449.5313019015057" />
+      <point x="3056.541292885472" y="1475.7793019015062" />
+      <point x="-210.0" y="2.2487800287690334" />
+    </edge>
+    <edge source="pjvsemproj.views.GameView" target="pjvsemproj.views.renderers.MapRenderer" relationship="TO_ONE">
+      <point x="-153.0" y="-246.5" />
+      <point x="207.0" y="208.5" />
+    </edge>
+    <edge source="pjvsemproj.controllers.GameController" target="pjvsemproj.models.game.maps.GameMap" relationship="DEPENDENCY">
+      <point x="142.0" y="14.999780028768328" />
+      <point x="3893.8012928854723" y="2952.5303019015055" />
+      <point x="3893.8012928854723" y="1179.7793019015062" />
+      <point x="129.5" y="-59.99960998561528" />
+    </edge>
+    <edge source="pjvsemproj.models.services.LocalGameService" target="pjvsemproj.models.game.players.Player" relationship="DEPENDENCY">
+      <point x="-175.00016380147645" y="-2.1997123167238897E-4" />
+      <point x="4413.041292885472" y="2932.5303019015055" />
+      <point x="4413.041292885472" y="1344.0303019015055" />
+      <point x="3056.541292885472" y="1344.0303019015055" />
+      <point x="3056.541292885472" y="1423.7793019015062" />
+      <point x="140.99953229395112" y="-72.65190754033483" />
+    </edge>
+    <edge source="pjvsemproj.models.entities.troopUnits.TroopUnit" target="pjvsemproj.models.entities.cities.City" relationship="DEPENDENCY">
+      <point x="-122.00023360999558" y="3.900143847204163E-4" />
+      <point x="490.0412928854721" y="2279.779301901506" />
+      <point x="490.0412928854721" y="1779.7793019015062" />
+      <point x="-107.50023360999558" y="3.900143847204163E-4" />
+    </edge>
+    <edge source="pjvsemproj.server.GameServer" target="pjvsemproj.server.Connection" relationship="TO_MANY">
+      <point x="-158.65156169900547" y="112.5004248315363" />
+      <point x="5193.041292885472" y="4137.527301901506" />
+      <point x="5175.041292885472" y="4137.527301901506" />
+      <point x="5175.041292885472" y="4289.027301901506" />
+      <point x="5116.693292885472" y="4289.027301901506" />
+      <point x="-14.999561699005426" y="-210.4995751684637" />
+    </edge>
+    <edge source="pjvsemproj.HelloApplication" target="pjvsemproj.controllers.SceneDirector" relationship="CREATE">
+      <point x="0.0" y="-52.5" />
+      <point x="0.0" y="52.5" />
+    </edge>
+    <edge source="pjvsemproj.views.GameView" target="pjvsemproj.views.SidePanelView" relationship="TO_ONE">
+      <point x="84.99990600704314" y="-246.5" />
+      <point x="44.99990600704314" y="186.5" />
+    </edge>
+    <edge source="pjvsemproj.models.entities.DamageableEntity" target="pjvsemproj.models.game.maps.Tile" relationship="DEPENDENCY">
+      <point x="-2.336099955755344E-4" y="114.50039001438472" />
+      <point x="309.315292885472" y="1977.5273019015058" />
+      <point x="-294.9587071145279" y="1977.5273019015058" />
+      <point x="-294.9587071145279" y="759.7793019015057" />
+      <point x="-129.00023360999558" y="3.900143842656689E-4" />
+    </edge>
+    <edge source="pjvsemproj.views.renderers.MapRenderer" target="pjvsemproj.models.entities.troopUnits.TroopUnit" relationship="DEPENDENCY">
+      <point x="-9.399295686307596E-5" y="208.49978002876833" />
+      <point x="3290.8012928854723" y="2165.527301901506" />
+      <point x="1181.315292885472" y="2165.527301901506" />
+      <point x="1181.315292885472" y="2264.779301901506" />
+      <point x="121.99976639000442" y="-14.99960998561528" />
+    </edge>
+    <edge source="pjvsemproj.server.GameSession" target="pjvsemproj.models.managers.ConquestManager" relationship="TO_ONE">
+      <point x="-237.0" y="-103.09857516846387" />
+      <point x="149.5" y="30.000031354971725" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.GameSetupManager" target="pjvsemproj.models.game.maps.Tile" relationship="DEPENDENCY">
+      <point x="166.5" y="-52.5" />
+      <point x="-531.4587071145279" y="3007.527301901506" />
+      <point x="-294.9587071145279" y="3007.527301901506" />
+      <point x="-294.9587071145279" y="759.7793019015057" />
+      <point x="-129.00023360999558" y="3.900143842656689E-4" />
+    </edge>
+    <edge source="pjvsemproj.models.game.players.BotPlayer" target="pjvsemproj.models.managers.MovementManager" relationship="TO_ONE">
+      <point x="225.99953229395112" y="9.245966521120863E-5" />
+      <point x="-273.9587071145279" y="1017.4313019015062" />
+      <point x="-273.9587071145279" y="1962.5273019015058" />
+      <point x="239.0412928854721" y="1962.5273019015058" />
+      <point x="239.0412928854721" y="5130.1243019015055" />
+      <point x="196.999532293951" y="4.2483153629291337E-4" />
+    </edge>
+    <edge source="pjvsemproj.views.renderers.MapRenderer" target="pjvsemproj.models.entities.cities.City" relationship="DEPENDENCY">
+      <point x="14.999906007043137" y="-208.50021997123167" />
+      <point x="3305.8012928854723" y="1659.5273019015058" />
+      <point x="1181.315292885472" y="1659.5273019015058" />
+      <point x="1181.315292885472" y="1635.0273019015058" />
+      <point x="107.49976639000442" y="-144.7516099856157" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.helpers.GridPositionHelper" target="pjvsemproj.models.entities.IGridEntity" relationship="DEPENDENCY">
+      <point x="-4.677060487665585E-4" y="-64.4995751684637" />
+      <point x="-72.55770711452783" y="4401.700301901506" />
+      <point x="42.0412928854721" y="4401.700301901506" />
+      <point x="42.0412928854721" y="446.2793019015062" />
+      <point x="-78.50023360999558" y="-14.99960998561528" />
+    </edge>
+    <edge source="pjvsemproj.models.services.LocalGameService" target="pjvsemproj.models.game.maps.GameMap" relationship="TO_ONE">
+      <point x="-175.0" y="59.99978002876833" />
+      <point x="4014.541292885472" y="2992.5303019015055" />
+      <point x="4014.541292885472" y="1149.7793019015062" />
+      <point x="129.5" y="-89.99960998561528" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.MovementManager" target="pjvsemproj.models.entities.troopUnits.TroopUnit" relationship="DEPENDENCY">
+      <point x="-197.00046770604877" y="-14.999575168463707" />
+      <point x="-243.9587071145279" y="5115.1243019015055" />
+      <point x="-243.9587071145279" y="2028.7793019015062" />
+      <point x="-122.00023360999558" y="-250.99960998561528" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.MovementManager" target="pjvsemproj.models.managers.helpers.GridPositionHelper" relationship="DEPENDENCY">
+      <point x="-197.00046770604877" y="15.000424831536293" />
+      <point x="-273.9587071145279" y="5145.1243019015055" />
+      <point x="-273.9587071145279" y="4771.1243019015055" />
+      <point x="-137.50046770604877" y="4.2483153629291337E-4" />
+    </edge>
+    <edge source="pjvsemproj.models.game.maps.GameMap" target="pjvsemproj.models.game.maps.Tile" relationship="TO_MANY">
+      <point x="-2.336099955755344E-4" y="-114.49960998561528" />
+      <point x="1229.315292885472" y="944.5273019015058" />
+      <point x="1289.315292885472" y="944.5273019015058" />
+      <point x="-2.336099955755344E-4" y="138.50039001438427" />
+    </edge>
+    <edge source="pjvsemproj.models.entities.troopUnits.TroopUnit" target="pjvsemproj.models.entities.IDamager" relationship="REALIZATION">
+      <point x="114.5" y="-258.5" />
+      <point x="-45.5" y="88.5" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.MovementManager" target="pjvsemproj.models.managers.ITurnListener" relationship="REALIZATION">
+      <point x="-197.00046770604877" y="30.000424831536293" />
+      <point x="-258.9587071145279" y="5160.1243019015055" />
+      <point x="-258.9587071145279" y="5335.527301901506" />
+      <point x="-418.55770711452783" y="5335.527301901506" />
+      <point x="-418.55770711452783" y="4771.6243019015055" />
+      <point x="100.99953229395123" y="4.2483153629291337E-4" />
+    </edge>
+    <edge source="pjvsemproj.controllers.GameController" target="pjvsemproj.models.entities.Entity" relationship="DEPENDENCY">
+      <point x="-9.399295686307596E-5" y="114.49978002876833" />
+      <point x="3710.8012928854723" y="3074.527301901506" />
+      <point x="529.0412928854721" y="3074.527301901506" />
+      <point x="59.72576639000454" y="101.50039001438472" />
+    </edge>
+    <edge source="pjvsemproj.models.entities.troopUnits.TroopUnit" target="pjvsemproj.models.entities.troopUnits.TroopType" relationship="DEPENDENCY">
+      <point x="-2.336099955755344E-4" y="258.5003900143847" />
+      <point x="889.315292885472" y="2591.527301901506" />
+      <point x="1196.315292885472" y="2591.527301901506" />
+      <point x="1196.315292885472" y="1519.7793019015062" />
+      <point x="128.99976639000442" y="3.900143847204163E-4" />
+    </edge>
+    <edge source="pjvsemproj.server.GameSession" target="pjvsemproj.models.managers.CombatManager" relationship="CREATE">
+      <point x="45.000438300994574" y="136.5" />
+      <point x="5516.693292885472" y="5600.6243019015055" />
+      <point x="177.0" y="90.0004248315363" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.GameSetupManager" target="pjvsemproj.models.managers.helpers.GridPositionHelper" relationship="DEPENDENCY">
+      <point x="-15.0" y="52.5" />
+      <point x="-712.9587071145279" y="3738.4503019015056" />
+      <point x="-273.9587071145279" y="3738.4503019015056" />
+      <point x="-273.9587071145279" y="4771.1243019015055" />
+      <point x="-137.50046770604877" y="4.2483153629291337E-4" />
+    </edge>
+    <edge source="pjvsemproj.controllers.GameController" target="pjvsemproj.models.game.maps.Tile" relationship="DEPENDENCY">
+      <point x="141.99990600704314" y="-2.1997123167238897E-4" />
+      <point x="3878.8012928854723" y="2937.5303019015055" />
+      <point x="3878.8012928854723" y="1636.5273019015058" />
+      <point x="2511.041292885472" y="1636.5273019015058" />
+      <point x="2511.041292885472" y="729.7793019015062" />
+      <point x="128.99976639000442" y="-29.99960998561528" />
+    </edge>
+    <edge source="pjvsemproj.models.services.LocalGameService" target="pjvsemproj.models.managers.MovementManager" relationship="TO_ONE">
+      <point x="-90.0" y="210.5" />
+      <point x="4607.558456686948" y="4371.525301901505" />
+      <point x="1364.041292885472" y="4371.525301901505" />
+      <point x="1364.041292885472" y="5005.1243019015055" />
+      <point x="196.99999999999977" y="-124.9995751684637" />
+    </edge>
+    <edge source="pjvsemproj.controllers.GameController" target="pjvsemproj.models.entities.IGridEntity" relationship="TO_ONE">
+      <point x="-15.000093992956863" y="-114.50021997123167" />
+      <point x="3695.8012928854723" y="2791.527301901506" />
+      <point x="2496.041292885472" y="2791.527301901506" />
+      <point x="2496.041292885472" y="446.2793019015062" />
+      <point x="78.49976639000442" y="-14.99960998561528" />
+    </edge>
+    <edge source="pjvsemproj.models.game.players.BotPlayer" target="pjvsemproj.models.managers.EconomyManager" relationship="TO_ONE">
+      <point x="14.99953229395112" y="100.50009245966521" />
+      <point x="-1247.557707114528" y="1267.1793019015058" />
+      <point x="-1443.5577071145278" y="1267.1793019015058" />
+      <point x="-1443.5577071145278" y="6490.527301901506" />
+      <point x="-637.5577071145278" y="6490.527301901506" />
+      <point x="14.999532293951233" y="138.5004248315363" />
+    </edge>
+    <edge source="pjvsemproj.server.Connection" target="pjvsemproj.server.Protocol" relationship="DEPENDENCY">
+      <point x="-80.0" y="-210.5" />
+      <point x="0.0" y="52.5" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.EconomyManager" target="pjvsemproj.models.managers.helpers.OwnershipHelper" relationship="DEPENDENCY">
+      <point x="201.49953229395123" y="-14.999575168463707" />
+      <point x="-324.9587071145279" y="5115.1243019015055" />
+      <point x="-324.9587071145279" y="4596.1243019015055" />
+      <point x="198.99953229395123" y="-14.999575168463707" />
+    </edge>
+    <edge source="pjvsemproj.models.game.players.BotPlayer" target="pjvsemproj.models.game.players.Player" relationship="GENERALIZATION">
+      <point x="-4.6770604888024536E-4" y="100.50039001438427" />
+      <point x="-4.6770604888024536E-4" y="-198.49960998561573" />
+    </edge>
+    <edge source="pjvsemproj.views.GameView" target="pjvsemproj.views.renderers.MapRenderer" relationship="CREATE">
+      <point x="-198.5" y="-246.5" />
+      <point x="161.5" y="208.5" />
+    </edge>
+    <edge source="pjvsemproj.controllers.SceneDirector" target="pjvsemproj.models.game.maps.GameMap" relationship="DEPENDENCY">
+      <point x="-15.0" y="-52.5" />
+      <point x="1314.3155264954676" y="4157.250497501351" />
+      <point x="2146.291292885472" y="4157.250497501351" />
+      <point x="2146.291292885472" y="1209.7793019015062" />
+      <point x="129.5" y="-29.99960998561528" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.ConquestManager" target="pjvsemproj.models.game.players.Player" relationship="TO_MANY">
+      <point x="-149.50046770604888" y="3.135497172479518E-5" />
+      <point x="-1344.958707114528" y="4038.0253019015054" />
+      <point x="-1344.958707114528" y="2045.2793019015062" />
+      <point x="-1322.557707114528" y="2045.2793019015062" />
+      <point x="-60.00046770604888" y="198.5000924596652" />
+    </edge>
+    <edge source="pjvsemproj.views.SidePanelView" target="pjvsemproj.models.entities.IGridEntity" relationship="DEPENDENCY">
+      <point x="29.999906007043137" y="-186.50021997123167" />
+      <point x="3720.8012928854723" y="1614.5273019015058" />
+      <point x="2526.041292885472" y="1614.5273019015058" />
+      <point x="2526.041292885472" y="461.2793019015062" />
+      <point x="78.49976639000442" y="3.900143847204163E-4" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.CombatManager" target="pjvsemproj.models.managers.helpers.GridPositionHelper" relationship="DEPENDENCY">
+      <point x="120.59853229395117" y="-101.4995751684637" />
+      <point x="-211.9587071145279" y="5371.6243019015055" />
+      <point x="-273.9587071145279" y="5371.6243019015055" />
+      <point x="-273.9587071145279" y="4771.1243019015055" />
+      <point x="-137.50046770604877" y="4.2483153629291337E-4" />
+    </edge>
+    <edge source="pjvsemproj.models.game.players.BotPlayer" target="pjvsemproj.models.managers.TurnManager" relationship="TO_ONE">
+      <point x="-15.00046770604888" y="100.50009245966521" />
+      <point x="-1277.557707114528" y="1227.9313019015062" />
+      <point x="-1458.5577071145278" y="1227.9313019015062" />
+      <point x="-1458.5577071145278" y="6353.527301901506" />
+      <point x="-872.5577071145278" y="6353.527301901506" />
+      <point x="-4.677060487665585E-4" y="162.5004248315363" />
+    </edge>
+    <edge source="pjvsemproj.controllers.SceneDirector" target="pjvsemproj.models.game.Game" relationship="DEPENDENCY">
+      <point x="0.0" y="-52.5" />
+      <point x="1329.3155264954676" y="4187.250497501351" />
+      <point x="889.3155264954676" y="4187.250497501351" />
+      <point x="0.0" y="102.5" />
+    </edge>
+    <edge source="pjvsemproj.views.GameView" target="pjvsemproj.models.entities.DamageableEntity" relationship="DEPENDENCY">
+      <point x="69.99990600704314" y="-246.50021997123167" />
+      <point x="3720.8012928854723" y="2137.527301901506" />
+      <point x="1163.815292885472" y="2137.527301901506" />
+      <point x="1163.815292885472" y="1962.5273019015058" />
+      <point x="384.315292885472" y="1962.5273019015058" />
+      <point x="74.99976639000442" y="114.50039001438472" />
+    </edge>
+    <edge source="pjvsemproj.server.GameSession" target="pjvsemproj.models.game.Game" relationship="TO_ONE">
+      <point x="237.0" y="-15.0" />
+      <point x="5741.192854584478" y="4156.123877069969" />
+      <point x="5741.192854584478" y="3224.527301901506" />
+      <point x="904.3155264954676" y="3224.527301901506" />
+      <point x="15.0" y="102.5" />
+    </edge>
+    <edge source="pjvsemproj.models.services.NetworkGameService" target="pjvsemproj.models.services.GameService" relationship="REALIZATION">
+      <point x="-1.6380147644667886E-4" y="-173.50021997123167" />
+      <point x="4897.558292885472" y="2298.527301901506" />
+      <point x="4697.558292885472" y="2298.527301901506" />
+      <point x="-1.6380147644667886E-4" y="160.49978002876833" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.MovementManager" target="pjvsemproj.models.game.players.Player" relationship="TO_ONE">
+      <point x="-197.00046770604877" y="4.2483153629291337E-4" />
+      <point x="-433.55770711452783" y="5130.1243019015055" />
+      <point x="-433.55770711452783" y="5310.527301901506" />
+      <point x="-1344.958707114528" y="5310.527301901506" />
+      <point x="-1344.958707114528" y="2045.2793019015062" />
+      <point x="-1322.557707114528" y="2045.2793019015062" />
+      <point x="-60.00046770604888" y="198.5000924596652" />
+    </edge>
+    <edge source="pjvsemproj.views.SidePanelView" target="pjvsemproj.models.entities.troopUnits.TroopType" relationship="DEPENDENCY">
+      <point x="170.5" y="-15.000219971231672" />
+      <point x="3909.541292885472" y="1877.5303019015055" />
+      <point x="3909.541292885472" y="1166.2793019015062" />
+      <point x="1419.3155264954676" y="1166.2793019015062" />
+      <point x="1419.3155264954676" y="1474.7793019015062" />
+      <point x="129.0" y="-44.99960998561528" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.GameSetupManager" target="pjvsemproj.models.entities.troopUnits.TroopUnit" relationship="CREATE">
+      <point x="176.5" y="45.0" />
+      <point x="-273.9587071145279" y="3254.027301901506" />
+      <point x="-273.9587071145279" y="2234.779301901506" />
+      <point x="-122.00023360999558" y="-44.99960998561528" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.ITurnListener" target="pjvsemproj.models.game.players.Player" relationship="DEPENDENCY">
+      <point x="-4.677060487665585E-4" y="-39.49957516846371" />
+      <point x="-772.5577071145278" y="4710.527301901506" />
+      <point x="-1428.557707114528" y="4710.527301901506" />
+      <point x="-1428.557707114528" y="1496.4313019015062" />
+      <point x="-141.00046770604888" y="9.245966521120863E-5" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.EconomyManager" target="pjvsemproj.models.managers.ITurnListener" relationship="REALIZATION">
+      <point x="179.59853229395117" y="138.5004248315363" />
+      <point x="-472.9587071145279" y="5335.527301901506" />
+      <point x="-418.55770711452783" y="5335.527301901506" />
+      <point x="-418.55770711452783" y="4771.6243019015055" />
+      <point x="100.99953229395123" y="4.2483153629291337E-4" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.CombatManager" target="pjvsemproj.models.game.players.Player" relationship="TO_ONE">
+      <point x="-4.677060487665585E-4" y="-101.4995751684637" />
+      <point x="-332.55770711452783" y="5310.527301901506" />
+      <point x="-1344.958707114528" y="5310.527301901506" />
+      <point x="-1344.958707114528" y="2045.2793019015062" />
+      <point x="-1322.557707114528" y="2045.2793019015062" />
+      <point x="-60.00046770604888" y="198.5000924596652" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.EconomyManager" target="pjvsemproj.models.game.players.Player" relationship="TO_ONE">
+      <point x="-4.677060487665585E-4" y="138.5004248315363" />
+      <point x="-652.5577071145278" y="5310.527301901506" />
+      <point x="-1344.958707114528" y="5310.527301901506" />
+      <point x="-1344.958707114528" y="2045.2793019015062" />
+      <point x="-1322.557707114528" y="2045.2793019015062" />
+      <point x="-60.00046770604888" y="198.5000924596652" />
+    </edge>
+    <edge source="pjvsemproj.models.game.players.BotPlayer" target="pjvsemproj.models.managers.CombatManager" relationship="TO_ONE">
+      <point x="-30.00046770604888" y="100.50009245966521" />
+      <point x="-1292.557707114528" y="1212.9313019015062" />
+      <point x="-1473.5577071145278" y="1212.9313019015062" />
+      <point x="-1473.5577071145278" y="5849.527301901506" />
+      <point x="-332.55770711452783" y="5849.527301901506" />
+      <point x="-4.677060487665585E-4" y="101.5004248315363" />
+    </edge>
+    <edge source="pjvsemproj.controllers.GameController" target="pjvsemproj.views.GameView" relationship="TO_ONE">
+      <point x="44.99990600704314" y="-114.5" />
+      <point x="104.99990600704314" y="246.5" />
+    </edge>
+    <edge source="pjvsemproj.models.services.GameService" target="pjvsemproj.models.game.maps.Tile" relationship="DEPENDENCY">
+      <point x="-175.00016380147645" y="14.999780028768328" />
+      <point x="4466.041292885472" y="2108.5303019015055" />
+      <point x="4466.041292885472" y="759.7793019015062" />
+      <point x="128.99976639000442" y="3.900143847204163E-4" />
+    </edge>
+    <edge source="pjvsemproj.models.services.NetworkGameService" target="pjvsemproj.models.game.maps.GameMap" relationship="DEPENDENCY">
+      <point x="174.99983619852355" y="-2.1997123167238897E-4" />
+      <point x="5090.058292885472" y="2513.0303019015055" />
+      <point x="5090.058292885472" y="1135.5273019015058" />
+      <point x="1404.315292885472" y="1135.5273019015058" />
+      <point x="1404.315292885472" y="1164.7793019015062" />
+      <point x="129.49976639000442" y="-74.99960998561528" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.CombatManager" target="pjvsemproj.models.managers.helpers.OwnershipHelper" relationship="DEPENDENCY">
+      <point x="-28.500467706048767" y="-101.4995751684637" />
+      <point x="-361.05770711452783" y="5146.6243019015055" />
+      <point x="-324.9587071145279" y="5146.6243019015055" />
+      <point x="-324.9587071145279" y="4596.1243019015055" />
+      <point x="198.99953229395123" y="-14.999575168463707" />
+    </edge>
+    <edge source="pjvsemproj.views.GameView" target="pjvsemproj.models.entities.cities.City" relationship="DEPENDENCY">
+      <point x="-206.00009399295686" y="-7.999219971231469" />
+      <point x="2891.188292885472" y="2464.5313019015057" />
+      <point x="2891.188292885472" y="1659.5273019015058" />
+      <point x="1181.315292885472" y="1659.5273019015058" />
+      <point x="1181.315292885472" y="1635.0273019015058" />
+      <point x="107.49976639000442" y="-144.7516099856157" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.GameSetupManager" target="pjvsemproj.models.managers.helpers.OwnershipHelper" relationship="DEPENDENCY">
+      <point x="176.5" y="30.0" />
+      <point x="-324.9587071145279" y="3239.027301901506" />
+      <point x="-324.9587071145279" y="4596.1243019015055" />
+      <point x="198.99953229395123" y="-14.999575168463707" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.ConquestManager" target="pjvsemproj.models.entities.troopUnits.TroopUnit" relationship="DEPENDENCY">
+      <point x="149.49953229395123" y="3.135497172479518E-5" />
+      <point x="-243.9587071145279" y="4038.0253019015054" />
+      <point x="-243.9587071145279" y="2028.7793019015062" />
+      <point x="-122.00023360999558" y="-250.99960998561528" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.EconomyManager" target="pjvsemproj.models.entities.cities.City" relationship="DEPENDENCY">
+      <point x="-201.50046770604877" y="4.2483153629291337E-4" />
+      <point x="-1213.958707114528" y="5130.1243019015055" />
+      <point x="-1213.958707114528" y="2161.279301901506" />
+      <point x="-324.9587071145279" y="2161.279301901506" />
+      <point x="-324.9587071145279" y="1926.7793019015062" />
+      <point x="-107.50023360999558" y="147.00039001438472" />
+    </edge>
+    <edge source="pjvsemproj.models.game.maps.Tile" target="pjvsemproj.models.entities.IGridEntity" relationship="TO_MANY">
+      <point x="-2.336099955755344E-4" y="-138.49960998561573" />
+      <point x="1289.315292885472" y="568.5273019015058" />
+      <point x="1249.315292885472" y="568.5273019015058" />
+      <point x="-2.336099955755344E-4" y="51.500390014384266" />
+    </edge>
+    <edge source="pjvsemproj.models.managers.IWinListener" target="pjvsemproj.models.game.players.Player" relationship="DEPENDENCY">
+      <point x="82.99953229395112" y="-0.7209686450278241" />
+      <point x="-866.9587071145279" y="3837.804301901506" />
+      <point x="-866.9587071145279" y="4710.527301901506" />
+      <point x="-1428.557707114528" y="4710.527301901506" />
+      <point x="-1428.557707114528" y="1496.4313019015062" />
+      <point x="-141.00046770604888" y="9.245966521120863E-5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Compact" zoom="0.08571515093609648" showDependencies="true" x="2446.8185694192885" y="3462.4445375070377" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Constructors</Category>
+    <Category>Fields</Category>
+    <Category>Inner Classes</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

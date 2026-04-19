@@ -4,10 +4,7 @@ import pjvsemproj.models.game.Game;
 import pjvsemproj.models.game.maps.GameMap;
 import pjvsemproj.models.game.maps.Tile;
 import pjvsemproj.models.game.players.Player;
-import pjvsemproj.models.managers.CombatManager;
-import pjvsemproj.models.managers.EconomyManager;
-import pjvsemproj.models.managers.MovementManager;
-import pjvsemproj.models.managers.TurnManager;
+import pjvsemproj.models.managers.*;
 
 import java.util.List;
 import java.util.Set;
@@ -27,6 +24,7 @@ public class LocalGameService implements GameService {
     private final CombatManager combatManager;
     private final EconomyManager economyManager;
     private final TurnManager turnManager;
+    private final ConquestManager conquestManager;
 
 
     public LocalGameService(Game game) {
@@ -37,6 +35,7 @@ public class LocalGameService implements GameService {
         Player player2 = game.getPlayers().get(1);
 
         this.turnManager = new TurnManager(player1, player2);
+        this.conquestManager = new ConquestManager(game.getPlayers(), turnManager.getCurrentPlayer());
 
         this.movementManager = new MovementManager(map);
         this.combatManager = new CombatManager(map, turnManager.getCurrentPlayer());
@@ -84,6 +83,10 @@ public class LocalGameService implements GameService {
 
     public void saveGame() {
 
+    }
+
+    public void addWinListener(IWinListener listener) {
+        conquestManager.addWinListener(listener);
     }
 
     @Override

@@ -3,10 +3,7 @@ package pjvsemproj.server;
 import pjvsemproj.models.game.Game;
 import pjvsemproj.models.game.maps.GameMap;
 import pjvsemproj.models.game.players.Player;
-import pjvsemproj.models.managers.CombatManager;
-import pjvsemproj.models.managers.EconomyManager;
-import pjvsemproj.models.managers.MovementManager;
-import pjvsemproj.models.managers.TurnManager;
+import pjvsemproj.models.managers.*;
 
 
 /**
@@ -31,6 +28,7 @@ public class GameSession {
     private final CombatManager combatManager;
     private final EconomyManager economyManager;
     private final TurnManager turnManager;
+    private final ConquestManager conquestManager;
 
     public GameSession(GameServer gameServer, Connection connection1, Connection connection2, GameMap map, Game game) {
         this.gameServer = gameServer;
@@ -43,6 +41,7 @@ public class GameSession {
         this.map = game.getMap();
 
         this.turnManager = new TurnManager(player1, player2);
+        this.conquestManager = new ConquestManager(game.getPlayers(), turnManager.getCurrentPlayer());
 
         this.movementManager = new MovementManager(this.map);
         this.combatManager = new CombatManager(map, turnManager.getCurrentPlayer());
@@ -80,6 +79,4 @@ public class GameSession {
 
     public synchronized void onPlayerDisconnect(Connection connection) {
     }
-
-
 }
