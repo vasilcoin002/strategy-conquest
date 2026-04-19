@@ -6,6 +6,12 @@ import pjvsemproj.models.entities.troopUnits.TroopUnit;
 import pjvsemproj.models.game.players.Player;
 import pjvsemproj.models.managers.helpers.OwnershipHelper;
 
+
+/**
+ * Handles economic logic such as gold generation,
+ * unit purchases and city upgrades.
+ */
+
 public class EconomyManager implements ITurnListener {
 
     private Player currentPlayer;
@@ -24,6 +30,11 @@ public class EconomyManager implements ITurnListener {
     public void onTurnEnd(Player endingPlayer) {
 
     }
+    /**
+     * Calculates total gold produced by all cities.
+     *
+     * @return total gold income
+     */
 
     public int countProducedGold() {
         return currentPlayer.getCities().stream().reduce(
@@ -40,6 +51,13 @@ public class EconomyManager implements ITurnListener {
         currentPlayer = player;
     }
 
+    /**
+     * Attempts to upgrade a city.
+     *
+     * @param city target city
+     * @return true if upgrade was successful
+     */
+
     // TODO test
     public boolean upgradeCity(City city) {
         if (!canPlayerUpgradeCity(city, currentPlayer)) return false;
@@ -54,6 +72,11 @@ public class EconomyManager implements ITurnListener {
                 && city.getOwner() == player
                 && player.getBalance() >= city.getUpgradePrice();
     }
+
+
+    /**
+     * Attempts to buy a troop unit in a city.
+     */
 
     // TODO test
     public boolean buyTroopUnit(TroopType troopType, City city) {

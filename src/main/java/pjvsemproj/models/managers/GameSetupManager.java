@@ -12,6 +12,12 @@ import pjvsemproj.models.managers.helpers.OwnershipHelper;
 import pjvsemproj.models.game.maps.GameMap;
 import pjvsemproj.models.game.maps.Tile;
 
+/**
+ * Responsible for initializing game state.
+ *
+ * Can create test scenarios or load game from configuration files.
+ */
+
 public class GameSetupManager {
 
     private final GameConfigParser parser;

@@ -9,6 +9,15 @@ import pjvsemproj.models.managers.helpers.GridPositionHelper;
 
 import java.util.*;
 
+
+/**
+ * Handles movement logic using BFS pathfinding.
+ *
+ * Responsible for:
+ * - calculating reachable tiles
+ * - validating movement
+ * - executing movement
+ */
 public class MovementManager implements ITurnListener {
 
     private Player currentPlayer;

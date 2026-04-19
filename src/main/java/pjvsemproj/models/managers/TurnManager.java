@@ -5,6 +5,12 @@ import pjvsemproj.models.game.players.Player;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Controls turn switching between players.
+ *
+ * Notifies all registered listeners about turn events.
+ */
 public class TurnManager {
     private final Player player1;
     private final Player player2;
@@ -19,7 +25,9 @@ public class TurnManager {
         this.turnNumber = 1;
         this.currentPlayer = p1;
     }
-
+    /**
+     * Registers a turn listener.
+     */
     public void addTurnListener(ITurnListener listener) {
         listeners.add(listener);
     }

@@ -20,6 +20,16 @@ import java.util.Set;
 
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
+
+/**
+ * Main controller connecting UI with game logic.
+ *
+ * Handles:
+ * - user input
+ * - selection
+ * - movement
+ * - UI updates
+ */
 // TODO implement attacking
 // TODO add movement and attack range info to side panel entity info
 public class GameController {
@@ -68,7 +78,9 @@ public class GameController {
         if (gameService.getPlayers().getFirst() == player) return Color.BLUE;
         else return Color.ORANGE;
     }
-
+    /**
+     * Handles click on game map.
+     */
     private void handleGameAreaClick(int viewX, int viewY) {
 
         int x = viewX / TILE_SIZE;
@@ -96,7 +108,9 @@ public class GameController {
         IGridEntity entity = tile.getEntities().getLast();
         setSelectedEntity(entity);
     }
-
+    /**
+     * Moves selected troop unit.
+     */
     private void moveSelectedTroop(Tile toTile) {
         if (selectedEntity instanceof TroopUnit troopUnit) {
             view.clearTroopUnit(troopUnit);
@@ -104,12 +118,16 @@ public class GameController {
             view.updateTroopUnit(troopUnit, getPlayerColor(troopUnit.getOwner()));
         }
     }
-
+    /**
+     * Handles city conquest.
+     */
     private void conquerCity(TroopUnit conquerer, City city) {
         OwnershipHelper.transferCity(city, conquerer.getOwner());
         view.updateCity(city, getPlayerColor(conquerer.getOwner()));
     }
-
+    /**
+     * Updates selected entity and UI.
+     */
     public void setSelectedEntity(IGridEntity selectedEntity) {
         this.selectedEntity = selectedEntity;
         view.setSelectedEntity(selectedEntity);

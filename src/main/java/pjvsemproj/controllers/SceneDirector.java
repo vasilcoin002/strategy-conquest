@@ -7,13 +7,30 @@ import pjvsemproj.models.game.Game;
 import pjvsemproj.views.GameView;
 import pjvsemproj.views.MainMenuView;
 
+
+/**
+ * Responsible for switching between different application scenes.
+ *
+ * Acts as a central navigation manager between:
+ * - Main menu
+ * - Game screen
+ *
+ * Encapsulates JavaFX Stage manipulation and scene creation.
+ */
 public class SceneDirector {
     private final Stage stage;
 
     public SceneDirector(Stage stage) {
         this.stage = stage;
     }
-
+    /**
+     * Displays the main menu scene.
+     *
+     * Initializes:
+     * - MainMenuView
+     * - MainMenuController
+     * and sets them into the stage.
+     */
     public void showMainMenu() {
         MainMenuView menuView = new MainMenuView();
         MainMenuController menuController = new MainMenuController(menuView, this);
@@ -23,7 +40,15 @@ public class SceneDirector {
         stage.setTitle("Strategy Game - Main Menu");
         stage.show();
     }
-
+    /**
+     * Displays the game scene.
+     *
+     * Initializes:
+     * - GameView based on provided Game object
+     * - (optionally) GameController
+     *
+     * @param game initialized game instance
+     */
     public void showGame(Game game) {
         // This relies on your GameSetupManager to provide the initialized Game object
         GameView gameView = new GameView(

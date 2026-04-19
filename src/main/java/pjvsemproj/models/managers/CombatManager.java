@@ -13,6 +13,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+
+/**
+ * Handles combat logic including:
+ * - attacking
+ * - damage calculation
+ * - unit death
+ * - healing units in cities
+ */
 public class CombatManager implements ITurnListener{
 
     private Player currentPlayer;
