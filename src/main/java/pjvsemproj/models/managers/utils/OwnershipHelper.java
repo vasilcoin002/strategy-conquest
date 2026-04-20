@@ -1,4 +1,4 @@
-package pjvsemproj.models.managers.helpers;
+package pjvsemproj.models.managers.utils;
 
 import pjvsemproj.models.entities.cities.City;
 import pjvsemproj.models.entities.troopUnits.TroopUnit;

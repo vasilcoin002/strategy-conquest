@@ -1,0 +1,5 @@
+MapWidth:15
+MapHeight:10
+Player1Color:Blue
+Player2Color:Orange
+CurrentPlayer:1

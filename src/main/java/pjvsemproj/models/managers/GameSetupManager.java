@@ -7,8 +7,8 @@ import pjvsemproj.models.entities.troopUnits.TroopType;
 import pjvsemproj.models.entities.troopUnits.TroopUnit;
 import pjvsemproj.models.game.Game;
 import pjvsemproj.models.game.players.Player;
-import pjvsemproj.models.managers.helpers.GridPositionHelper;
-import pjvsemproj.models.managers.helpers.OwnershipHelper;
+import pjvsemproj.models.managers.utils.GridPositionHelper;
+import pjvsemproj.models.managers.utils.OwnershipHelper;
 import pjvsemproj.models.game.maps.GameMap;
 import pjvsemproj.models.game.maps.Tile;
 

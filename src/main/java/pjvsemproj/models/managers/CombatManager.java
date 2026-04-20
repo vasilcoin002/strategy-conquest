@@ -5,8 +5,8 @@ import pjvsemproj.models.entities.troopUnits.TroopUnit;
 import pjvsemproj.models.game.maps.GameMap;
 import pjvsemproj.models.game.players.Player;
 import pjvsemproj.models.game.maps.Tile;
-import pjvsemproj.models.managers.helpers.GridPositionHelper;
-import pjvsemproj.models.managers.helpers.OwnershipHelper;
+import pjvsemproj.models.managers.utils.GridPositionHelper;
+import pjvsemproj.models.managers.utils.OwnershipHelper;
 
 import java.util.ArrayList;
 import java.util.HashSet;

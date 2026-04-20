@@ -5,7 +5,7 @@ import pjvsemproj.models.entities.cities.City;
 import pjvsemproj.models.entities.cities.CityType;
 import pjvsemproj.models.game.players.HumanPlayer;
 import pjvsemproj.models.game.players.Player;
-import pjvsemproj.models.managers.helpers.OwnershipHelper;
+import pjvsemproj.models.managers.utils.OwnershipHelper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
