@@ -7,9 +7,8 @@ import java.util.List;
 
 
 /**
- * Controls turn switching between players.
- *
- * Notifies all registered listeners about turn events.
+ * Handles turn switching between players and
+ * notifies all registered listeners about turn events.
  */
 public class TurnManager {
     private final Player player1;

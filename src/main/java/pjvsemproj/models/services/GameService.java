@@ -1,6 +1,5 @@
 package pjvsemproj.models.services;
 
-import pjvsemproj.models.entities.troopUnits.TroopUnit;
 import pjvsemproj.models.game.maps.GameMap;
 import pjvsemproj.models.game.maps.Tile;
 import pjvsemproj.models.game.players.Player;
@@ -14,7 +13,6 @@ import java.util.Set;
  *
  * Acts as an abstraction layer between UI/network and game logic.
  */
-
 public interface GameService {
 
     void login(String playerName);

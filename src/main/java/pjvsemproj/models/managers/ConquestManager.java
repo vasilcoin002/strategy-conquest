@@ -7,6 +7,12 @@ import pjvsemproj.models.game.players.Player;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Handles conquest logic including:
+ * - conquering cities
+ * - detecting winner
+ * - notifying listeners
+ */
 public class ConquestManager {
 
     private final List<Player> players;

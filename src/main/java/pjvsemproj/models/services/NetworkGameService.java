@@ -14,7 +14,6 @@ import java.util.Set;
  *
  * Sends commands to the server instead of executing them locally.
  */
-
 public class NetworkGameService implements GameService {
 
     private final Client client;

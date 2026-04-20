@@ -17,7 +17,6 @@ import pjvsemproj.models.game.maps.Tile;
  *
  * Can create test scenarios or load game from configuration files.
  */
-
 public class GameSetupManager {
 
     private final GameConfigParser parser;

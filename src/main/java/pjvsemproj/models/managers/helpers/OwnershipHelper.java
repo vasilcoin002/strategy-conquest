@@ -4,6 +4,9 @@ import pjvsemproj.models.entities.cities.City;
 import pjvsemproj.models.entities.troopUnits.TroopUnit;
 import pjvsemproj.models.game.players.Player;
 
+/**
+ * Helper class for syncing bidirectional relationship between Ownable and Player
+ */
 public class OwnershipHelper {
 
     /**

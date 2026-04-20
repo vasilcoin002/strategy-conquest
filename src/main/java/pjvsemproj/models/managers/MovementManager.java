@@ -11,9 +11,7 @@ import java.util.*;
 
 
 /**
- * Handles movement logic using BFS pathfinding.
- *
- * Responsible for:
+ * Handles movement logic including:
  * - calculating reachable tiles
  * - validating movement
  * - executing movement

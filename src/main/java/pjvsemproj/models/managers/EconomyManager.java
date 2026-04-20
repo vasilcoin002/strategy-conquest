@@ -8,10 +8,11 @@ import pjvsemproj.models.managers.helpers.OwnershipHelper;
 
 
 /**
- * Handles economic logic such as gold generation,
- * unit purchases and city upgrades.
+ * Handles economic logic including:
+ * - gold generation
+ * - unit purchases
+ * - city upgrades
  */
-
 public class EconomyManager implements ITurnListener {
 
     private Player currentPlayer;

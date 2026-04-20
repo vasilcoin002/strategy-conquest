@@ -3,6 +3,9 @@ package pjvsemproj.models.managers.helpers;
 import pjvsemproj.models.entities.IGridEntity;
 import pjvsemproj.models.game.maps.Tile;
 
+/**
+ * Helper class for syncing bidirectional relationship between Entities and Tiles
+ */
 public class GridPositionHelper {
 
     /**

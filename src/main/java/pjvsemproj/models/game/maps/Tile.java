@@ -10,7 +10,6 @@ import java.util.List;
  *
  * A tile stores its coordinates and all entities currently placed on it.
  */
-
 public class Tile {
     private final int x;
     private final int y;

@@ -15,7 +15,6 @@ import java.util.Set;
  *
  * Directly interacts with managers to execute game actions.
  */
-
 public class LocalGameService implements GameService {
     private final Game game;
     private final GameMap map;
