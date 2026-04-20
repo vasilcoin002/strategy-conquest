@@ -5,14 +5,9 @@ import javafx.stage.Stage;
 import pjvsemproj.models.entities.IGridEntity;
 import pjvsemproj.models.entities.cities.City;
 import pjvsemproj.models.entities.troopUnits.TroopUnit;
-import pjvsemproj.models.game.Game;
 import pjvsemproj.models.game.maps.Tile;
 import pjvsemproj.models.game.players.Player;
-import pjvsemproj.models.managers.CombatManager;
-import pjvsemproj.models.managers.EconomyManager;
-import pjvsemproj.models.managers.MovementManager;
-import pjvsemproj.models.managers.TurnManager;
-import pjvsemproj.models.managers.helpers.OwnershipHelper;
+import pjvsemproj.models.managers.utils.OwnershipHelper;
 import pjvsemproj.models.services.GameService;
 import pjvsemproj.views.GameView;
 

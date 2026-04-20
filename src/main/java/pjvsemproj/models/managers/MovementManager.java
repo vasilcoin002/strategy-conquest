@@ -2,10 +2,10 @@ package pjvsemproj.models.managers;
 
 import pjvsemproj.models.entities.troopUnits.TroopUnit;
 import pjvsemproj.models.game.maps.GameMap;
-import pjvsemproj.models.game.maps.MovementNode;
+import pjvsemproj.models.managers.utils.MovementNode;
 import pjvsemproj.models.game.players.Player;
 import pjvsemproj.models.game.maps.Tile;
-import pjvsemproj.models.managers.helpers.GridPositionHelper;
+import pjvsemproj.models.managers.utils.GridPositionHelper;
 
 import java.util.*;
 

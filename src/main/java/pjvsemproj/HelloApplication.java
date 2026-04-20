@@ -1,20 +1,8 @@
 package pjvsemproj;
 
 import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import pjvsemproj.controllers.GameController;
 import pjvsemproj.controllers.SceneDirector;
-import pjvsemproj.models.game.Game;
-import pjvsemproj.models.game.maps.GameMap;
-import pjvsemproj.models.game.players.BotPlayer;
-import pjvsemproj.models.game.players.HumanPlayer;
-import pjvsemproj.models.managers.GameSetupManager;
-import pjvsemproj.models.services.LocalGameService;
-
-import java.io.IOException;
 
 public class HelloApplication extends Application {
 //    @Override

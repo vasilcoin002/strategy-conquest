@@ -1,4 +1,4 @@
-package pjvsemproj.models.managers.helpers;
+package pjvsemproj.models.managers.utils;
 
 import pjvsemproj.models.entities.IGridEntity;
 import pjvsemproj.models.game.maps.Tile;

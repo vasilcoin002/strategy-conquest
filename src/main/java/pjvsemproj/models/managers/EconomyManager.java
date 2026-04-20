@@ -4,7 +4,7 @@ import pjvsemproj.models.entities.cities.City;
 import pjvsemproj.models.entities.troopUnits.TroopType;
 import pjvsemproj.models.entities.troopUnits.TroopUnit;
 import pjvsemproj.models.game.players.Player;
-import pjvsemproj.models.managers.helpers.OwnershipHelper;
+import pjvsemproj.models.managers.utils.OwnershipHelper;
 
 
 /**
