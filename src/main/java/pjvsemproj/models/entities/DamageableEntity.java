@@ -8,7 +8,6 @@ import pjvsemproj.models.game.maps.Tile;
  * Extends {@link Entity} and provides reusable logic for clamping health
  * between zero and maximum value.
  */
-
 public abstract class DamageableEntity extends Entity implements Damageable {
 
     protected int health;

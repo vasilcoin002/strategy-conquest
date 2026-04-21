@@ -10,7 +10,6 @@ import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 /**
  * Base renderer class providing helper methods for drawing entities.
  */
-
 public abstract class Renderer {
 
     public Tile getTile(IGridEntity entity) {

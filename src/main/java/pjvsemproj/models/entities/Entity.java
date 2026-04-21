@@ -11,7 +11,6 @@ import java.util.UUID;
  * Stores a unique identifier, current tile position, and passability flag.
  * Serves as a common parent for all map entities such as cities and troop units.
  */
-
 public abstract class Entity implements IGridEntity {
 
     protected final String id;

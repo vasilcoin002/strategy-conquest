@@ -16,7 +16,6 @@ import java.util.logging.Logger;
  *
  * Handles incoming messages and communicates with GameSession.
  */
-
 public class Connection implements Runnable {
 
     // TODO handleMove, handleAttack, handleBuyUnit, handleUpgradeCity, handleEndTurn

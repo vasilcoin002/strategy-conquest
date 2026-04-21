@@ -1,5 +1,8 @@
 package pjvsemproj.views;
 
+/**
+ * Constants which are used in views
+ */
 public final class ViewConstants {
     private ViewConstants() {}
 

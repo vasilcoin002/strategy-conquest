@@ -11,8 +11,6 @@ import pjvsemproj.models.managers.*;
  *
  * Coordinates game logic and synchronizes state between clients.
  */
-
-
 public class GameSession {
 
     private final GameServer gameServer;

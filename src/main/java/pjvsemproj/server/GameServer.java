@@ -15,8 +15,6 @@ import java.util.logging.Logger;
  *
  * Manages active connections and game sessions.
  */
-
-
 public class GameServer implements Runnable {
     // TODO unregisterConnection, stopServer, tryAssignToSession, removeSession
 

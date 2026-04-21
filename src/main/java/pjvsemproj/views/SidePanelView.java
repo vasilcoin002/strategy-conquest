@@ -25,7 +25,6 @@ import static pjvsemproj.views.ViewConstants.GAME_SIDE_PANEL_WIDTH;
  *
  * Allows interaction with selected entities.
  */
-
 public class SidePanelView {
 
     private final VBox root;

@@ -28,7 +28,6 @@ import static pjvsemproj.views.ViewConstants.TILE_SIZE;
  *
  * Responsible for rendering the map, entities, and handling user interaction.
  */
-
 public class GameView {
 
     private final int gameAreaWidth;

@@ -12,7 +12,6 @@ import java.util.logging.Logger;
  *
  * Sends commands to the server and processes responses.
  */
-
 public class Client implements Runnable {
 
     private static final Logger LOGGER = Logger.getLogger(Client.class.getName());

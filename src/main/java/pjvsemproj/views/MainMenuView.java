@@ -13,7 +13,6 @@ import javafx.scene.layout.VBox;
  *
  * Provides options to start local or multiplayer games.
  */
-
 public class MainMenuView {
     private final VBox root;
     private final CheckBox loggerToggle; // The new toggle
