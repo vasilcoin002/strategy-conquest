@@ -19,7 +19,7 @@ public class EconomyManagerTest {
     public static void init() {
         player1 = new HumanPlayer("Vasya", 0);
 
-        economyManager = new EconomyManager();
+        economyManager = new EconomyManager(player1);
     }
 
     @Test
