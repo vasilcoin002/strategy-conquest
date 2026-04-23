@@ -1,12 +1,18 @@
 package pjvsemproj.models.services;
 
+import pjvsemproj.models.entities.cities.City;
+import pjvsemproj.models.entities.troopUnits.TroopType;
+import pjvsemproj.models.entities.troopUnits.TroopUnit;
 import pjvsemproj.models.game.Game;
 import pjvsemproj.models.game.maps.GameMap;
+import pjvsemproj.models.game.maps.Tile;
 import pjvsemproj.models.game.players.Player;
 import pjvsemproj.models.managers.CombatManager;
 import pjvsemproj.models.managers.EconomyManager;
 import pjvsemproj.models.managers.MovementManager;
 import pjvsemproj.models.managers.TurnManager;
+
+import java.util.Set;
 
 public class LocalGameService implements GameService {
     private final Game game;
@@ -49,31 +55,86 @@ public class LocalGameService implements GameService {
 
     @Override
     public void moveUnit(String unitId, int x, int y) {
+        TroopUnit troopUnit = findTroopById(unitId);
+        if(troopUnit == null){
+            return;
+        }
+        Tile tile = game.getMap().getTile(x, y);
+        Set<Tile> availableTiles = movementManager.getAvailableTilesForMovement(troopUnit);
 
+        if(!availableTiles.contains(tile)){
+            return;
+        }
+        movementManager.moveTroopUnit(troopUnit, tile);
     }
 
     @Override
     public void attack(String attackerId, String targetId) {
+        TroopUnit attacker = findTroopById(attackerId);
+        TroopUnit target = findTroopById(targetId);
+        if(attacker == null || target == null){
+            return;
+        }
+        Set<TroopUnit> attackableTroops = combatManager.getAttackableTroops(attacker);
 
+        if(!attackableTroops.contains(target)){
+            return;
+        }
+        combatManager.attackTroop(attacker, target);
     }
 
     @Override
     public void buyUnit(String cityId, String troopType) {
+        City city = findCityById(cityId);
+        if(city == null){
+            return;
+        }
 
+        TroopType type = TroopType.valueOf(troopType);
+        economyManager.buyTroopUnit(type, city);
     }
 
     @Override
     public void upgradeCity(String cityId) {
+        City city = findCityById(cityId);
+        if(city == null){
+            return;
+        }
 
+        economyManager.upgradeCity(city);
     }
 
     @Override
     public void endTurn() {
-
+        turnManager.endTurn();
     }
 
+
+    // TODO save game
     @Override
     public void quit() {
+        System.out.println("Game quit");
+    }
 
+    private TroopUnit findTroopById(String id){
+        for (Player player: game.getPlayers()) {
+            for(TroopUnit troopUnit: player.getTroops()){
+                if(troopUnit.getId().equals(id)){
+                    return troopUnit;
+                }
+            }
+        }
+        return null;
+    }
+
+    private City findCityById(String id){
+        for(Player player: game.getPlayers()){
+            for(City city: player.getCities()){
+                if(city.getId().equals(id)){
+                    return city;
+                }
+            }
+        }
+        return null;
     }
 }

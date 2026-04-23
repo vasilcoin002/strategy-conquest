@@ -6,4 +6,5 @@ public interface IGridEntity {
     Tile getTile();
     void setTile(Tile tile);
     boolean isPassable();
+    String getId();
 }
