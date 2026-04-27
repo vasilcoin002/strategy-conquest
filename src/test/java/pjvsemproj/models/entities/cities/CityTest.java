@@ -17,17 +17,17 @@ public class CityTest {
     private static Player player1;
     private static Player player2;
 
-    @BeforeAll
-    public static void init() {
-        GameSetupManager gsm = new GameSetupManager();
-        player1 = new HumanPlayer("Vasya", 0);
-        player2 = new BotPlayer("Ivan", 0);
-        game = gsm.setupTestMatch(
-                new GameMap(25, 25),
-                player1,
-                player2
-        );
-    }
+//    @BeforeAll
+//    public static void init() {
+//        GameSetupManager gsm = new GameSetupManager();
+//        player1 = new HumanPlayer("Vasya", 0);
+//        player2 = new BotPlayer("Ivan", 0);
+//        game = gsm.setupTestMatch(
+//                new GameMap(25, 25),
+//                player1,
+//                player2
+//        );
+//    }
 
     @Test
     public void getOwner_returnsPlayerClassInsteadOfIOwnerInterface() {
