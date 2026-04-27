@@ -39,7 +39,7 @@ public class TurnManager {
         startTurn(currentPlayer);
     }
 
-    private void startTurn(Player player) {
+    public void startTurn(Player player) {
         for (ITurnListener listener : listeners) {
             listener.onTurnStart(player);
         }

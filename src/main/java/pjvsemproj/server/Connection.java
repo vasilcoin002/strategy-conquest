@@ -126,7 +126,6 @@ public class Connection implements Runnable{
         return true;
     }
 
-    private boolean handleMove(){}
     private boolean handleAttack(){}
     private boolean handleBuyUnit(){}
     private boolean handleUpgradeCity(){}
