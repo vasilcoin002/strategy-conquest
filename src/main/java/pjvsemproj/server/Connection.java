@@ -12,8 +12,6 @@ import java.util.logging.Logger;
 
 public class Connection implements Runnable{
 
-    // TODO handleMove, handleAttack, handleBuyUnit, handleUpgradeCity, handleEndTurn
-
     private static final Logger LOGGER = Logger.getLogger(Connection.class.getName());
     private final GameServer server;
     private final Socket socket;
@@ -59,7 +57,33 @@ public class Connection implements Runnable{
 
         switch(actionCode){
             case LOGIN:
+                return handleLogin(tokens);
 
+            case READY:
+               return handleReady();
+
+            case MOVE:
+               return handleMove(tokens);
+
+            case ATTACK:
+               return handleAttack(tokens);
+
+            case BUY_UNIT:
+               return  handleBuyUnit(tokens);
+
+            case UPGRADE_CITY:
+               return handleUpgradeCity(tokens);
+
+            case END_TURN:
+                return handleEndTurn();
+
+            case QUIT:
+                handleQuit();
+                return false;
+
+            default:
+                sendToClient(Protocol.ERROR, "UNKNOWN_COMMAND");
+                return true;
         }
     }
 
@@ -118,7 +142,7 @@ public class Connection implements Runnable{
         try{
             int x = Integer.parseInt(tokens[2]);
             int y = Integer.parseInt(tokens[3]);
-            session.handleMove();
+            session.onMove(this, unitId, x, y);
         } catch (NumberFormatException ex){
             sendToClient(Protocol.ERROR, "INVALID_COORDINATES");
         }
@@ -126,10 +150,94 @@ public class Connection implements Runnable{
         return true;
     }
 
-    private boolean handleAttack(){}
-    private boolean handleBuyUnit(){}
-    private boolean handleUpgradeCity(){}
-    private boolean handleEndTurn(){}
+    private boolean handleAttack(String[] tokens){
+        if(!isLoggedIn()) {
+            sendToClient(Protocol.ERROR, "NOT_LOGGED_IN");
+            return true;
+        }
+
+        if (session == null) {
+            sendToClient(Protocol.ERROR, "NOT_IN_SESSION");
+            return true;
+        }
+
+        if (tokens.length < 3) {
+            sendToClient(Protocol.ERROR, "ATTACK_REQUIRES_ATTACKERID_TARGETID");
+            return true;
+        }
+
+        String attackerId = tokens[1];
+        String targetId = tokens[2];
+
+        session.onAttack(this, attackerId, targetId);
+        return true;
+    }
+
+    private boolean handleBuyUnit(String[] tokens){
+        if(!isLoggedIn()) {
+            sendToClient(Protocol.ERROR, "NOT_LOGGED_IN");
+            return true;
+        }
+
+        if (session == null) {
+            sendToClient(Protocol.ERROR, "NOT_IN_SESSION");
+            return true;
+        }
+
+        if (tokens.length < 3) {
+            sendToClient(Protocol.ERROR, "BUY_UNIT_REQUIRES_CITYID_TROOPTYPE");
+            return true;
+        }
+
+        String cityId = tokens[1];
+        String troopType = tokens[2];
+
+        session.onUnitPurchase(this, cityId, troopType);
+        return true;
+    }
+
+    private boolean handleUpgradeCity(String[] tokens){
+        if(!isLoggedIn()) {
+            sendToClient(Protocol.ERROR, "NOT_LOGGED_IN");
+            return true;
+        }
+
+        if (session == null) {
+            sendToClient(Protocol.ERROR, "NOT_IN_SESSION");
+            return true;
+        }
+
+        if (tokens.length < 2) {
+            sendToClient(Protocol.ERROR, "UPGRADE_CITY_REQUIRES_CITYID");
+            return true;
+        }
+
+        String cityId = tokens[1];
+
+        session.onCityUpgrade(this, cityId);
+        return true;
+    }
+
+    private boolean handleEndTurn(){
+        if(!isLoggedIn()) {
+            sendToClient(Protocol.ERROR, "NOT_LOGGED_IN");
+            return true;
+        }
+
+        if (session == null) {
+            sendToClient(Protocol.ERROR, "NOT_IN_SESSION");
+            return true;
+        }
+
+        session.onEndTurn(this);
+        return true;
+    }
+
+    private void handleQuit() {
+        if (session != null) {
+            session.onPlayerQuit(this);
+        }
+    }
 
     private boolean isLoggedIn() {
         return player != null;
