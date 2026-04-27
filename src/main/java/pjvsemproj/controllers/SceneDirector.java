@@ -4,7 +4,7 @@ import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import pjvsemproj.models.game.Game;
-import pjvsemproj.views.GameView;
+import pjvsemproj.views.game.GameView;
 import pjvsemproj.views.MainMenuView;
 
 

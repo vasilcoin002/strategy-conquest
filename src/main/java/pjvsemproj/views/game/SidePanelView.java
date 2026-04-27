@@ -1,4 +1,4 @@
-package pjvsemproj.views;
+package pjvsemproj.views.game;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;

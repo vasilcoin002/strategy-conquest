@@ -1,4 +1,4 @@
-package pjvsemproj.views;
+package pjvsemproj.views.game;
 
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -12,7 +12,7 @@ import pjvsemproj.models.entities.cities.City;
 import pjvsemproj.models.entities.troopUnits.TroopUnit;
 import pjvsemproj.models.game.maps.Tile;
 import pjvsemproj.models.game.players.Player;
-import pjvsemproj.views.renderers.*;
+import pjvsemproj.views.game.renderers.*;
 
 import java.util.List;
 import java.util.Set;

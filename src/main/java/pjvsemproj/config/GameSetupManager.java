@@ -1,6 +1,5 @@
-package pjvsemproj.models.managers;
+package pjvsemproj.config;
 
-import pjvsemproj.config.GameConfigParser;
 import pjvsemproj.models.entities.cities.City;
 import pjvsemproj.models.entities.cities.CityType;
 import pjvsemproj.models.entities.troopUnits.TroopType;

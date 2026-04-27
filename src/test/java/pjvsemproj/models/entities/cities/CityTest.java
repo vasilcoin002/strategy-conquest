@@ -1,13 +1,9 @@
 package pjvsemproj.models.entities.cities;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import pjvsemproj.models.game.Game;
-import pjvsemproj.models.game.players.BotPlayer;
 import pjvsemproj.models.game.players.HumanPlayer;
 import pjvsemproj.models.game.players.Player;
-import pjvsemproj.models.managers.GameSetupManager;
-import pjvsemproj.models.game.maps.GameMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

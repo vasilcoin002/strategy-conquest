@@ -1,4 +1,4 @@
-package pjvsemproj.views.renderers;
+package pjvsemproj.views.game.renderers;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;

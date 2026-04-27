@@ -9,7 +9,7 @@ import pjvsemproj.models.game.maps.Tile;
 import pjvsemproj.models.game.players.Player;
 import pjvsemproj.models.managers.utils.OwnershipHelper;
 import pjvsemproj.models.services.GameService;
-import pjvsemproj.views.GameView;
+import pjvsemproj.views.game.GameView;
 
 import java.util.Set;
 

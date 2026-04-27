@@ -1,5 +1,7 @@
 package pjvsemproj.config;
 
+import pjvsemproj.dto.GameDTO;
+
 import java.io.*;
 
 /**
@@ -8,10 +10,11 @@ import java.io.*;
  */
 public class GameConfigParser {
     // TODO add methods which parse config file
+    // TODO create GameConfigSaver
     /**
      * Reads a level file and translates it into raw configuration data.
      */
-    public GameConfigDTO parseLevelConfig(String filePath) {
+    public GameDTO parseLevelConfig(String filePath) {
         try (
                 BufferedReader br = new BufferedReader(new FileReader(filePath));
 //                PrintWriter pw = new PrintWriter("output.txt");
