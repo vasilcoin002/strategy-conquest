@@ -27,7 +27,7 @@ public interface GameService {
 
     Set<Tile> getAvailableTilesForMovement(String unitId);
 
-    void moveTroopUnit(String unitId, int x, int y);
+    void moveUnit(String unitId, int x, int y);
 
     void attack(String attackerId, String targetId);
 

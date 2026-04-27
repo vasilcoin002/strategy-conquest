@@ -54,7 +54,7 @@ public class Client implements Runnable {
     public void buyUnit() {
     }
 
-    public void upgradeCity() {
+    public void upgradeCity(String cityId) {
     }
 
     public void endTurn() {

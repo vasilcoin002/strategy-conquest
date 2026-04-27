@@ -20,7 +20,7 @@ public abstract class Entity implements IGridEntity {
     protected Entity(Tile intialTile, boolean isPassable) {
         this.id = UUID.randomUUID().toString();
         this.tile = intialTile;
-        this.isPassable = isPassable;;
+        this.isPassable = isPassable;
     }
 
 

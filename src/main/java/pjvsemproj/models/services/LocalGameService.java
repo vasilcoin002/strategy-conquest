@@ -12,8 +12,6 @@ import pjvsemproj.models.managers.*;
 import java.util.List;
 import java.util.Set;
 
-import java.util.List;
-import java.util.Set;
 
 
 /**
@@ -35,7 +33,6 @@ public class LocalGameService implements GameService {
     public LocalGameService(Game game, ConquestManager conquestManager) {
         this.game = game;
         this.map = game.getMap();
-        this.conquestManager = conquestManager;
 
         Player player1 = game.getPlayers().get(0);
         Player player2 = game.getPlayers().get(1);
@@ -154,6 +151,7 @@ public class LocalGameService implements GameService {
     @Override
     public Set<Tile> getAvailableTilesForMovement(String unitId) {
         return Set.of();
+    }
 
     private TroopUnit findTroopById(String id){
         for (Player player: game.getPlayers()) {
@@ -176,4 +174,4 @@ public class LocalGameService implements GameService {
         }
         return null;
     }
-}}
+}
