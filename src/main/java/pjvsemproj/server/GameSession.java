@@ -280,4 +280,12 @@ public class GameSession {
         }
         return null;
     }
+
+    public Connection getConnection1(){
+        return connection1;
+    }
+
+    public Connection getConnection2(){
+        return connection2;
+    }
 }

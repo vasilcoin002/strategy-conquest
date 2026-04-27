@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 public class GameServer implements Runnable {
-    // TODO unregisterConnection, stopServer, tryAssignToSession, removeSession
+    // TODO tryAssignToSession
 
 
     private final int PORT_NUMBER;
@@ -55,9 +55,52 @@ public class GameServer implements Runnable {
         return true;
     }
 
-    public synchronized void unregisterConnection(){}
-    public synchronized void stopServer(){}
+    public synchronized void unregisterConnection(String connectionName, Connection connection){
+       boolean removed = connectionsByName.remove(connectionName, connection);
+
+        if (removed) {
+            LOGGER.info("Connection removed: " + connectionName);
+        } else {
+            LOGGER.warning("Failed to remove connection: " + connectionName);
+        }
+    }
+
+    public synchronized void stopServer(){
+        LOGGER.info("Stopping server...");
+
+        for(GameSession session : new ArrayList<>(sessions)) {
+            removeSession(session);
+        }
+
+        for(Connection connection: new ArrayList<>(connectionsByName.values())){
+            connection.quit();
+        }
+        connectionsByName.clear();
+
+        try {
+            if (serverSocket != null && !serverSocket.isClosed()) {
+                serverSocket.close();
+            }
+        } catch (IOException e) {
+            LOGGER.severe("Error closing server socket: " + e.getMessage());
+        }
+
+        LOGGER.info("Server stopped.");
+    }
+
     public synchronized void tryAssignToSession(){}
-    public synchronized void removeSession(){}
+
+    public synchronized void removeSession(GameSession session){
+       boolean removed = sessions.remove(session);
+
+        if (removed) {
+            LOGGER.info("Session removed.");
+
+            session.getConnection1().quit();
+            session.getConnection2().quit();
+        } else {
+            LOGGER.warning("Session not found.");
+        }
+    }
 
 }
