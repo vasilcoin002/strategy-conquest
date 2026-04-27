@@ -10,13 +10,7 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
-/**
- * Represents a single client connection to the server.
- *
- * Handles incoming messages and communicates with GameSession.
- */
-public class Connection implements Runnable {
+public class Connection implements Runnable{
 
     // TODO handleMove, handleAttack, handleBuyUnit, handleUpgradeCity, handleEndTurn
 
@@ -36,16 +30,16 @@ public class Connection implements Runnable {
 
     @Override
     public void run() {
-        try {
+        try{
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream(), true);
 
             boolean running = true;
-            while (running) {
+            while (running){
                 String msg = in.readLine();
                 LOGGER.log(Level.INFO, "Server received from {0}: >>>{1}<<<",
                         new Object[]{playerName, msg});
-                if (msg != null) {
+                if(msg != null){
                     running = processIncomingMessage(msg);
                 } else {
                     running = false;
@@ -59,19 +53,43 @@ public class Connection implements Runnable {
         }
     }
 
-    private boolean processIncomingMessage(String msg) {
+    private boolean processIncomingMessage(String msg){
         String[] tokens = msg.split("\\|", -1);
         Protocol actionCode = Protocol.valueOf(tokens[0]);
 
-        switch (actionCode) {
+        switch(actionCode){
             case LOGIN:
+                return handleLogin(tokens);
 
+            case READY:
+               return handleReady();
+
+            case MOVE:
+               return handleMove(tokens);
+
+            case ATTACK:
+               return handleAttack(tokens);
+
+            case BUY_UNIT:
+               return  handleBuyUnit(tokens);
+
+            case UPGRADE_CITY:
+               return handleUpgradeCity(tokens);
+
+            case END_TURN:
+                return handleEndTurn();
+
+            case QUIT:
+                handleQuit();
+                return false;
+
+            default:
+                sendToClient(Protocol.ERROR, "UNKNOWN_COMMAND");
+                return true;
         }
-        // TODO remove and add normal return
-        return true;
     }
 
-    public void sendToClient(Protocol code, String... args) {
+    public void sendToClient(Protocol code, String... args){
         StringBuilder msg = new StringBuilder(code.toString());
 
         for (String arg : args) {
@@ -81,8 +99,8 @@ public class Connection implements Runnable {
         out.println(msg);
     }
 
-    private boolean handleLogin(String[] tokens) {
-        if (tokens.length < 2) {
+    private boolean handleLogin(String[] tokens){
+        if (tokens.length < 2){
             sendToClient(Protocol.ERROR, "LOGIN_REQUIRES_NAME");
             return true;
         }
@@ -111,9 +129,9 @@ public class Connection implements Runnable {
         return true;
     }
 
-    private boolean handleMove(String[] tokens) {
+    private boolean handleMove(String[] tokens){
 
-        if (!isLoggedIn()) {
+        if(!isLoggedIn()){
             sendToClient(Protocol.ERROR, "NOT_LOGGED_IN");
         }
 
@@ -123,43 +141,111 @@ public class Connection implements Runnable {
         }
         String unitId = tokens[1];
 
-        try {
+        try{
             int x = Integer.parseInt(tokens[2]);
             int y = Integer.parseInt(tokens[3]);
-            // TODO uncomment
-//            session.handleMove();
-        } catch (NumberFormatException ex) {
+            session.onMove(this, unitId, x, y);
+        } catch (NumberFormatException ex){
             sendToClient(Protocol.ERROR, "INVALID_COORDINATES");
         }
 
         return true;
     }
 
-    private boolean handleMove() {
-        return false;
+    private boolean handleAttack(String[] tokens){
+        if(!isLoggedIn()) {
+            sendToClient(Protocol.ERROR, "NOT_LOGGED_IN");
+            return true;
+        }
+
+        if (session == null) {
+            sendToClient(Protocol.ERROR, "NOT_IN_SESSION");
+            return true;
+        }
+
+        if (tokens.length < 3) {
+            sendToClient(Protocol.ERROR, "ATTACK_REQUIRES_ATTACKERID_TARGETID");
+            return true;
+        }
+
+        String attackerId = tokens[1];
+        String targetId = tokens[2];
+
+        session.onAttack(this, attackerId, targetId);
+        return true;
     }
 
-    private boolean handleAttack() {
-        return false;
+    private boolean handleBuyUnit(String[] tokens){
+        if(!isLoggedIn()) {
+            sendToClient(Protocol.ERROR, "NOT_LOGGED_IN");
+            return true;
+        }
+
+        if (session == null) {
+            sendToClient(Protocol.ERROR, "NOT_IN_SESSION");
+            return true;
+        }
+
+        if (tokens.length < 3) {
+            sendToClient(Protocol.ERROR, "BUY_UNIT_REQUIRES_CITYID_TROOPTYPE");
+            return true;
+        }
+
+        String cityId = tokens[1];
+        String troopType = tokens[2];
+
+        session.onUnitPurchase(this, cityId, troopType);
+        return true;
     }
 
-    private boolean handleBuyUnit() {
-        return false;
+    private boolean handleUpgradeCity(String[] tokens){
+        if(!isLoggedIn()) {
+            sendToClient(Protocol.ERROR, "NOT_LOGGED_IN");
+            return true;
+        }
+
+        if (session == null) {
+            sendToClient(Protocol.ERROR, "NOT_IN_SESSION");
+            return true;
+        }
+
+        if (tokens.length < 2) {
+            sendToClient(Protocol.ERROR, "UPGRADE_CITY_REQUIRES_CITYID");
+            return true;
+        }
+
+        String cityId = tokens[1];
+
+        session.onCityUpgrade(this, cityId);
+        return true;
     }
 
-    private boolean handleUpgradeCity() {
-        return false;
+    private boolean handleEndTurn(){
+        if(!isLoggedIn()) {
+            sendToClient(Protocol.ERROR, "NOT_LOGGED_IN");
+            return true;
+        }
+
+        if (session == null) {
+            sendToClient(Protocol.ERROR, "NOT_IN_SESSION");
+            return true;
+        }
+
+        session.onEndTurn(this);
+        return true;
     }
 
-    private boolean handleEndTurn() {
-        return false;
+    private void handleQuit() {
+        if (session != null) {
+            session.onPlayerQuit(this);
+        }
     }
 
     private boolean isLoggedIn() {
         return player != null;
     }
 
-    private void quit() {
+    public void quit() {
         LOGGER.info("Quitting connection.");
         try {
             if (socket != null) {
