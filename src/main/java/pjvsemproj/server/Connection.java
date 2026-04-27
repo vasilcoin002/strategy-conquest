@@ -243,7 +243,7 @@ public class Connection implements Runnable{
         return player != null;
     }
 
-    private void quit() {
+    public void quit() {
         LOGGER.info("Quitting connection.");
         try {
             if (socket != null) {
