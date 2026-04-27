@@ -54,10 +54,73 @@ public class Client implements Runnable{
         }
     }
 
-    private boolean processIncomingMessage(String msg){}
+    private boolean processIncomingMessage(String msg){
+        String[] tokens = msg.split("\\|", -1);
+        Protocol actionCode = Protocol.valueOf(tokens[0]);
+
+        switch(actionCode){
+            case OK:
+                LOGGER.info("Server OK: " + (tokens.length > 1 ? tokens[1] : ""));
+                break;
+
+            case ERROR:
+                LOGGER.warning("Server ERROR: " + (tokens.length > 1 ? tokens[1] : ""));
+                break;
+
+            case GAME_STARTED:
+                String player1 = tokens[1];
+                String player2 = tokens[2];
+                LOGGER.info("Game started: " + player1 + " vs " + player2);
+                break;
+
+            case TURN_STARTED:
+                String currentPlayer = tokens[1];
+                LOGGER.info("Turn started: " + currentPlayer);
+                break;
+
+            case UNIT_MOVED:
+                String unitId = tokens[1];
+                int x = Integer.parseInt(tokens[2]);
+                int y = Integer.parseInt(tokens[3]);
+                LOGGER.info("Unit moved: " + unitId + " -> (" + x + "," + y + ")");
+                break;
+
+            case UNIT_ATTACKED:
+                String attackerId = tokens[1];
+                String targetId = tokens[2];
+                int newHp = Integer.parseInt(tokens[3]);
+                LOGGER.info("Attack: " + attackerId + " -> " + targetId + " HP=" + newHp);
+                break;
+
+            case UNIT_DIED:
+                String deadUnit = tokens[1];
+                LOGGER.info("Unit died: " + deadUnit);
+                break;
+
+            case CITY_UPGRADED:
+                String cityId = tokens[1];
+                String newLevel = tokens[2];
+                LOGGER.info("City upgraded: " + cityId + " -> " + newLevel);
+                break;
+
+            case QUIT:
+                LOGGER.info("Opponent quit: " + tokens[1]);
+                return false;
+
+            default:
+                LOGGER.warning("Unknown message: " + msg);
+        }
+
+        return true;
+        }
+
 
     public void close(){
         LOGGER.info("Closing client");
+    }
+
+    public void login(String playerName) {
+        sendToServer(Protocol.LOGIN, playerName);
     }
 
     public void sendToServer(Protocol code, String... args){
