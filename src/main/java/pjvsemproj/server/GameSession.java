@@ -179,7 +179,7 @@ public class GameSession {
             return;
         }
         connection1.sendToClient(Protocol.BUY_UNIT, String.valueOf(TroopType.valueOf(troopType)));
-        connection2.sendToClient(Protocol.BUY_UNIT, String.valueOf(TroopType.valueOf(troopType)));
+        connection2.sendToClient(Protocol.UNIT_BOUGHT, String.valueOf(TroopType.valueOf(troopType)));
     }
     public synchronized void onCityUpgrade(Connection connection, String cityId){
         if (!gameStarted) {
@@ -205,7 +205,7 @@ public class GameSession {
             return;
         }
         connection1.sendToClient(Protocol.UPGRADE_CITY, cityId, city.getCityType().name(), String.valueOf(currentPlayer.getBalance()));
-        connection2.sendToClient(Protocol.UPGRADE_CITY, cityId, city.getCityType().name());
+        connection2.sendToClient(Protocol.CITY_UPGRADED, cityId, city.getCityType().name());
     }
 
     public synchronized void onEndTurn(Connection connection){
@@ -225,9 +225,39 @@ public class GameSession {
         connection1.sendToClient(Protocol.TURN_STARTED, newCurrentPlayer.getName());
         connection2.sendToClient(Protocol.TURN_STARTED, newCurrentPlayer.getName());
     }
+    public synchronized void onPlayerQuit(Connection connection){
+        Connection otherConnection;
+        if (connection == connection1) {
+            otherConnection = connection2;
+        } else {
+            otherConnection = connection1;
+        }
+
+        if (otherConnection != null) {
+            otherConnection.sendToClient(Protocol.QUIT);
+        }
+
+        gameServer.removeSession(this);
     }
-    public synchronized void onPlayerQuit(Connection connection){}
-    public synchronized void onPlayerDisconnect(Connection connection){}
+
+    public synchronized void onPlayerDisconnect(Connection connection){
+        Player disconnectedPlayer = connection.getPlayer();
+        Connection otherConnection;
+
+        if (connection == connection1) {
+            otherConnection = connection2;
+        } else {
+            otherConnection = connection1;
+        }
+        if (otherConnection != null) {
+            otherConnection.sendToClient(
+                    Protocol.QUIT,
+                    disconnectedPlayer != null ? disconnectedPlayer.getName() : "UNKNOWN"
+            );
+        }
+
+        gameServer.removeSession(this);
+    }
 
     private TroopUnit findUnitById(String unitId){
         for(Player player: game.getPlayers()){
