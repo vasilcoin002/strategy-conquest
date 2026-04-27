@@ -4,6 +4,7 @@ import pjvsemproj.models.game.maps.GameMap;
 import pjvsemproj.models.game.maps.Tile;
 import pjvsemproj.models.game.players.Player;
 import pjvsemproj.server.Client;
+import pjvsemproj.server.Protocol;
 
 import java.util.List;
 import java.util.Set;

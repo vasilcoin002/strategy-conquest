@@ -109,7 +109,7 @@ public class GameController {
     private void moveSelectedTroop(Tile toTile) {
         if (selectedEntity instanceof TroopUnit troopUnit) {
             view.clearTroopUnit(troopUnit);
-            gameService.moveTroopUnit(troopUnit.getId(), toTile.getX(), toTile.getY());
+            gameService.moveUnit(troopUnit.getId(), toTile.getX(), toTile.getY());
             view.updateTroopUnit(troopUnit, getPlayerColor(troopUnit.getOwner()));
         }
     }
