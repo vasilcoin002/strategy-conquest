@@ -29,31 +29,29 @@ import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 // TODO add movement and attack range info to side panel entity info
 public class GameController {
 
-    private final Stage stage;
     private final GameView view;
-
-    // TODO add services instead of changing game directly through the GameController
     private final GameService gameService;
 
     private IGridEntity selectedEntity;
 
-    public GameController(Stage stage, GameService gameService) {
-        this.stage = stage;
+    public GameController(GameService gameService, GameView view) {
+//        this.stage = stage;
         this.gameService = gameService;
-        this.view = new GameView(
-                stage,
-                gameService.getMap().getWidth(),
-                gameService.getMap().getHeight(),
-                gameService.getPlayers(),
-                gameService.getPlayers().getFirst(),
-                Color.BLUE,
-                Color.ORANGE
-        );
+        this.view = view;
+//        this.view = new GameView(
+////                stage,
+//                gameService.getMap().getWidth(),
+//                gameService.getMap().getHeight(),
+//                gameService.getPlayers(),
+//                gameService.getPlayers().getFirst(),
+//                Color.BLUE,
+//                Color.ORANGE
+//        );
 
         Player player1 = gameService.getPlayers().getFirst();
         Player player2 = gameService.getPlayers().getLast();
 
-        view.setOnQuitGameAction(() -> stage.setScene(null));
+//        view.setOnQuitGameAction(() -> stage.setScene(null));
         view.setOnGameAreaClickedAction(this::handleGameAreaClick);
         view.setOnEntitySelectedAction(this::setSelectedEntity);
         view.setOnNextTurnAction(() -> {
@@ -63,10 +61,6 @@ public class GameController {
             view.updateCurrentPlayer(gameService.getCurrentPlayer());
             setSelectedEntity(selectedEntity);
         });
-    }
-
-    public void showView() {
-        view.show();
     }
 
     public Color getPlayerColor(Player player) {

@@ -30,21 +30,18 @@ public class LocalGameService implements GameService {
     private final ConquestManager conquestManager;
 
 
-    public LocalGameService(Game game, ConquestManager conquestManager) {
+    public LocalGameService(Game game) {
         this.game = game;
         this.map = game.getMap();
 
         Player player1 = game.getPlayers().get(0);
         Player player2 = game.getPlayers().get(1);
         this.turnManager = new TurnManager(player1, player2);
-        this.movementManager = new MovementManager(this.map);
 
-
+        this.movementManager = new MovementManager(this.map, turnManager.getCurrentPlayer());
         this.combatManager = new CombatManager(this.map, turnManager.getCurrentPlayer());
         this.economyManager = new EconomyManager(turnManager.getCurrentPlayer());
         this.conquestManager = new ConquestManager(game.getPlayers(), turnManager.getCurrentPlayer());
-
-
 
         this.turnManager.addTurnListener(movementManager);
         this.turnManager.addTurnListener(combatManager);
@@ -74,6 +71,9 @@ public class LocalGameService implements GameService {
             return;
         }
         movementManager.moveTroopUnit(troopUnit, tile);
+        if (conquestManager.checkIfWinnerExists()) {
+            conquestManager.announceWinner(troopUnit.getOwner());
+        }
     }
 
     @Override
@@ -135,22 +135,24 @@ public class LocalGameService implements GameService {
 
     @Override
     public GameMap getMap() {
-        return null;
+        return map;
     }
 
     @Override
     public List<Player> getPlayers() {
-        return List.of();
+        return game.getPlayers();
     }
 
     @Override
     public Player getCurrentPlayer() {
-        return null;
+        return turnManager.getCurrentPlayer();
     }
 
     @Override
     public Set<Tile> getAvailableTilesForMovement(String unitId) {
-        return Set.of();
+        return movementManager.getAvailableTilesForMovement(
+                findTroopById(unitId)
+        );
     }
 
     private TroopUnit findTroopById(String id){

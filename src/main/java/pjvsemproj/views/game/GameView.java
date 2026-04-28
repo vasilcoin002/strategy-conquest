@@ -32,7 +32,7 @@ public class GameView {
 
     private final int gameAreaWidth;
     private final int gameAreaHeight;
-    private final Stage stage;
+//    private final Stage stage;
     private final Scene scene;
     private final BorderPane root;
 
@@ -47,9 +47,9 @@ public class GameView {
 
     private BiConsumer<Integer, Integer> onGameAreaClickedAction;
 
-    public GameView(Stage stage, int mapModelWidth, int mapModelHeight,
+    public GameView(int mapModelWidth, int mapModelHeight,
             List<Player> players, Player currentPlayer, Color player1Color, Color player2Color) {
-        this.stage = stage;
+//        this.stage = stage;
 
         gameAreaWidth = mapModelWidth * TILE_SIZE;
         gameAreaHeight = mapModelHeight * TILE_SIZE;
@@ -93,7 +93,7 @@ public class GameView {
         sidePanel.updateCurrentPlayer(currentPlayer);
     }
 
-    public void show() {
+    public void show(Stage stage) {
         stage.setScene(scene);
     }
 

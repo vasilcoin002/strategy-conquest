@@ -21,11 +21,11 @@ public class MovementManager implements ITurnListener {
     private Player currentPlayer;
     private final GameMap gameMap;
 
-    public MovementManager(GameMap gameMap) {
-        this(null, gameMap);
-    }
+//    public MovementManager(GameMap gameMap) {
+//        this(null, gameMap);
+//    }
 
-    public MovementManager(Player currentPlayer, GameMap gameMap) {
+    public MovementManager(GameMap gameMap, Player currentPlayer) {
         this.currentPlayer = currentPlayer;
         this.gameMap = gameMap;
     }

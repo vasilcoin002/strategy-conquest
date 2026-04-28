@@ -44,18 +44,16 @@ public class GameSession {
         this.player2 = connection2.getPlayer();
         this.game = game;
         this.map = game.getMap();
-        this.movementManager = new MovementManager(this.map);
-
 
         this.turnManager = new TurnManager(player1, player2);
 
+        this.movementManager = new MovementManager(this.map, turnManager.getCurrentPlayer());
         this.combatManager = new CombatManager(map, turnManager.getCurrentPlayer());
         this.economyManager = new EconomyManager(turnManager.getCurrentPlayer());
 
         this.turnManager.addTurnListener(movementManager);
         this.turnManager.addTurnListener(combatManager);
         this.turnManager.addTurnListener(economyManager);
-
     }
 
     public void startGame(){

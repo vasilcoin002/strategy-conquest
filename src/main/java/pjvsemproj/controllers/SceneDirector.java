@@ -4,6 +4,7 @@ import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import pjvsemproj.models.game.Game;
+import pjvsemproj.models.services.GameService;
 import pjvsemproj.views.game.GameView;
 import pjvsemproj.views.MainMenuView;
 
@@ -39,7 +40,9 @@ public class SceneDirector {
         stage.setScene(scene);
         stage.setTitle("Strategy Game - Main Menu");
         stage.show();
+        stage.centerOnScreen();
     }
+
     /**
      * Displays the game scene.
      *
@@ -49,24 +52,23 @@ public class SceneDirector {
      *
      * @param game initialized game instance
      */
-    public void showGame(Game game) {
+    public void showGame(GameService gameService) {
         // This relies on your GameSetupManager to provide the initialized Game object
         GameView gameView = new GameView(
-                stage,
-                game.getMap().getWidth(),
-                game.getMap().getHeight(),
-                game.getPlayers(),
-                game.getPlayers().getFirst(),
+                gameService.getMap().getWidth(),
+                gameService.getMap().getHeight(),
+                gameService.getPlayers(),
+                gameService.getPlayers().getFirst(),
                 Color.BLUE,
                 Color.ORANGE
         );
 
-        gameView.show();
+        gameView.show(stage);
 
-        // Initialize your game controllers here...
-        // GameController controller = new GameController(game, gameView, ...);
+        // Initialize game controller here...
+         GameController controller = new GameController(gameService, gameView);
 
-        Scene scene = new Scene(gameView.getRoot(), 1200, 800);
-        stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.show();
     }
 }
