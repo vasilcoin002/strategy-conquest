@@ -8,13 +8,15 @@ import java.util.List;
 public class GameDTO {
     public final int mapWidth;
     public final int mapHeight;
-    public final int startingGold;
     public final List<EntityDTO> entities;
+    public final List<PlayerDTO> players;
+    public PlayerDTO currentPlayer;
 
-    public GameDTO(int mapWidth, int mapHeight, int startingGold, List<EntityDTO> entities) {
+    public GameDTO(int mapWidth, int mapHeight, List<EntityDTO> entities, List<PlayerDTO> players, PlayerDTO currentPlayer) {
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
-        this.startingGold = startingGold;
         this.entities = entities;
+        this.players = players;
+        this.currentPlayer = currentPlayer;
     }
 }
