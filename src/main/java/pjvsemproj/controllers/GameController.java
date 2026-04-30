@@ -101,9 +101,12 @@ public class GameController {
     public void setSelectedEntityId(String entityId) {
         this.selectedEntityId = entityId;
         EntityDTO entity = gameService.getEntityDTO(entityId);
-        TileDTO tile = gameService.getTileDTO(entity.x, entity.y);
-
         view.setSelectedEntity(entity);
+
+        TileDTO tile = null;
+        if (entity != null) {
+            tile = gameService.getTileDTO(entity.x, entity.y);
+        }
         view.updateTileEntitiesInfo(tile);
 
         if (entityId != null) {
