@@ -1,5 +1,6 @@
 package pjvsemproj.models.services;
 
+import pjvsemproj.dto.EntityDTO;
 import pjvsemproj.dto.GameDTO;
 import pjvsemproj.dto.PlayerDTO;
 import pjvsemproj.dto.TileDTO;
@@ -69,6 +70,11 @@ public class NetworkGameService implements GameService {
 
     @Override
     public GameDTO getGameDTO() {
+        return null;
+    }
+
+    @Override
+    public EntityDTO getEntityDTO(String entityId) {
         return null;
     }
 

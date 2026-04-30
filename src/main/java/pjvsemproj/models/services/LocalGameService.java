@@ -1,8 +1,6 @@
 package pjvsemproj.models.services;
 
-import pjvsemproj.dto.GameDTO;
-import pjvsemproj.dto.PlayerDTO;
-import pjvsemproj.dto.TileDTO;
+import pjvsemproj.dto.*;
 import pjvsemproj.models.entities.cities.City;
 import pjvsemproj.models.entities.troopUnits.TroopType;
 import pjvsemproj.models.entities.troopUnits.TroopUnit;
@@ -13,6 +11,7 @@ import pjvsemproj.models.managers.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -179,6 +178,23 @@ public class LocalGameService implements GameService {
     @Override
     public GameDTO getGameDTO() {
         return new GameDTO(game);
+    }
+
+    @Override
+    public EntityDTO getEntityDTO(String entityId) {
+        for (Player player : game.getPlayers()) {
+            for (TroopUnit troopUnit : player.getTroops()) {
+                if (Objects.equals(troopUnit.getId(), entityId)) {
+                    return new TroopUnitDTO(troopUnit);
+                }
+            }
+            for (City city : player.getCities()) {
+                if (Objects.equals(city.getId(), entityId)) {
+                    return new CityDTO(city);
+                }
+            }
+        }
+        return null;
     }
 
     @Override

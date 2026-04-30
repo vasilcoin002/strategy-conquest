@@ -1,14 +1,11 @@
 package pjvsemproj.controllers;
 
-import javafx.scene.paint.Color;
 import pjvsemproj.dto.EntityDTO;
-import pjvsemproj.dto.PlayerDTO;
 import pjvsemproj.dto.TileDTO;
 import pjvsemproj.models.services.GameService;
 import pjvsemproj.views.game.GameView;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
@@ -72,11 +69,13 @@ public class GameController {
         }
     }
 
+
     public void setSelectedEntityId(String entityId) {
         this.selectedEntityId = entityId;
+        EntityDTO entity = gameService.getEntityDTO(entityId);
 
         // Ensure your GameView is updated to accept an ID/DTO instead of IGridEntity
-        // view.setSelectedEntity(entityId);
+         view.setSelectedEntity(entity);
 
         if (entityId != null) {
             Set<TileDTO> availableTiles = gameService.getAvailableTilesDTOForMovement(entityId);

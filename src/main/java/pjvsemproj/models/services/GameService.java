@@ -1,5 +1,6 @@
 package pjvsemproj.models.services;
 
+import pjvsemproj.dto.EntityDTO;
 import pjvsemproj.dto.GameDTO;
 import pjvsemproj.dto.PlayerDTO;
 import pjvsemproj.dto.TileDTO;
@@ -31,6 +32,7 @@ public interface GameService {
     void quit();
 
     GameDTO getGameDTO();
+    EntityDTO getEntityDTO(String entityId);
 
     int getMapWidth();
     int getMapHeight();

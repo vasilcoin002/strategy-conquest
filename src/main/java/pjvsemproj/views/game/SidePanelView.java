@@ -7,16 +7,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import pjvsemproj.dto.CityDTO;
-import pjvsemproj.dto.EntityDTO;
-import pjvsemproj.dto.PlayerDTO;
-import pjvsemproj.dto.TroopUnitDTO;
+import pjvsemproj.dto.*;
 import pjvsemproj.models.entities.IGridEntity;
 import pjvsemproj.models.entities.cities.City;
 import pjvsemproj.models.entities.troopUnits.TroopType;
 import pjvsemproj.models.entities.troopUnits.TroopUnit;
 import pjvsemproj.models.game.maps.Tile;
-import pjvsemproj.models.game.players.Player;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -42,7 +38,7 @@ public class SidePanelView {
     private final Button nextTurnBtn;
 
     private Runnable onQuitGameAction;
-    private Consumer<IGridEntity> onEntitySelectedAction;
+    private Consumer<EntityDTO> onEntitySelectedAction;
     private Runnable onNextTurnAction;
 
     public SidePanelView() {
@@ -79,43 +75,43 @@ public class SidePanelView {
     }
 
     /**
-     * Reads the tile's getEntities() list and builds the switcher if anything is there.
+     * Reads the tile's entities list and builds the switcher if anything is there.
      */
-    public void updateForTile(Tile tile) {
+    public void updateForTile(TileDTO tile) {
         // Clear previous buttons and text
         switcherBox.getChildren().clear();
         actionMenuBox.getChildren().clear();
 
         // If the tile is empty or null, show nothing
-        if (tile == null || tile.getEntities().isEmpty()) {
-            entityInfoLabel.setText("Selected: none");
+        if (tile == null || tile.entities.isEmpty()) {
+            entityInfoLabel.setText("Selected: None");
             return;
         }
 
-        City foundCity = null;
-        TroopUnit foundTroop = null;
+        CityDTO foundCity = null;
+        TroopUnitDTO foundTroop = null;
 
-        for (IGridEntity entity : tile.getEntities()) {
-            if (entity instanceof City) {
-                foundCity = (City) entity;
-            } else if (entity instanceof TroopUnit) {
-                foundTroop = (TroopUnit) entity;
+        for (EntityDTO entity : tile.entities) {
+            if (entity instanceof CityDTO city) {
+                foundCity = city;
+            } else if (entity instanceof TroopUnitDTO troopUnit) {
+                foundTroop = troopUnit;
             }
         }
 
         if (foundCity != null) {
-            final City cityRef = foundCity; // 'effectively final' for the button action
+            final CityDTO finalCity = foundCity; // 'effectively final' for the button action
             Button viewCityBtn = new Button("View City");
             viewCityBtn.setMaxWidth(Double.MAX_VALUE);
-            viewCityBtn.setOnAction(e -> onEntitySelectedAction.accept(cityRef));
+            viewCityBtn.setOnAction(e -> onEntitySelectedAction.accept(finalCity));
             switcherBox.getChildren().add(viewCityBtn);
         }
 
         if (foundTroop != null) {
-            final TroopUnit troopRef = foundTroop;
+            final TroopUnitDTO finalTroop = foundTroop;
             Button viewTroopBtn = new Button("View Troop");
             viewTroopBtn.setMaxWidth(Double.MAX_VALUE);
-            viewTroopBtn.setOnAction(e -> onEntitySelectedAction.accept(troopRef));
+            viewTroopBtn.setOnAction(e -> onEntitySelectedAction.accept(finalTroop));
             switcherBox.getChildren().add(viewTroopBtn);
         }
     }
@@ -185,7 +181,7 @@ public class SidePanelView {
         nextTurnBtn.setDisable(disabled);
     }
 
-    public void setOnEntitySelectedAction(Consumer<IGridEntity> onEntitySelectedAction) {
+    public void setOnEntitySelectedAction(Consumer<EntityDTO> onEntitySelectedAction) {
         this.onEntitySelectedAction = onEntitySelectedAction;
     }
 

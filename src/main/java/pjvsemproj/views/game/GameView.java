@@ -22,7 +22,10 @@ import java.util.function.Consumer;
 import static pjvsemproj.views.ViewConstants.GAME_SIDE_PANEL_WIDTH;
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
-
+// TODO fix side menu doesn't show two entities on one tile
+// TODO fix changing selection from entity to entity works incorrectly
+//  (now it works only for entity-empty-entity, but doesn't work for entity-entity)
+// TODO fix view doesn't update after moving
 /**
  * Main game UI class.
  *
@@ -32,7 +35,6 @@ public class GameView {
 
     private final int gameAreaWidth;
     private final int gameAreaHeight;
-//    private final Stage stage;
     private final Scene scene;
     private final BorderPane root;
 
@@ -51,7 +53,6 @@ public class GameView {
     public GameView(
             GameDTO game,
             Map<String, Color> ownersColors
-//            Color player1Color, Color player2Color
     ) {
         gameAreaWidth = game.mapWidth * TILE_SIZE;
         gameAreaHeight = game.mapHeight * TILE_SIZE;
@@ -81,16 +82,6 @@ public class GameView {
 
         mapRenderer = new MapRenderer();
 
-//        Color ownerColor = player1Color;
-//        for (PlayerDTO player : players) {
-//            List<EntityDTO> cities = new ArrayList<>();
-//            for ()
-//            List<TroopUnit> troops = player.getTroops();
-//
-//            mapRenderer.renderCities(staticEntitiesGc, cities, ownerColor);
-//            mapRenderer.renderTroops(dynamicEntitiesGc, troops, ownerColor);
-//            ownerColor = player2Color;
-//        }
         List<CityDTO> cities = new ArrayList<>();
         List<TroopUnitDTO> troops = new ArrayList<>();
         for (EntityDTO entity : game.entities) {
@@ -200,7 +191,7 @@ public class GameView {
         this.onGameAreaClickedAction = onGameAreaClickedAction;
     }
 
-    public void setOnEntitySelectedAction(Consumer<IGridEntity> onEntitySelectedAction) {
+    public void setOnEntitySelectedAction(Consumer<EntityDTO> onEntitySelectedAction) {
         sidePanel.setOnEntitySelectedAction(onEntitySelectedAction);
     }
 
