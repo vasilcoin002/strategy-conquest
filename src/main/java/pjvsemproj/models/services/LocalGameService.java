@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 /**
  * Local (single-player) implementation of GameService.
- *
+ * <p>
  * Directly interacts with managers to execute game actions.
  */
 public class LocalGameService implements GameService {
@@ -61,13 +61,13 @@ public class LocalGameService implements GameService {
     @Override
     public void moveUnit(String unitId, int x, int y) {
         TroopUnit troopUnit = findTroopById(unitId);
-        if(troopUnit == null){
+        if (troopUnit == null) {
             return;
         }
         Tile tile = game.getMap().getTile(x, y);
         Set<Tile> availableTiles = movementManager.getAvailableTilesForMovement(troopUnit);
 
-        if(!availableTiles.contains(tile)){
+        if (!availableTiles.contains(tile)) {
             return;
         }
         movementManager.moveTroopUnit(troopUnit, tile);
@@ -80,12 +80,12 @@ public class LocalGameService implements GameService {
     public void attack(String attackerId, String targetId) {
         TroopUnit attacker = findTroopById(attackerId);
         TroopUnit target = findTroopById(targetId);
-        if(attacker == null || target == null){
+        if (attacker == null || target == null) {
             return;
         }
         Set<TroopUnit> attackableTroops = combatManager.getAttackableTroops(attacker);
 
-        if(!attackableTroops.contains(target)){
+        if (!attackableTroops.contains(target)) {
             return;
         }
         combatManager.attackTroop(attacker, target);
@@ -94,7 +94,7 @@ public class LocalGameService implements GameService {
     @Override
     public void buyUnit(String cityId, String troopType) {
         City city = findCityById(cityId);
-        if(city == null){
+        if (city == null) {
             return;
         }
 
@@ -105,7 +105,7 @@ public class LocalGameService implements GameService {
     @Override
     public void upgradeCity(String cityId) {
         City city = findCityById(cityId);
-        if(city == null){
+        if (city == null) {
             return;
         }
 
@@ -152,10 +152,10 @@ public class LocalGameService implements GameService {
                 .collect(Collectors.toSet());
     }
 
-    private TroopUnit findTroopById(String id){
-        for (Player player: game.getPlayers()) {
-            for(TroopUnit troopUnit: player.getTroops()){
-                if(troopUnit.getId().equals(id)){
+    private TroopUnit findTroopById(String id) {
+        for (Player player : game.getPlayers()) {
+            for (TroopUnit troopUnit : player.getTroops()) {
+                if (troopUnit.getId().equals(id)) {
                     return troopUnit;
                 }
             }
@@ -163,10 +163,10 @@ public class LocalGameService implements GameService {
         return null;
     }
 
-    private City findCityById(String id){
-        for(Player player: game.getPlayers()){
-            for(City city: player.getCities()){
-                if(city.getId().equals(id)){
+    private City findCityById(String id) {
+        for (Player player : game.getPlayers()) {
+            for (City city : player.getCities()) {
+                if (city.getId().equals(id)) {
                     return city;
                 }
             }

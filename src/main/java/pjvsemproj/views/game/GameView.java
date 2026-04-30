@@ -8,14 +8,13 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import pjvsemproj.dto.*;
-import pjvsemproj.models.entities.IGridEntity;
-import pjvsemproj.models.entities.cities.City;
-import pjvsemproj.models.entities.troopUnits.TroopUnit;
 import pjvsemproj.models.game.maps.Tile;
-import pjvsemproj.models.game.players.Player;
-import pjvsemproj.views.game.renderers.*;
+import pjvsemproj.views.game.renderers.MapRenderer;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -25,7 +24,6 @@ import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 // TODO fix side menu doesn't show two entities on one tile
 // TODO fix changing selection from entity to entity works incorrectly
 //  (now it works only for entity-empty-entity, but doesn't work for entity-entity)
-// TODO fix view doesn't update after moving
 /**
  * Main game UI class.
  *

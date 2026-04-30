@@ -151,7 +151,7 @@ public class MapRenderer extends Renderer {
             }
         }
 
-        gc.clearRect(viewX, viewY, TILE_SIZE, TILE_SIZE);
+//        gc.clearRect(viewX, viewY, TILE_SIZE, TILE_SIZE);
     }
 
     public void clearTile(GraphicsContext gc, TileDTO tile) {

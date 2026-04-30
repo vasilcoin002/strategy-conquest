@@ -2,6 +2,7 @@ package pjvsemproj.controllers;
 
 import pjvsemproj.dto.EntityDTO;
 import pjvsemproj.dto.TileDTO;
+import pjvsemproj.dto.TroopUnitDTO;
 import pjvsemproj.models.services.GameService;
 import pjvsemproj.views.game.GameView;
 
@@ -51,8 +52,10 @@ public class GameController {
 
         if (entitiesOnTile.isEmpty()) {
             if (selectedEntityId != null) {
-                // 4. Delegate all movement to the service
-                gameService.moveUnit(selectedEntityId, x, y);
+                EntityDTO selectedEntity = gameService.getEntityDTO(selectedEntityId);
+                if (selectedEntity instanceof TroopUnitDTO troopUnit) {
+                    moveTroop(selectedEntityId, x, y);
+                }
                 // Note: The UI redraw should happen via the Service listeners discussed previously
             }
             setSelectedEntityId(null);
@@ -69,7 +72,6 @@ public class GameController {
         }
     }
 
-
     public void setSelectedEntityId(String entityId) {
         this.selectedEntityId = entityId;
         EntityDTO entity = gameService.getEntityDTO(entityId);
@@ -82,4 +84,21 @@ public class GameController {
             view.showSelectedEntityAvailableMoves(availableTiles);
         }
     }
+
+    private void moveTroop(String troopUnitId, int x, int y) {
+        TroopUnitDTO troopUnit = (TroopUnitDTO) gameService.getEntityDTO(troopUnitId);
+        int oldX = troopUnit.x;
+        int oldY = troopUnit.y;
+        gameService.moveUnit(troopUnitId, x, y);
+        TileDTO oldTile = gameService.getTileDTO(oldX, oldY);
+        TileDTO newTile = gameService.getTileDTO(x, y);
+        view.updateTile(oldTile);
+        view.updateTile(newTile);
+    }
+
+//    private void conquerCity(TroopUnit conquerer, City city) {
+//        OwnershipHelper.transferCity(city, conquerer.getOwner());
+//        view.updateCity(city, getPlayerColor(conquerer.getOwner()));
+//    }
+
 }
