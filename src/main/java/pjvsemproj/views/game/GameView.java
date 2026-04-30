@@ -106,6 +106,10 @@ public class GameView {
         sidePanel.updateCurrentPlayer(currentPlayer);
     }
 
+    public void updateTileEntitiesInfo(TileDTO tile) {
+        sidePanel.updateForTile(tile);
+    }
+
     public Background getBackground() {
         Image grassTexture = new Image("grass.png");
 
@@ -156,31 +160,6 @@ public class GameView {
         mapRenderer.clearTile(entitiesGc, tile);
         mapRenderer.renderTile(entitiesGc, tile, ownersColors);
     }
-
-//    public void updateTroopUnit(TroopUnitDTO troopUnit, Color ownerColor) {
-//        int hp = troopUnit.hp;
-//
-//        if (hp <= 0) {
-//            mapRenderer.clearTroopUnit(entitiesGc ,troopUnit);
-//            if (selectedEntity == troopUnit) {
-//                setSelectedEntity(null);
-//            }
-//        } else {
-//            mapRenderer.renderTroop(
-//                    entitiesGc,
-//                    troopUnit,
-//                    ownerColor
-//            );
-//        }
-//    }
-
-//    public void clearTroopUnit(TroopUnit troopUnit) {
-//        mapRenderer.clearTroopUnit(dynamicEntitiesGc, troopUnit);
-//    }
-
-//    public void updateCity(City city, Color ownerColor) {
-//        mapRenderer.renderCity(staticEntitiesGc, city, ownerColor);
-//    }
 
     public void setOnGameAreaClickedAction(BiConsumer<Integer, Integer> onGameAreaClickedAction) {
         this.onGameAreaClickedAction = onGameAreaClickedAction;

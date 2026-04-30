@@ -11,8 +11,9 @@ import java.util.Set;
 
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
-// TODO fix side menu doesn't show two entities on one tile
+// TODO fix side menu buttons view entity (view city and view troop) doesn't work
 // TODO cancel selection when is clicked on the selected entity second time
+// TODO on escape pressed: cancel selection or pop up dialog window
 /**
  * Main controller connecting UI with game logic.
  */
@@ -101,9 +102,11 @@ public class GameController {
     public void setSelectedEntityId(String entityId) {
         this.selectedEntityId = entityId;
         EntityDTO entity = gameService.getEntityDTO(entityId);
+        TileDTO tile = gameService.getTileDTO(entity.x, entity.y);
 
         // Ensure your GameView is updated to accept an ID/DTO instead of IGridEntity
-         view.setSelectedEntity(entity);
+        view.setSelectedEntity(entity);
+        view.updateTileEntitiesInfo(tile);
 
         if (entityId != null) {
             Set<TileDTO> tilesToMove = gameService.getAvailableTilesDTOForMovement(entityId);
