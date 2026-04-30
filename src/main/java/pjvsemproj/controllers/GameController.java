@@ -91,8 +91,11 @@ public class GameController {
             if (tilesToAttack.contains(targetTile)
                     && targetEntity instanceof TroopUnitDTO targetTroopUnit) {
                 attackTroop(currentTroopUnit.id, targetTroopUnit.id);
+                return;
             }
         }
+
+        setSelectedEntityId(targetEntity.id);
     }
 
     public void setSelectedEntityId(String entityId) {
