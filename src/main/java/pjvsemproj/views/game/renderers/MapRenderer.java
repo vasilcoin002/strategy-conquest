@@ -3,18 +3,16 @@ package pjvsemproj.views.game.renderers;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-import pjvsemproj.models.entities.Damageable;
+import pjvsemproj.dto.CityDTO;
+import pjvsemproj.dto.EntityDTO;
+import pjvsemproj.dto.TileDTO;
+import pjvsemproj.dto.TroopUnitDTO;
 import pjvsemproj.models.entities.IGridEntity;
 import pjvsemproj.models.entities.Ownable;
-import pjvsemproj.models.entities.cities.City;
 import pjvsemproj.models.entities.troopUnits.TroopType;
 import pjvsemproj.models.entities.troopUnits.TroopUnit;
-import pjvsemproj.models.game.maps.Tile;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
@@ -36,10 +34,9 @@ public class MapRenderer extends Renderer {
         }
     }
 
-    private void renderEntity(GraphicsContext gc, IGridEntity entity, int xSize, int ySize, String imageName) {
-        Tile cityTile = entity.getTile();
-        int viewX = cityTile.getX() * TILE_SIZE;
-        int viewY = cityTile.getY() * TILE_SIZE;
+    private void renderEntity(GraphicsContext gc, EntityDTO entity, int xSize, int ySize, String imageName) {
+        int viewX = getEntityViewX(entity);
+        int viewY = getEntityViewY(entity);
 
         int middleOfTileX = viewX + TILE_SIZE/2;
         int middleOfTileY = viewY + TILE_SIZE/2;
@@ -54,26 +51,26 @@ public class MapRenderer extends Renderer {
         );
     }
 
-    private void clearEntity(GraphicsContext gc, IGridEntity entity) {
+    private void clearEntity(GraphicsContext gc, EntityDTO entity) {
         int viewX = getEntityViewX(entity);
         int viewY = getEntityViewY(entity);
 
         clear(gc, viewX, viewY, TILE_SIZE, TILE_SIZE);
     }
 
-    public void renderCity(GraphicsContext gc, City city, Color ownerColor) {
+    public void renderCity(GraphicsContext gc, CityDTO city, Color ownerColor) {
         renderEntity(gc, city, TILE_SIZE, TILE_SIZE, "city.png");
         renderEntityOwner(gc, city, ownerColor);
     }
 
-    public void renderCities(GraphicsContext gc, List<City> cities, Color ownerColor) {
-        for (City city: cities) {
-            renderCity(gc, city, ownerColor);
+    public void renderCities(GraphicsContext gc, List<CityDTO> cities, Map<String, Color> ownersColors) {
+        for (CityDTO city: cities) {
+            renderCity(gc, city, ownersColors.get(city.ownerName));
         }
     }
 
-    public void renderTroop(GraphicsContext gc, TroopUnit troopUnit, Color ownerColor) {
-        String imageName = troopsImageNames.get(TroopType.valueOf(troopUnit.getName()));
+    public void renderTroop(GraphicsContext gc, TroopUnitDTO troopUnit, Color ownerColor) {
+        String imageName = troopsImageNames.get(TroopType.valueOf(troopUnit.entityType));
         renderEntity(
                 gc,
                 troopUnit,
@@ -82,20 +79,20 @@ public class MapRenderer extends Renderer {
                 imageName
         );
         renderEntityOwner(gc, troopUnit, ownerColor);
-        renderEntityHp(gc, troopUnit);
+        renderTroopUnitHp(gc, troopUnit);
     }
 
-    public void renderTroops(GraphicsContext gc, List<TroopUnit> troops, Color ownerColor) {
-        for (TroopUnit troopUnit: troops) {
-            renderTroop(gc, troopUnit, ownerColor);
+    public void renderTroops(GraphicsContext gc, List<TroopUnitDTO> troops, Map<String, Color> ownersColors) {
+        for (TroopUnitDTO troopUnit: troops) {
+            renderTroop(gc, troopUnit, ownersColors.get(troopUnit.ownerName));
         }
     }
 
-    public void clearTroopUnit(GraphicsContext gc, TroopUnit troopUnit) {
+    public void clearTroopUnit(GraphicsContext gc, TroopUnitDTO troopUnit) {
         clearEntity(gc, troopUnit);
     }
 
-    public <T extends Ownable & IGridEntity> void renderEntityOwner(GraphicsContext gc, T entity, Color color) {
+    public void renderEntityOwner(GraphicsContext gc, EntityDTO entity, Color color) {
         int boxXSize = 32;
         int boxYSize = 4;
 
@@ -109,19 +106,19 @@ public class MapRenderer extends Renderer {
         gc.fillRect(boxXPos, boxYPos, boxXSize, boxYSize);
     }
 
-    private <T extends Ownable & IGridEntity> void clearEntityOwner(GraphicsContext gc, T entity) {
+    private void clearEntityOwner(GraphicsContext gc, EntityDTO entity) {
         int viewX = getEntityViewX(entity);
         int viewY = getEntityViewY(entity);
 
         gc.clearRect(viewX, viewY, TILE_SIZE, TILE_SIZE);
     }
 
-    public <T extends Damageable & IGridEntity> void renderEntityHp(GraphicsContext gc, T entity) {
+    public void renderTroopUnitHp(GraphicsContext gc, TroopUnitDTO troopUnit) {
         int boxXSize = 4;
         int boxYSize = 40;
 
-        int viewX = getEntityViewX(entity);
-        int viewY = getEntityViewY(entity);
+        int viewX = getEntityViewX(troopUnit);
+        int viewY = getEntityViewY(troopUnit);
 
         int boxXPos = viewX + TILE_SIZE - boxXSize;
         int boxYPos = viewY + (TILE_SIZE - boxYSize) / 2;
@@ -129,20 +126,42 @@ public class MapRenderer extends Renderer {
         gc.setFill(Color.RED);
         gc.fillRect(boxXPos, boxYPos, boxXSize, boxYSize);
 
-        double percentHpLeft = (double) entity.getHealth() / entity.getMaxHealth();
+        double percentHpLeft = (double) troopUnit.hp / troopUnit.maxHp;
 
         gc.setFill(Color.GRAY);
         gc.fillRect(boxXPos, boxYPos, boxXSize, (1 - percentHpLeft) * boxYSize);
     }
 
-    private <T extends Damageable & IGridEntity> void clearEntityHp(GraphicsContext gc, T entity) {
-        int viewX = getEntityViewX(entity);
-        int viewY = getEntityViewY(entity);
+    private void clearTroopUnitHp(GraphicsContext gc, TroopUnitDTO troopUnit) {
+        int viewX = getEntityViewX(troopUnit);
+        int viewY = getEntityViewY(troopUnit);
 
         gc.clearRect(viewX, viewY, TILE_SIZE, TILE_SIZE);
     }
 
-    public void renderSelection(GraphicsContext gc, IGridEntity entity) {
+    public void renderTile(GraphicsContext gc, TileDTO tile, Map<String, Color> ownersColor) {
+        int viewX = tile.x * TILE_SIZE;
+        int viewY = tile.y * TILE_SIZE;
+
+        for (EntityDTO entity: tile.entities) {
+            if (entity instanceof CityDTO city) {
+                renderCity(gc, city, ownersColor.get(city.ownerName));
+            } else if (entity instanceof TroopUnitDTO troopUnit) {
+                renderTroop(gc, troopUnit, ownersColor.get(troopUnit.ownerName));
+            }
+        }
+
+        gc.clearRect(viewX, viewY, TILE_SIZE, TILE_SIZE);
+    }
+
+    public void clearTile(GraphicsContext gc, TileDTO tile) {
+        int viewX = tile.x * TILE_SIZE;
+        int viewY = tile.y * TILE_SIZE;
+
+        gc.clearRect(viewX, viewY, TILE_SIZE, TILE_SIZE);
+    }
+
+    public void renderSelection(GraphicsContext gc, EntityDTO entity) {
         int viewX = getEntityViewX(entity);
         int viewY = getEntityViewY(entity);
 
@@ -154,27 +173,27 @@ public class MapRenderer extends Renderer {
         clear(gc);
     }
 
-    public void renderAvailableMove(GraphicsContext gc, Tile tile) {
-        int viewX = tile.getX() * TILE_SIZE;
-        int viewY = tile.getY() * TILE_SIZE;
+    public void renderAvailableMove(GraphicsContext gc, TileDTO tile) {
+        int viewX = tile.x * TILE_SIZE;
+        int viewY = tile.y * TILE_SIZE;
 
         Image image = new Image("move_circle.png");
         gc.drawImage(image, viewX, viewY, TILE_SIZE, TILE_SIZE);
     }
 
-    public void renderAvailableMoves(GraphicsContext gc, Set<Tile> tiles) {
-        for (Tile tile: tiles) {
+    public void renderAvailableMoves(GraphicsContext gc, Set<TileDTO> tiles) {
+        for (TileDTO tile: tiles) {
             renderAvailableMove(gc, tile);
         }
     }
 
     // TODO implement
-    public void renderAvailableAttacks(GraphicsContext gc, Set<Tile> tiles) {
+    public void renderAvailableAttacks(GraphicsContext gc, Set<TileDTO> tiles) {
 
     }
 
     // TODO implement
-    public void renderAvailableAttack(GraphicsContext gc, Tile tile) {
+    public void renderAvailableAttack(GraphicsContext gc, TileDTO tile) {
 
     }
 }

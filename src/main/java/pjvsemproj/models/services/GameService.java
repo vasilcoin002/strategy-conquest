@@ -1,8 +1,8 @@
 package pjvsemproj.models.services;
 
-import pjvsemproj.models.game.maps.GameMap;
-import pjvsemproj.models.game.maps.Tile;
-import pjvsemproj.models.game.players.Player;
+import pjvsemproj.dto.GameDTO;
+import pjvsemproj.dto.PlayerDTO;
+import pjvsemproj.dto.TileDTO;
 
 import java.util.List;
 import java.util.Set;
@@ -19,23 +19,25 @@ public interface GameService {
 
     void ready();
 
-    GameMap getMap();
-
-    List<Player> getPlayers();
-
-    Player getCurrentPlayer();
-
-    Set<Tile> getAvailableTilesForMovement(String unitId);
-
     void moveUnit(String unitId, int x, int y);
 
     void attack(String attackerId, String targetId);
 
     void buyUnit(String cityId, String troopType);
-
     void upgradeCity(String cityId);
 
     void endTurn();
 
     void quit();
+
+    GameDTO getGameDTO();
+
+    int getMapWidth();
+    int getMapHeight();
+    TileDTO getTileDTO(int x, int y);
+
+    List<PlayerDTO> getPlayersDTO();
+    PlayerDTO getCurrentPlayerDTO();
+
+    Set<TileDTO> getAvailableTilesDTOForMovement(String unitId);
 }

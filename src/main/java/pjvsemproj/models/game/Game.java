@@ -14,6 +14,7 @@ import java.util.List;
  */
 public class Game {
     private final List<Player> players;
+    private Player currentPlayer;
     private final GameMap map;
 
     public Game(List<Player> players, GameMap map) {
@@ -42,5 +43,13 @@ public class Game {
 
     public GameMap getMap() {
         return map;
+    }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
     }
 }

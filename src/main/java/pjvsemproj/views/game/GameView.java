@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import pjvsemproj.dto.*;
 import pjvsemproj.models.entities.IGridEntity;
 import pjvsemproj.models.entities.cities.City;
 import pjvsemproj.models.entities.troopUnits.TroopUnit;
@@ -14,8 +15,7 @@ import pjvsemproj.models.game.maps.Tile;
 import pjvsemproj.models.game.players.Player;
 import pjvsemproj.views.game.renderers.*;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -36,36 +36,38 @@ public class GameView {
     private final Scene scene;
     private final BorderPane root;
 
-    private final GraphicsContext staticEntitiesGc;
-    private final GraphicsContext dynamicEntitiesGc;
+    private Map<String, Color> ownersColors;
+
+    private final GraphicsContext entitiesGc;
     private final GraphicsContext overlaysGc;
     private final MapRenderer mapRenderer;
 
     private final SidePanelView sidePanel;
 
-    private IGridEntity selectedEntity;
+    private EntityDTO selectedEntity;
 
     private BiConsumer<Integer, Integer> onGameAreaClickedAction;
 
-    public GameView(int mapModelWidth, int mapModelHeight,
-            List<Player> players, Player currentPlayer, Color player1Color, Color player2Color) {
-//        this.stage = stage;
+    public GameView(
+            GameDTO game,
+            Map<String, Color> ownersColors
+//            Color player1Color, Color player2Color
+    ) {
+        gameAreaWidth = game.mapWidth * TILE_SIZE;
+        gameAreaHeight = game.mapHeight * TILE_SIZE;
+        this.ownersColors = ownersColors;
 
-        gameAreaWidth = mapModelWidth * TILE_SIZE;
-        gameAreaHeight = mapModelHeight * TILE_SIZE;
-        Canvas staticEntitesCanvas = new Canvas(gameAreaWidth, gameAreaHeight);
-        Canvas dynamicEntitesCanvas = new Canvas(gameAreaWidth, gameAreaHeight);
+        Canvas entitiesCanvas = new Canvas(gameAreaWidth, gameAreaHeight);
         Canvas overlaysCanvas = new Canvas(gameAreaWidth, gameAreaHeight);
 
         overlaysCanvas.setOnMouseClicked(e -> {
             onGameAreaClickedAction.accept((int)e.getX(), (int)e.getY());
         });
 
-        staticEntitiesGc = staticEntitesCanvas.getGraphicsContext2D();
-        dynamicEntitiesGc = dynamicEntitesCanvas.getGraphicsContext2D();
+        entitiesGc = entitiesCanvas.getGraphicsContext2D();
         overlaysGc = overlaysCanvas.getGraphicsContext2D();
 
-        StackPane mapPane = new StackPane(staticEntitesCanvas, dynamicEntitesCanvas, overlaysCanvas);
+        StackPane mapPane = new StackPane(entitiesCanvas, overlaysCanvas);
         setBackground(mapPane);
 
         sidePanel = new SidePanelView();
@@ -79,29 +81,42 @@ public class GameView {
 
         mapRenderer = new MapRenderer();
 
-        Color ownerColor = player1Color;
-        for (Player player : players) {
-            List<City> cities = player.getCities();
-            List<TroopUnit> troops = player.getTroops();
-
-            mapRenderer.renderCities(staticEntitiesGc, cities, ownerColor);
-            mapRenderer.renderTroops(dynamicEntitiesGc, troops, ownerColor);
-            ownerColor = player2Color;
+//        Color ownerColor = player1Color;
+//        for (PlayerDTO player : players) {
+//            List<EntityDTO> cities = new ArrayList<>();
+//            for ()
+//            List<TroopUnit> troops = player.getTroops();
+//
+//            mapRenderer.renderCities(staticEntitiesGc, cities, ownerColor);
+//            mapRenderer.renderTroops(dynamicEntitiesGc, troops, ownerColor);
+//            ownerColor = player2Color;
+//        }
+        List<CityDTO> cities = new ArrayList<>();
+        List<TroopUnitDTO> troops = new ArrayList<>();
+        for (EntityDTO entity : game.entities) {
+            if (entity instanceof CityDTO city) {
+                cities.add(city);
+            } else if (entity instanceof TroopUnitDTO troopUnit) {
+                troops.add(troopUnit);
+            }
         }
 
-        sidePanel.updatePlayersBalance(players);
-        sidePanel.updateCurrentPlayer(currentPlayer);
+        mapRenderer.renderCities(entitiesGc, cities, ownersColors);
+        mapRenderer.renderTroops(entitiesGc, troops, ownersColors);
+
+        sidePanel.updatePlayersBalance(game.players);
+        sidePanel.updateCurrentPlayer(game.currentPlayer);
     }
 
     public void show(Stage stage) {
         stage.setScene(scene);
     }
 
-    public void updatePlayersBalance(List<Player> players) {
+    public void updatePlayersBalance(List<PlayerDTO> players) {
         sidePanel.updatePlayersBalance(players);
     }
 
-    public void updateCurrentPlayer(Player currentPlayer) {
+    public void updateCurrentPlayer(PlayerDTO currentPlayer) {
         sidePanel.updateCurrentPlayer(currentPlayer);
     }
 
@@ -123,11 +138,11 @@ public class GameView {
         pane.setBackground(getBackground());
     }
 
-    public IGridEntity getSelectedEntity() {
+    public EntityDTO getSelectedEntity() {
         return selectedEntity;
     }
 
-    public void setSelectedEntity(IGridEntity selectedEntity) {
+    public void setSelectedEntity(EntityDTO selectedEntity) {
         this.selectedEntity = selectedEntity;
 
         mapRenderer.clear(overlaysGc);
@@ -137,11 +152,12 @@ public class GameView {
         if (selectedEntity != null) {
             mapRenderer.renderSelection(overlaysGc, selectedEntity);
             sidePanel.updateEntityInfo(selectedEntity);
-            sidePanel.updateForTile(selectedEntity.getTile());
+            // TODO updateForTile
+//            sidePanel.updateForTile(selectedEntity.getTile());
         }
     }
 
-    public void showSelectedEntityAvailableMoves(Set<Tile> tilesToMove) {
+    public void showSelectedEntityAvailableMoves(Set<TileDTO> tilesToMove) {
         mapRenderer.renderAvailableMoves(overlaysGc, tilesToMove);
     }
 
@@ -150,30 +166,35 @@ public class GameView {
 
     }
 
-    public void updateTroopUnit(TroopUnit troopUnit, Color ownerColor) {
-        int hp = troopUnit.getHealth();
-
-        if (hp <= 0) {
-            mapRenderer.clearTroopUnit(dynamicEntitiesGc ,troopUnit);
-            if (selectedEntity == troopUnit) {
-                setSelectedEntity(null);
-            }
-        } else {
-            mapRenderer.renderTroop(
-                    dynamicEntitiesGc,
-                    troopUnit,
-                    ownerColor
-            );
-        }
+    public void updateTile(TileDTO tile) {
+        mapRenderer.clearTile(entitiesGc, tile);
+        mapRenderer.renderTile(entitiesGc, tile, ownersColors);
     }
 
-    public void clearTroopUnit(TroopUnit troopUnit) {
-        mapRenderer.clearTroopUnit(dynamicEntitiesGc, troopUnit);
-    }
+//    public void updateTroopUnit(TroopUnitDTO troopUnit, Color ownerColor) {
+//        int hp = troopUnit.hp;
+//
+//        if (hp <= 0) {
+//            mapRenderer.clearTroopUnit(entitiesGc ,troopUnit);
+//            if (selectedEntity == troopUnit) {
+//                setSelectedEntity(null);
+//            }
+//        } else {
+//            mapRenderer.renderTroop(
+//                    entitiesGc,
+//                    troopUnit,
+//                    ownerColor
+//            );
+//        }
+//    }
 
-    public void updateCity(City city, Color ownerColor) {
-        mapRenderer.renderCity(staticEntitiesGc, city, ownerColor);
-    }
+//    public void clearTroopUnit(TroopUnit troopUnit) {
+//        mapRenderer.clearTroopUnit(dynamicEntitiesGc, troopUnit);
+//    }
+
+//    public void updateCity(City city, Color ownerColor) {
+//        mapRenderer.renderCity(staticEntitiesGc, city, ownerColor);
+//    }
 
     public void setOnGameAreaClickedAction(BiConsumer<Integer, Integer> onGameAreaClickedAction) {
         this.onGameAreaClickedAction = onGameAreaClickedAction;

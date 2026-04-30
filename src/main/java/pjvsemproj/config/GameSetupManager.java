@@ -60,6 +60,8 @@ public class GameSetupManager {
         game.addPlayer(p1);
         game.addPlayer(p2);
 
+        game.setCurrentPlayer(p1);
+
         return game;
     }
 

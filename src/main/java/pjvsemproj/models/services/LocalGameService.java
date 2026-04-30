@@ -1,17 +1,20 @@
 package pjvsemproj.models.services;
 
+import pjvsemproj.dto.GameDTO;
+import pjvsemproj.dto.PlayerDTO;
+import pjvsemproj.dto.TileDTO;
 import pjvsemproj.models.entities.cities.City;
 import pjvsemproj.models.entities.troopUnits.TroopType;
 import pjvsemproj.models.entities.troopUnits.TroopUnit;
 import pjvsemproj.models.game.Game;
-import pjvsemproj.models.game.maps.GameMap;
 import pjvsemproj.models.game.maps.Tile;
 import pjvsemproj.models.game.players.Player;
 import pjvsemproj.models.managers.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
+import java.util.stream.Collectors;
 
 
 /**
@@ -21,7 +24,6 @@ import java.util.Set;
  */
 public class LocalGameService implements GameService {
     private final Game game;
-    private final GameMap map;
 
     private final MovementManager movementManager;
     private final CombatManager combatManager;
@@ -32,14 +34,13 @@ public class LocalGameService implements GameService {
 
     public LocalGameService(Game game) {
         this.game = game;
-        this.map = game.getMap();
 
         Player player1 = game.getPlayers().get(0);
         Player player2 = game.getPlayers().get(1);
         this.turnManager = new TurnManager(player1, player2);
 
-        this.movementManager = new MovementManager(this.map, turnManager.getCurrentPlayer());
-        this.combatManager = new CombatManager(this.map, turnManager.getCurrentPlayer());
+        this.movementManager = new MovementManager(this.game.getMap(), turnManager.getCurrentPlayer());
+        this.combatManager = new CombatManager(this.game.getMap(), turnManager.getCurrentPlayer());
         this.economyManager = new EconomyManager(turnManager.getCurrentPlayer());
         this.conquestManager = new ConquestManager(game.getPlayers(), turnManager.getCurrentPlayer());
 
@@ -125,34 +126,31 @@ public class LocalGameService implements GameService {
         conquestManager.addWinListener(listener);
     }
 
-
     @Override
     public void quit() {
         System.out.println("Game quit");
     }
 
-
-
     @Override
-    public GameMap getMap() {
-        return map;
+    public List<PlayerDTO> getPlayersDTO() {
+        List<PlayerDTO> playerDTOs = new ArrayList<>();
+        playerDTOs.add(new PlayerDTO(game.getPlayers().getFirst()));
+        playerDTOs.add(new PlayerDTO(game.getPlayers().getLast()));
+        return playerDTOs;
     }
 
     @Override
-    public List<Player> getPlayers() {
-        return game.getPlayers();
+    public PlayerDTO getCurrentPlayerDTO() {
+        return new PlayerDTO(turnManager.getCurrentPlayer());
     }
 
     @Override
-    public Player getCurrentPlayer() {
-        return turnManager.getCurrentPlayer();
-    }
-
-    @Override
-    public Set<Tile> getAvailableTilesForMovement(String unitId) {
-        return movementManager.getAvailableTilesForMovement(
-                findTroopById(unitId)
-        );
+    public Set<TileDTO> getAvailableTilesDTOForMovement(String unitId) {
+        Set<Tile> availableTiles = movementManager
+                .getAvailableTilesForMovement(findTroopById(unitId));
+        return availableTiles.stream()
+                .map(TileDTO::new)
+                .collect(Collectors.toSet());
     }
 
     private TroopUnit findTroopById(String id){
@@ -175,5 +173,26 @@ public class LocalGameService implements GameService {
             }
         }
         return null;
+    }
+
+
+    @Override
+    public GameDTO getGameDTO() {
+        return new GameDTO(game);
+    }
+
+    @Override
+    public int getMapWidth() {
+        return game.getMap().getWidth();
+    }
+
+    @Override
+    public int getMapHeight() {
+        return game.getMap().getHeight();
+    }
+
+    @Override
+    public TileDTO getTileDTO(int x, int y) {
+        return new TileDTO(game.getMap().getTile(x, y));
     }
 }

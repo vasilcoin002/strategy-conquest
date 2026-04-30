@@ -1,5 +1,8 @@
 package pjvsemproj.models.services;
 
+import pjvsemproj.dto.GameDTO;
+import pjvsemproj.dto.PlayerDTO;
+import pjvsemproj.dto.TileDTO;
 import pjvsemproj.models.game.maps.GameMap;
 import pjvsemproj.models.game.maps.Tile;
 import pjvsemproj.models.game.players.Player;
@@ -65,22 +68,37 @@ public class NetworkGameService implements GameService {
     }
 
     @Override
-    public GameMap getMap() {
+    public GameDTO getGameDTO() {
         return null;
     }
 
     @Override
-    public List<Player> getPlayers() {
+    public int getMapWidth() {
+        return 0;
+    }
+
+    @Override
+    public int getMapHeight() {
+        return 0;
+    }
+
+    @Override
+    public TileDTO getTileDTO(int x, int y) {
+        return null;
+    }
+
+    @Override
+    public List<PlayerDTO> getPlayersDTO() {
         return List.of();
     }
 
     @Override
-    public Player getCurrentPlayer() {
+    public PlayerDTO getCurrentPlayerDTO() {
         return null;
     }
 
     @Override
-    public Set<Tile> getAvailableTilesForMovement(String unitId) {
+    public Set<TileDTO> getAvailableTilesDTOForMovement(String unitId) {
         return Set.of();
     }
 }

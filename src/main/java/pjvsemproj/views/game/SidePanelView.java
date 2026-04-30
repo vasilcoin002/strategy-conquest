@@ -7,6 +7,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import pjvsemproj.dto.CityDTO;
+import pjvsemproj.dto.EntityDTO;
+import pjvsemproj.dto.PlayerDTO;
+import pjvsemproj.dto.TroopUnitDTO;
 import pjvsemproj.models.entities.IGridEntity;
 import pjvsemproj.models.entities.cities.City;
 import pjvsemproj.models.entities.troopUnits.TroopType;
@@ -120,18 +124,18 @@ public class SidePanelView {
         return root;
     }
 
-    public void updatePlayersBalance(List<Player> players) {
+    public void updatePlayersBalance(List<PlayerDTO> players) {
         ballanceLabel.setText(
                 "Balance:\n" +
-                players.getFirst().getName() + ": " + players.getFirst().getBalance() + "\n" +
-                players.getLast().getName() + ": " + players.getLast().getBalance() + "\n"
+                players.getFirst().name + ": " + players.getFirst().balance + "\n" +
+                players.getLast().name + ": " + players.getLast().balance + "\n"
         );
     }
 
-    public void updateCurrentPlayer(Player currentPlayer) {
+    public void updateCurrentPlayer(PlayerDTO currentPlayer) {
         if (currentPlayer != null) {
             currentPlayerLabel.setText(
-                    "Current Player: " + currentPlayer.getName()
+                    "Current Player: " + currentPlayer.name
             );
         }
     }
@@ -141,18 +145,18 @@ public class SidePanelView {
         actionMenuBox.getChildren().clear();
     }
 
-    public void updateEntityInfo(IGridEntity entity) {
+    public void updateEntityInfo(EntityDTO entity) {
         actionMenuBox.getChildren().clear();
 
-        if (entity instanceof City city) {
-            String ownerName = city.getOwner() != null ? city.getOwner().getName() : "Neutral";
-            entityInfoLabel.setText("City (" + city.getCityType() + ")\nOwner: " + ownerName);
+        if (entity instanceof CityDTO city) {
+            String ownerName = city.ownerName != null ? city.ownerName : "Neutral";
+            entityInfoLabel.setText("City (" + city.cityLevel + ")\nOwner: " + ownerName);
 
             // TODO: Later, your Controller will provide these buttons!
-            Button upgradeBtn = new Button("Upgrade City (" + city.getUpgradePrice() + "g)");
+            Button upgradeBtn = new Button("Upgrade City (" + city.upgradePrice + "g)");
             actionMenuBox.getChildren().add(upgradeBtn);
 
-            if (!city.getTile().isBlocked()) {
+            if (city.canSpawnTroops) {
                 Button buyMilitiaBtn = new Button("Buy " + TroopType.Militia.name()
                         + ": " + TroopType.Militia.getPrice() + " gold");
                 Button buyInfantryBtn = new Button("Buy " + TroopType.Infantry.name()
@@ -168,12 +172,12 @@ public class SidePanelView {
                 );
             }
 
-        } else if (entity instanceof TroopUnit troop) {
-            entityInfoLabel.setText("Troop: " + troop.getName() +
-                    "\nOwner: " + troop.getOwner().getName() +
-                    "\nHP: " + troop.getHealth() + " / " + troop.getMaxHealth() +
-                    "\nDamage: " + troop.getMinDamage() + "-" + troop.getMaxDamage() +
-                    "\nMoved: " + (troop.hasMovedThisTurn() ? "Yes" : "No"));
+        } else if (entity instanceof TroopUnitDTO troop) {
+            entityInfoLabel.setText("Troop: " + troop.entityType +
+                    "\nOwner: " + troop.ownerName +
+                    "\nHP: " + troop.hp + " / " + troop.maxHp +
+                    "\nDamage: " + troop.minDamage + "-" + troop.maxDamage +
+                    "\nMoved: " + (troop.hasMovedThisTurn ? "Yes" : "No"));
         }
     }
 

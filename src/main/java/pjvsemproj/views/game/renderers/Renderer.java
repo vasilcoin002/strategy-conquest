@@ -2,6 +2,7 @@ package pjvsemproj.views.game.renderers;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import pjvsemproj.dto.EntityDTO;
 import pjvsemproj.models.entities.IGridEntity;
 import pjvsemproj.models.game.maps.Tile;
 
@@ -12,23 +13,23 @@ import static pjvsemproj.views.ViewConstants.TILE_SIZE;
  */
 public abstract class Renderer {
 
-    public Tile getTile(IGridEntity entity) {
-        return entity.getTile();
+//    public Tile getTile(IGridEntity entity) {
+//        return entity.getTile();
+//    }
+
+    public int getEntityGameX(EntityDTO entity) {
+        return entity.x;
     }
 
-    public int getEntityGameX(IGridEntity entity) {
-        return getTile(entity).getX();
-    }
-
-    public int getEntityViewX(IGridEntity entity) {
+    public int getEntityViewX(EntityDTO entity) {
         return getEntityGameX(entity) * TILE_SIZE;
     }
 
-    public int getEntityGameY(IGridEntity entity) {
-        return getTile(entity).getY();
+    public int getEntityGameY(EntityDTO entity) {
+        return entity.y;
     }
 
-    public int getEntityViewY(IGridEntity entity) {
+    public int getEntityViewY(EntityDTO entity) {
         return getEntityGameY(entity) * TILE_SIZE;
     }
 
