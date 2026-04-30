@@ -42,4 +42,5 @@ public interface GameService {
     PlayerDTO getCurrentPlayerDTO();
 
     Set<TileDTO> getAvailableTilesDTOForMovement(String unitId);
+    Set<TileDTO> getAvailableTilesDTOForAttack(String unitId);
 }

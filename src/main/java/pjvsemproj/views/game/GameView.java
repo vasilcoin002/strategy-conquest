@@ -21,9 +21,6 @@ import java.util.function.Consumer;
 import static pjvsemproj.views.ViewConstants.GAME_SIDE_PANEL_WIDTH;
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
-// TODO fix side menu doesn't show two entities on one tile
-// TODO fix changing selection from entity to entity works incorrectly
-//  (now it works only for entity-empty-entity, but doesn't work for entity-entity)
 /**
  * Main game UI class.
  *
@@ -151,7 +148,7 @@ public class GameView {
     }
 
     // TODO implement
-    public void showSelectedEntityAvailableAttacks(Set<Tile> tilesToAttack) {
+    public void showSelectedEntityAvailableAttacks(Set<TileDTO> tilesToAttack) {
 
     }
 

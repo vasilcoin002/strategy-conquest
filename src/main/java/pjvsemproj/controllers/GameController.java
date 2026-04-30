@@ -1,16 +1,18 @@
 package pjvsemproj.controllers;
 
+import pjvsemproj.dto.CityDTO;
 import pjvsemproj.dto.EntityDTO;
 import pjvsemproj.dto.TileDTO;
 import pjvsemproj.dto.TroopUnitDTO;
 import pjvsemproj.models.services.GameService;
 import pjvsemproj.views.game.GameView;
 
-import java.util.List;
 import java.util.Set;
 
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
+// TODO fix side menu doesn't show two entities on one tile
+// TODO cancel selection when is clicked on the selected entity second time
 /**
  * Main controller connecting UI with game logic.
  */
@@ -37,37 +39,58 @@ public class GameController {
         });
     }
 
-//    public Color getPlayerColor(PlayerDTO player) {
-//        // Assume PlayerDTO has a getter for the name or ID to check who is player 1
-//        if (gameService.getPlayersDTO().getFirst().name.equals(player.name)) return Color.BLUE;
-//        else return Color.ORANGE;
-//    }
-
     private void handleGameAreaClick(int viewX, int viewY) {
         int x = viewX / TILE_SIZE;
         int y = viewY / TILE_SIZE;
-
         TileDTO tile = gameService.getTileDTO(x, y);
-        List<EntityDTO> entitiesOnTile = tile.entities;
 
-        if (entitiesOnTile.isEmpty()) {
-            if (selectedEntityId != null) {
-                EntityDTO selectedEntity = gameService.getEntityDTO(selectedEntityId);
-                if (selectedEntity instanceof TroopUnitDTO troopUnit) {
-                    moveTroop(selectedEntityId, x, y);
-                }
-                // Note: The UI redraw should happen via the Service listeners discussed previously
+        // Handle empty tile
+        if (tile.entities.isEmpty()) {
+            handleEmptyTileClick(x, y);
+            return;
+        }
+
+        // Handle occupied tile
+        handleOccupiedTileClick(tile);
+    }
+
+    private void handleEmptyTileClick(int x, int y) {
+        if (selectedEntityId == null) return;
+
+        EntityDTO selectedEntity = gameService.getEntityDTO(selectedEntityId);
+        if (selectedEntity instanceof TroopUnitDTO) {
+            moveTroop(selectedEntityId, x, y);
+        }
+        setSelectedEntityId(null);
+    }
+
+    private void handleOccupiedTileClick(TileDTO targetTile) {
+        if (selectedEntityId == null) {
+            setSelectedEntityId(targetTile.entities.getLast().id);
+            return;
+        }
+
+        EntityDTO currentEntity = gameService.getEntityDTO(selectedEntityId);
+        EntityDTO targetEntity = targetTile.entities.getLast();
+        if (currentEntity instanceof TroopUnitDTO currentTroopUnit) {
+            Set<TileDTO> tilesToMove = gameService.getAvailableTilesDTOForMovement(currentTroopUnit.id);
+            Set<TileDTO> tilesToAttack = gameService.getAvailableTilesDTOForAttack(currentTroopUnit.id);
+
+            // if troop can't move on or attack target tile
+            if (!tilesToMove.contains(targetTile) && !tilesToAttack.contains(targetTile)) {
+                setSelectedEntityId(targetTile.entities.getLast().id);
+                return;
             }
-            setSelectedEntityId(null);
-        } else {
-            EntityDTO targetEntity = entitiesOnTile.getLast();
 
-            if (selectedEntityId != null && !selectedEntityId.equals(targetEntity.id)) {
-                // 5. Delegate attacking/conquering to the service
-                gameService.attack(selectedEntityId, targetEntity.id);
-            } else {
-                // Select the entity
-                setSelectedEntityId(targetEntity.id);
+            // if troop can move on target tile
+            if (tilesToMove.contains(targetTile)) {
+                moveTroop(selectedEntityId, targetTile.x, targetTile.y);
+                return;
+            }
+            // if troop can attack target tile
+            if (tilesToAttack.contains(targetTile)
+                    && targetEntity instanceof TroopUnitDTO targetTroopUnit) {
+                attackTroop(currentTroopUnit.id, targetTroopUnit.id);
             }
         }
     }
@@ -80,8 +103,10 @@ public class GameController {
          view.setSelectedEntity(entity);
 
         if (entityId != null) {
-            Set<TileDTO> availableTiles = gameService.getAvailableTilesDTOForMovement(entityId);
-            view.showSelectedEntityAvailableMoves(availableTiles);
+            Set<TileDTO> tilesToMove = gameService.getAvailableTilesDTOForMovement(entityId);
+            Set<TileDTO> tilesToAttack = gameService.getAvailableTilesDTOForAttack(entityId);
+            view.showSelectedEntityAvailableMoves(tilesToMove);
+            view.showSelectedEntityAvailableAttacks(tilesToAttack);
         }
     }
 
@@ -90,15 +115,36 @@ public class GameController {
         int oldX = troopUnit.x;
         int oldY = troopUnit.y;
         gameService.moveUnit(troopUnitId, x, y);
-        TileDTO oldTile = gameService.getTileDTO(oldX, oldY);
-        TileDTO newTile = gameService.getTileDTO(x, y);
-        view.updateTile(oldTile);
-        view.updateTile(newTile);
+        updateTile(oldX, oldY);
+        updateTile(x, y);
+        setSelectedEntityId(null);
     }
 
-//    private void conquerCity(TroopUnit conquerer, City city) {
-//        OwnershipHelper.transferCity(city, conquerer.getOwner());
-//        view.updateCity(city, getPlayerColor(conquerer.getOwner()));
-//    }
+    private void attackTroop(String attackerId, String targetId) {
+        gameService.attack(attackerId, targetId);
+        TroopUnitDTO target = (TroopUnitDTO) gameService.getEntityDTO(targetId);
+        updateTile(target.x, target.y);
+        setSelectedEntityId(null);
+    }
 
+    private void conquerCity(TroopUnitDTO conquerer, CityDTO city) {
+        // TODO finish
+    }
+
+    public void updateTile(int x, int y) {
+        TileDTO tile = gameService.getTileDTO(x, y);
+        view.updateTile(tile);
+    }
+
+    public GameView getView() {
+        return view;
+    }
+
+    public GameService getGameService() {
+        return gameService;
+    }
+
+    public String getSelectedEntityId() {
+        return selectedEntityId;
+    }
 }

@@ -6,6 +6,7 @@ import pjvsemproj.models.entities.troopUnits.TroopUnit;
 import pjvsemproj.models.game.maps.Tile;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -38,5 +39,17 @@ public class TileDTO {
         }
         // Fallback for generic entities (if you add obstacles/mountains later)
         return new EntityDTO(entity.getId(), "Unknown", entity.getTile().getX(), entity.getTile().getY(), "None");
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        TileDTO tileDTO = (TileDTO) o;
+        return x == tileDTO.x && y == tileDTO.y;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
     }
 }

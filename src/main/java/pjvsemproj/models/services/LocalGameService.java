@@ -152,6 +152,15 @@ public class LocalGameService implements GameService {
                 .collect(Collectors.toSet());
     }
 
+    @Override
+    public Set<TileDTO> getAvailableTilesDTOForAttack(String unitId) {
+        Set<Tile> availableTiles = combatManager
+                .getAttackableTiles(findTroopById(unitId));
+        return availableTiles.stream()
+                .map(TileDTO::new)
+                .collect(Collectors.toSet());
+    }
+
     private TroopUnit findTroopById(String id) {
         for (Player player : game.getPlayers()) {
             for (TroopUnit troopUnit : player.getTroops()) {

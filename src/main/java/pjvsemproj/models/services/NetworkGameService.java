@@ -107,4 +107,9 @@ public class NetworkGameService implements GameService {
     public Set<TileDTO> getAvailableTilesDTOForMovement(String unitId) {
         return Set.of();
     }
+
+    @Override
+    public Set<TileDTO> getAvailableTilesDTOForAttack(String unitId) {
+        return Set.of();
+    }
 }
