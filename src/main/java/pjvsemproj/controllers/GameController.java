@@ -11,7 +11,6 @@ import java.util.Set;
 
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
-// TODO fix side menu buttons view entity (view city and view troop) doesn't work
 // TODO cancel selection when is clicked on the selected entity second time
 // TODO on escape pressed: cancel selection or pop up dialog window
 /**
@@ -22,7 +21,6 @@ public class GameController {
     private final GameView view;
     private final GameService gameService;
 
-    // 1. Store the ID of the entity, not the raw IGridEntity object
     private String selectedEntityId;
 
     public GameController(GameService gameService, GameView view) {
@@ -30,10 +28,11 @@ public class GameController {
         this.view = view;
 
         view.setOnGameAreaClickedAction(this::handleGameAreaClick);
+        view.setOnEntitySelectedAction(entity -> setSelectedEntityId(entity.id));
 
         view.setOnNextTurnAction(() -> {
             gameService.endTurn();
-            // 2. Use DTO methods
+
             view.updatePlayersBalance(gameService.getPlayersDTO());
             view.updateCurrentPlayer(gameService.getCurrentPlayerDTO());
             setSelectedEntityId(selectedEntityId);
@@ -104,7 +103,6 @@ public class GameController {
         EntityDTO entity = gameService.getEntityDTO(entityId);
         TileDTO tile = gameService.getTileDTO(entity.x, entity.y);
 
-        // Ensure your GameView is updated to accept an ID/DTO instead of IGridEntity
         view.setSelectedEntity(entity);
         view.updateTileEntitiesInfo(tile);
 
