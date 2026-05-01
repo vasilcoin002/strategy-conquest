@@ -44,6 +44,7 @@ public class MainMenuController {
         System.out.println("Triggered Local Game Load. Logging Enabled: " + enableLogs);
 
         // 3. Continue loading the game...
+        director.showLocalGame();
     }
     /**
      * Handles multiplayer game start.

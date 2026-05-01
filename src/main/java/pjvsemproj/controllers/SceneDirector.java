@@ -3,8 +3,14 @@ package pjvsemproj.controllers;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import pjvsemproj.config.GameSetupManager;
 import pjvsemproj.dto.PlayerDTO;
+import pjvsemproj.models.game.Game;
+import pjvsemproj.models.game.maps.GameMap;
+import pjvsemproj.models.game.players.HumanPlayer;
+import pjvsemproj.models.game.players.Player;
 import pjvsemproj.models.services.GameService;
+import pjvsemproj.models.services.LocalGameService;
 import pjvsemproj.views.MainMenuView;
 import pjvsemproj.views.game.GameView;
 
@@ -70,4 +76,19 @@ public class SceneDirector {
         stage.centerOnScreen();
         stage.show();
     }
+
+    public void showLocalGame() {
+        GameMap map = new GameMap(10, 10);
+
+        Player p1 = new HumanPlayer("Player 1", 100);
+        Player p2 = new HumanPlayer("Player 2", 100);
+
+        GameSetupManager setupManager = new GameSetupManager();
+        Game game = setupManager.setupTestMatch(map, p1, p2);
+
+        GameService gameService = new LocalGameService(game);
+
+        showGame(gameService);
+    }
+
 }
