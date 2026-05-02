@@ -11,6 +11,7 @@ import java.util.Set;
 
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
+// TODO fix city doesn't display buy buttons
 // TODO cancel selection when is clicked on the selected entity second time
 // TODO on escape pressed: cancel selection or pop up dialog window
 /**
@@ -34,7 +35,7 @@ public class GameController {
             gameService.endTurn();
 
             view.updatePlayersBalance(gameService.getPlayersDTO());
-            view.updateCurrentPlayer(gameService.getCurrentPlayerDTO());
+            view.updateCurrentPlayer(gameService.getCurrentPlayerDTO().name);
             setSelectedEntityId(selectedEntityId);
         });
     }

@@ -11,10 +11,7 @@ import pjvsemproj.dto.*;
 import pjvsemproj.models.game.maps.Tile;
 import pjvsemproj.views.game.renderers.MapRenderer;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -91,7 +88,7 @@ public class GameView {
         mapRenderer.renderTroops(entitiesGc, troops, ownersColors);
 
         sidePanel.updatePlayersBalance(game.players);
-        sidePanel.updateCurrentPlayer(game.currentPlayer);
+        sidePanel.updateCurrentPlayer(game.currentPlayerName);
     }
 
     public void show(Stage stage) {
@@ -102,8 +99,8 @@ public class GameView {
         sidePanel.updatePlayersBalance(players);
     }
 
-    public void updateCurrentPlayer(PlayerDTO currentPlayer) {
-        sidePanel.updateCurrentPlayer(currentPlayer);
+    public void updateCurrentPlayer(String currentPlayerName) {
+        sidePanel.updateCurrentPlayer(currentPlayerName);
     }
 
     public void updateTileEntitiesInfo(TileDTO tile) {

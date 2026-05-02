@@ -4,9 +4,10 @@ import pjvsemproj.models.entities.troopUnits.TroopUnit;
 
 public class TroopUnitDTO extends EntityDTO {
     public final int hp;
-    public final int maxHp;
-    public final int minDamage;
-    public final int maxDamage;
+    // adding transient to tell Gson to not serialize it
+    public final transient int maxHp;
+    public final transient int minDamage;
+    public final transient int maxDamage;
     public final boolean hasMovedThisTurn;
 
     public TroopUnitDTO(

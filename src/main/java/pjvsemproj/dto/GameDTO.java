@@ -16,14 +16,17 @@ public class GameDTO {
     public final int mapHeight;
     public final List<EntityDTO> entities;
     public final List<PlayerDTO> players;
-    public PlayerDTO currentPlayer;
+    public String currentPlayerName;
 
-    public GameDTO(int mapWidth, int mapHeight, List<EntityDTO> entities, List<PlayerDTO> players, PlayerDTO currentPlayer) {
+    public GameDTO(
+            int mapWidth, int mapHeight, List<EntityDTO> entities,
+            List<PlayerDTO> players, String currentPlayerName
+    ) {
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
         this.entities = entities;
         this.players = players;
-        this.currentPlayer = currentPlayer;
+        this.currentPlayerName = currentPlayerName;
     }
 
     public GameDTO(Game game) {
@@ -34,7 +37,7 @@ public class GameDTO {
         this.players.add(new PlayerDTO(game.getPlayers().getFirst()));
         this.players.add(new PlayerDTO(game.getPlayers().getLast()));
 
-        this.currentPlayer = new PlayerDTO(game.getCurrentPlayer());
+        this.currentPlayerName = new PlayerDTO(game.getCurrentPlayer()).name;
 
         this.entities = new ArrayList<>();
         for (Player player: game.getPlayers()) {

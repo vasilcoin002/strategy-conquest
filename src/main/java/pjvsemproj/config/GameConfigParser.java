@@ -1,5 +1,8 @@
 package pjvsemproj.config;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import pjvsemproj.dto.EntityDTO;
 import pjvsemproj.dto.GameDTO;
 
 import java.io.*;
@@ -9,23 +12,29 @@ import java.io.*;
  * and returns data for game setup manager to set up game
  */
 public class GameConfigParser {
-    // TODO add methods which parse config file
-    // TODO create GameConfigSaver
+    private final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(EntityDTO.class, new EntityDTODeserializer())
+            .setPrettyPrinting() // Makes the saved JSON file readable for humans
+            .create();
     /**
      * Reads a level file and translates it into raw configuration data.
      */
     public GameDTO parseLevelConfig(String filePath) {
-        try (
-                BufferedReader br = new BufferedReader(new FileReader(filePath));
-//                PrintWriter pw = new PrintWriter("output.txt");
-        ) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                // TODO finish method
-            }
+        try (FileReader reader = new FileReader(filePath)) {
+            return gson.fromJson(reader, GameDTO.class);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to load config file", e);
         }
-        return null;
+    }
+
+    /**
+     * Reads game state and writes it into file
+     */
+    public void saveLevelConfig(GameDTO gameDTO, String filePath) {
+        try (FileWriter writer = new FileWriter(filePath)) {
+            gson.toJson(gameDTO, writer);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to save config file", e);
+        }
     }
 }

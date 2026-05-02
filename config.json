@@ -1,0 +1,51 @@
+{
+  "mapWidth": 20,
+  "mapHeight": 20,
+  "currentPlayerName": "Vasya",
+  "players": [
+    {
+      "name": "Vasya",
+      "balance": 25
+    },
+    {
+      "name": "Ivan",
+      "balance": 25
+    }
+  ],
+  "entities": [
+    {
+      "entityType": "City",
+      "id": "city_vasya_1",
+      "x": 2,
+      "y": 2,
+      "ownerName": "Vasya",
+      "cityLevel": "LEVEL_2"
+    },
+    {
+      "entityType": "Infantry",
+      "id": "troop_vasya_1",
+      "x": 3,
+      "y": 2,
+      "ownerName": "Vasya",
+      "hp": 35,
+      "hasMovedThisTurn": true
+    },
+    {
+      "entityType": "City",
+      "id": "city_ivan_1",
+      "x": 18,
+      "y": 18,
+      "ownerName": "Ivan",
+      "cityLevel": "LEVEL_1"
+    },
+    {
+      "entityType": "Artillery",
+      "id": "troop_ivan_1",
+      "x": 18,
+      "y": 17,
+      "ownerName": "Ivan",
+      "hp": 8,
+      "hasMovedThisTurn": false
+    }
+  ]
+}

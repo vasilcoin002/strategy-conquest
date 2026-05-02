@@ -128,10 +128,10 @@ public class SidePanelView {
         );
     }
 
-    public void updateCurrentPlayer(PlayerDTO currentPlayer) {
-        if (currentPlayer != null) {
+    public void updateCurrentPlayer(String currentPlayerName) {
+        if (currentPlayerName != null) {
             currentPlayerLabel.setText(
-                    "Current Player: " + currentPlayer.name
+                    "Current Player: " + currentPlayerName
             );
         }
     }
