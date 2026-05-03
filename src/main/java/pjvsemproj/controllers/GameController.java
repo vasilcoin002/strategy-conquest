@@ -25,6 +25,11 @@ public class GameController {
 
         view.setOnGameAreaClickedAction(this::handleGameAreaClick);
         view.setOnEntitySelectedAction(entity -> setSelectedEntityId(entity.id));
+        view.setOnQuitGameAction(this::handleQuitGameRequest);
+        // Wire up the save action conditionally
+        if (isLocalGame()) {
+            view.setOnSaveGameAction(this::handleSaveGameRequest);
+        }
 
         view.setOnNextTurnAction(() -> {
             gameService.endTurn();
@@ -33,11 +38,6 @@ public class GameController {
             view.updateCurrentPlayer(gameService.getCurrentPlayerDTO().name);
             setSelectedEntityId(selectedEntityId);
         });
-
-        // Wire up the save action conditionally
-        if (isLocalGame()) {
-            view.setOnSaveGameAction(this::handleSaveGameRequest);
-        }
     }
 
     private void handleGameAreaClick(int viewX, int viewY) {
@@ -118,6 +118,10 @@ public class GameController {
                 }
             }
         });
+    }
+
+    public void handleQuitGameRequest() {
+        sceneDirector.showMainMenu();
     }
 
     public void setSelectedEntityId(String entityId) {
