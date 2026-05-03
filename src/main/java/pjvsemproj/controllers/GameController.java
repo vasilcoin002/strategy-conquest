@@ -3,13 +3,15 @@ package pjvsemproj.controllers;
 import pjvsemproj.config.GameConfigParser;
 import pjvsemproj.dto.*;
 import pjvsemproj.models.services.GameService;
-import pjvsemproj.models.services.LocalGameService;
 import pjvsemproj.views.game.GameView;
 
 import java.util.Set;
 
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
+/**
+ * Main controller connecting UI with game logic.
+ */
 public class GameController {
 
     private final GameView view;
@@ -25,11 +27,9 @@ public class GameController {
 
         view.setOnGameAreaClickedAction(this::handleGameAreaClick);
         view.setOnEntitySelectedAction(entity -> setSelectedEntityId(entity.id));
+
+        view.setOnSaveGameAction(this::handleSaveGameRequest);
         view.setOnQuitGameAction(this::handleQuitGameRequest);
-        // Wire up the save action conditionally
-        if (isLocalGame()) {
-            view.setOnSaveGameAction(this::handleSaveGameRequest);
-        }
 
         view.setOnNextTurnAction(() -> {
             gameService.endTurn();
@@ -99,19 +99,13 @@ public class GameController {
         setSelectedEntityId(targetEntity.id);
     }
 
-    public boolean isLocalGame() {
-        return gameService instanceof LocalGameService;
-    }
-
     public void handleSaveGameRequest() {
         sceneDirector.showSaveFileDialog(filePath -> {
             if (filePath != null) {
                 try {
                     GameDTO saveState = gameService.getGameDTO();
-
                     GameConfigParser parser = new GameConfigParser();
                     parser.saveLevelConfig(saveState, filePath);
-
                     System.out.println("Game saved successfully to: " + filePath);
                 } catch (Exception e) {
                     System.err.println("Failed to save game: " + e.getMessage());

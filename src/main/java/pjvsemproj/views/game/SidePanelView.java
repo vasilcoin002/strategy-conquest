@@ -15,11 +15,15 @@ import java.util.function.Consumer;
 
 import static pjvsemproj.views.ViewConstants.GAME_SIDE_PANEL_WIDTH;
 
+/**
+ * UI panel displaying player info and actions.
+ * Allows interaction with selected entities.
+ */
 public class SidePanelView {
 
     private final VBox root;
     private final Button quitBtn;
-    private Button saveBtn; // New save button
+    private final Button saveBtn;
     private final Label currentPlayerLabel;
     private final Label ballanceLabel;
     private final HBox switcherBox;
@@ -28,11 +32,11 @@ public class SidePanelView {
     private final Button nextTurnBtn;
 
     private Runnable onQuitGameAction;
-    private Runnable onSaveGameAction; // New save action
+    private Runnable onSaveGameAction;
     private Consumer<EntityDTO> onEntitySelectedAction;
     private Runnable onNextTurnAction;
 
-    public SidePanelView(boolean isLocalGame) {
+    public SidePanelView() {
         root = new VBox(15);
         root.setPadding(new Insets(20));
         root.setPrefWidth(GAME_SIDE_PANEL_WIDTH);
@@ -40,25 +44,24 @@ public class SidePanelView {
 
         // Top Buttons Container
         HBox topButtonsBox = new HBox(10);
+
+        saveBtn = new Button("Save Game");
+        saveBtn.setOnAction(e -> {
+            if (onSaveGameAction != null) onSaveGameAction.run();
+        });
+
         quitBtn = new Button("Quit game");
         quitBtn.setOnAction(e -> {
             if (onQuitGameAction != null) onQuitGameAction.run();
         });
 
-        if (isLocalGame) {
-            saveBtn = new Button("Save Game");
-            saveBtn.setOnAction(e -> {
-                if (onSaveGameAction != null) onSaveGameAction.run();
-            });
-            topButtonsBox.getChildren().addAll(saveBtn, quitBtn);
-        } else {
-            topButtonsBox.getChildren().add(quitBtn);
-        }
+        topButtonsBox.getChildren().addAll(saveBtn, quitBtn);
 
         currentPlayerLabel = new Label("Current Player: ");
         currentPlayerLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
 
         ballanceLabel = new Label("Balance: ");
+
         switcherBox = new HBox(10);
 
         entityInfoLabel = new Label("Selected: None");
@@ -72,15 +75,16 @@ public class SidePanelView {
         nextTurnBtn = new Button("Next Turn");
         nextTurnBtn.setMaxWidth(Double.MAX_VALUE);
         nextTurnBtn.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-base: #ff7e67; -fx-padding: 8px;");
-
         nextTurnBtn.setOnAction(e -> {
             if (onNextTurnAction != null) onNextTurnAction.run();
         });
 
-        // Add topButtonsBox instead of just quitBtn
         root.getChildren().addAll(topButtonsBox, currentPlayerLabel, ballanceLabel, switcherBox, entityInfoLabel, actionMenuBox, spacer, nextTurnBtn);
     }
 
+    /**
+     * Reads the tile's entities list and builds the switcher if anything is there.
+     */
     public void updateForTile(TileDTO tile) {
         switcherBox.getChildren().clear();
         actionMenuBox.getChildren().clear();
@@ -186,7 +190,6 @@ public class SidePanelView {
         this.onQuitGameAction = onQuitGameAction;
     }
 
-    // New setter for the save action
     public void setOnSaveGameAction(Runnable onSaveGameAction) {
         this.onSaveGameAction = onSaveGameAction;
     }

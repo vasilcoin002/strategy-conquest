@@ -21,6 +21,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
+/**
+ * Responsible for switching between different application scenes.
+ */
 public class SceneDirector {
     private final Stage stage;
 
@@ -46,17 +49,15 @@ public class SceneDirector {
         colors.put(players.getFirst().name, Color.BLUE);
         colors.put(players.getLast().name, Color.ORANGE);
 
-        // Check if the service is a LocalGameService to tell the View
-        boolean isLocalGame = gameService instanceof LocalGameService;
-
         GameView gameView = new GameView(
                 gameService.getGameDTO(),
-                colors,
-                isLocalGame
+                colors
         );
-        GameController controller = new GameController(gameService, gameView, this);
 
         gameView.show(stage);
+
+        GameController controller = new GameController(gameService, gameView, this);
+
         stage.centerOnScreen();
         stage.show();
     }
