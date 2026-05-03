@@ -62,24 +62,18 @@ public class SceneDirector {
     }
 
     public void showLocalGame() {
-        GameMap map = new GameMap(10, 10);
-
-        Player p1 = new HumanPlayer("Player 1", 100);
-        Player p2 = new HumanPlayer("Player 2", 100);
-
         GameSetupManager setupManager = new GameSetupManager();
-        Game game = setupManager.loadGame("savegame.json");
+        Game game = setupManager.loadGame("config.json");
 
         GameService gameService = new LocalGameService(game);
 
         showGame(gameService);
     }
 
-    // New Dialog specifically for grabbing the save file path!
     public void showSaveFileDialog(Consumer<String> onFileSelected) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save Game");
-        fileChooser.setInitialFileName("savegame.json");
+        fileChooser.setInitialFileName("config.json");
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("JSON Files", "*.json")
         );
