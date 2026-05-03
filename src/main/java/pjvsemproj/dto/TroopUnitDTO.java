@@ -9,11 +9,12 @@ public class TroopUnitDTO extends EntityDTO {
     public final transient int minDamage;
     public final transient int maxDamage;
     public final boolean hasMovedThisTurn;
+    public final boolean hasAttackedThisTurn;
 
     public TroopUnitDTO(
             String id, String entityType, int x, int y, String ownerName,
             int hp, int maxHp, int minDamage, int maxDamage,
-            boolean hasMovedThisTurn
+            boolean hasMovedThisTurn, boolean hasAttackedThisTurn
     ) {
         super(id, entityType, x, y, ownerName);
         this.hp = hp;
@@ -21,6 +22,7 @@ public class TroopUnitDTO extends EntityDTO {
         this.minDamage = minDamage;
         this.maxDamage = maxDamage;
         this.hasMovedThisTurn = hasMovedThisTurn;
+        this.hasAttackedThisTurn = hasAttackedThisTurn;
     }
 
     public TroopUnitDTO(TroopUnit troop) {
@@ -37,5 +39,6 @@ public class TroopUnitDTO extends EntityDTO {
         this.minDamage = troop.getMinDamage();
         this.maxDamage = troop.getMaxDamage();
         this.hasMovedThisTurn = troop.hasMovedThisTurn();
+        this.hasAttackedThisTurn = troop.hasAttackedThisTurn();
     }
 }

@@ -1,16 +1,22 @@
 package pjvsemproj.config;
 
+import pjvsemproj.dto.*;
 import pjvsemproj.models.entities.cities.City;
 import pjvsemproj.models.entities.cities.CityType;
 import pjvsemproj.models.entities.troopUnits.TroopType;
 import pjvsemproj.models.entities.troopUnits.TroopUnit;
 import pjvsemproj.models.game.Game;
+import pjvsemproj.models.game.players.HumanPlayer;
 import pjvsemproj.models.game.players.Player;
 import pjvsemproj.models.managers.utils.GridPositionHelper;
 import pjvsemproj.models.managers.utils.OwnershipHelper;
 import pjvsemproj.models.game.maps.GameMap;
 import pjvsemproj.models.game.maps.Tile;
 
+import java.util.HashMap;
+import java.util.Map;
+
+// TODO write unit tests
 /**
  * Responsible for initializing game state.
  *
@@ -50,12 +56,6 @@ public class GameSetupManager {
         OwnershipHelper.addTroopUnitToPlayer(p2StartUnit, p2);
         GridPositionHelper.placeEntity(p2StartUnit, p2CityTile);
 
-
-//        City neutralCity = new City(CityType.LEVEL_1); // No owner
-//        // Middle of the map
-//        Tile neutralTile = map.getTile(map.getWidth() / 2, map.getHeight() / 2);
-//        GridPositionHelper.placeEntity(neutralCity, neutralTile);
-
         Game game = new Game(map);
         game.addPlayer(p1);
         game.addPlayer(p2);
@@ -65,10 +65,65 @@ public class GameSetupManager {
         return game;
     }
 
+    // TODO add checks for valid values
     /**
      * Reads a level file and creates a game from those data.
      */
     public Game loadGame(String levelFilePath) {
-        return null;
+        GameDTO gameDTO = parser.parseLevelConfig(levelFilePath);
+        return createGameFromDTO(gameDTO);
+    }
+
+    private Game createGameFromDTO(GameDTO dto) {
+        GameMap map = new GameMap(dto.mapWidth, dto.mapHeight);
+        Game game = new Game(map);
+
+        // using a Map so we can easily find owners for the entities later
+        Map<String, Player> loadedPlayers = new HashMap<>();
+
+        for (PlayerDTO playerDTO : dto.players) {
+            Player player = new HumanPlayer(playerDTO.name, playerDTO.balance);
+            game.addPlayer(player);
+            loadedPlayers.put(player.getName(), player);
+        }
+
+        Player currentPlayer = loadedPlayers.get(dto.currentPlayerName);
+        if (currentPlayer != null) {
+            game.setCurrentPlayer(currentPlayer);
+        } else {
+            System.err.println("Warning: Current player from save not found. Defaulting to Player 1.");
+            game.setCurrentPlayer(game.getPlayers().getFirst());
+        }
+
+        for (EntityDTO entityDTO : dto.entities) {
+            Tile tile = map.getTile(entityDTO.x, entityDTO.y);
+            Player owner = loadedPlayers.get(entityDTO.ownerName);
+
+            if (entityDTO instanceof CityDTO cityDTO) {
+                CityType type = CityType.valueOf(cityDTO.cityLevel);
+                City city = new City(tile, type);
+
+                GridPositionHelper.placeEntity(city, tile);
+                OwnershipHelper.transferCity(city, owner);
+
+            } else if (entityDTO instanceof TroopUnitDTO troopDTO) {
+                TroopType type = TroopType.valueOf(troopDTO.entityType);
+
+                TroopUnit troop = new TroopUnit(
+                        type, tile,
+                        troopDTO.hasMovedThisTurn, troopDTO.hasAttackedThisTurn
+                );
+
+                troop.setHealth(troopDTO.hp);
+                troop.setHasMovedThisTurn(troopDTO.hasMovedThisTurn);
+                troop.setHasAttackedThisTurn(troopDTO.hasAttackedThisTurn);
+
+                // Bind it to the game state
+                GridPositionHelper.placeEntity(troop, tile);
+                OwnershipHelper.addTroopUnitToPlayer(troop, owner);
+            }
+        }
+
+        return game;
     }
 }

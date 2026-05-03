@@ -173,7 +173,8 @@ public class SidePanelView {
                     "\nOwner: " + troop.ownerName +
                     "\nHP: " + troop.hp + " / " + troop.maxHp +
                     "\nDamage: " + troop.minDamage + "-" + troop.maxDamage +
-                    "\nMoved: " + (troop.hasMovedThisTurn ? "Yes" : "No"));
+                    "\nMoved: " + (troop.hasMovedThisTurn ? "Yes" : "No") +
+                    "\nAttacked: " + (troop.hasAttackedThisTurn ? "Yes" : "No"));
         }
     }
 

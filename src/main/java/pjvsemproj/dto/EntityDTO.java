@@ -9,7 +9,8 @@ import pjvsemproj.models.entities.troopUnits.TroopUnit;
  * Container representing a single entity to be placed on the map.
  */
 public class EntityDTO {
-    public final String id;
+    // adding transient to tell Gson to not serialize it
+    public final transient String id;
     public final String entityType; // e.g., "CITY", "INFANTRY", "CAVALRY"
     public final int x;
     public final int y;

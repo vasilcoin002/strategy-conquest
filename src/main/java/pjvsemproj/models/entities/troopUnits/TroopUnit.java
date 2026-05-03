@@ -2,6 +2,7 @@ package pjvsemproj.models.entities.troopUnits;
 
 import pjvsemproj.models.entities.*;
 import pjvsemproj.models.entities.cities.City;
+import pjvsemproj.models.game.maps.Tile;
 import pjvsemproj.models.game.players.Player;
 
 
@@ -25,7 +26,16 @@ public class TroopUnit extends DamageableEntity implements Movable, IDamager, Ow
     private boolean hasAttackedThisTurn;
 
     public TroopUnit(TroopType troopType, City city) {
-        super(city.getTile(), false);
+        // hasMovedThisTurn = false => player can spawn many units
+        // in one city per round
+        // hasAttackedThisTurn = false => player can spawn and unexpectedly
+        // attack enemies
+        this(troopType, city.getTile(), true, true);
+    }
+
+    public TroopUnit(TroopType troopType, Tile tile,
+                     boolean hasMovedThisTurn, boolean hasAttackedThisTurn) {
+        super(tile, false);
 
         this.name = troopType.name();
 
@@ -36,11 +46,9 @@ public class TroopUnit extends DamageableEntity implements Movable, IDamager, Ow
         this.minDamage = troopType.minDamage;
 
         this.health = maxHealth;
-        // false => player can spawn many units in one city per round
-        this.hasMovedThisTurn = true;
-        this.hasAttackedThisTurn = true;
+        this.hasMovedThisTurn = hasMovedThisTurn;
+        this.hasAttackedThisTurn = hasAttackedThisTurn;
     }
-
 
     /**
      * Calculates random damage within the unit's damage interval.

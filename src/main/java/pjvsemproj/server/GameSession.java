@@ -45,7 +45,7 @@ public class GameSession {
         this.game = game;
         this.map = game.getMap();
 
-        this.turnManager = new TurnManager(player1, player2);
+        this.turnManager = new TurnManager(player1, player2, game.getCurrentPlayer());
 
         this.movementManager = new MovementManager(this.map, turnManager.getCurrentPlayer());
         this.combatManager = new CombatManager(map, turnManager.getCurrentPlayer());

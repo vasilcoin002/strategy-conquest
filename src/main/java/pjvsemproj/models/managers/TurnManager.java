@@ -18,11 +18,15 @@ public class TurnManager {
 
     private final List<ITurnListener> listeners = new ArrayList<>();
 
-    public TurnManager(Player p1, Player p2) {
+    public TurnManager(Player p1, Player p2, Player currentPlayer) {
         this.player1 = p1;
         this.player2 = p2;
         this.turnNumber = 1;
-        this.currentPlayer = p1;
+        if (currentPlayer == null) {
+            this.currentPlayer = p1;
+        } else {
+            this.currentPlayer = currentPlayer;
+        }
     }
     /**
      * Registers a turn listener.

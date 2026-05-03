@@ -11,6 +11,7 @@ import java.util.Set;
 
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
+// TODO fix city does not change color when enemy walks in (maybe it's not conquered)
 // TODO fix city doesn't display buy buttons
 // TODO cancel selection when is clicked on the selected entity second time
 // TODO on escape pressed: cancel selection or pop up dialog window

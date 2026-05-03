@@ -36,7 +36,7 @@ public class LocalGameService implements GameService {
 
         Player player1 = game.getPlayers().get(0);
         Player player2 = game.getPlayers().get(1);
-        this.turnManager = new TurnManager(player1, player2);
+        this.turnManager = new TurnManager(player1, player2, game.getCurrentPlayer());
 
         this.movementManager = new MovementManager(this.game.getMap(), turnManager.getCurrentPlayer());
         this.combatManager = new CombatManager(this.game.getMap(), turnManager.getCurrentPlayer());

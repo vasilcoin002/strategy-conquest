@@ -27,12 +27,16 @@ public class City extends Entity implements Upgradable<CityType>, Ownable {
         this(null, cityType);
     }
 
+//    public City(Tile tile, CityType cityType, Player owner) {
+//        this(tile, cityType);
+//        this.owner = owner;
+//    }
+
     /**
      * Checks whether the city can be upgraded.
      *
      * @return {@code true} if a next city level exists
      */
-
     @Override
     public boolean canBeUpgraded() {
         return this.cityType.nextCityType != null;

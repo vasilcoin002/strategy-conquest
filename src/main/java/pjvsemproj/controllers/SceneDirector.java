@@ -84,7 +84,8 @@ public class SceneDirector {
         Player p2 = new HumanPlayer("Player 2", 100);
 
         GameSetupManager setupManager = new GameSetupManager();
-        Game game = setupManager.setupTestMatch(map, p1, p2);
+//        Game game = setupManager.setupTestMatch(map, p1, p2);
+        Game game = setupManager.loadGame("config.json");
 
         GameService gameService = new LocalGameService(game);
 
