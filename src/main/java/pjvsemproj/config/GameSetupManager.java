@@ -118,7 +118,6 @@ public class GameSetupManager {
                 troop.setHasMovedThisTurn(troopDTO.hasMovedThisTurn);
                 troop.setHasAttackedThisTurn(troopDTO.hasAttackedThisTurn);
 
-                // Bind it to the game state
                 GridPositionHelper.placeEntity(troop, tile);
                 OwnershipHelper.addTroopUnitToPlayer(troop, owner);
             }

@@ -1,33 +1,27 @@
 package pjvsemproj.controllers;
 
-import pjvsemproj.dto.CityDTO;
-import pjvsemproj.dto.EntityDTO;
-import pjvsemproj.dto.TileDTO;
-import pjvsemproj.dto.TroopUnitDTO;
+import pjvsemproj.config.GameConfigParser;
+import pjvsemproj.dto.*;
 import pjvsemproj.models.services.GameService;
+import pjvsemproj.models.services.LocalGameService;
 import pjvsemproj.views.game.GameView;
 
 import java.util.Set;
 
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
-// TODO fix city does not change color when enemy walks in (maybe it's not conquered)
-// TODO fix city doesn't display buy buttons
-// TODO cancel selection when is clicked on the selected entity second time
-// TODO on escape pressed: cancel selection or pop up dialog window
-/**
- * Main controller connecting UI with game logic.
- */
 public class GameController {
 
     private final GameView view;
     private final GameService gameService;
+    private final SceneDirector sceneDirector;
 
     private String selectedEntityId;
 
-    public GameController(GameService gameService, GameView view) {
+    public GameController(GameService gameService, GameView view, SceneDirector sceneDirector) {
         this.gameService = gameService;
         this.view = view;
+        this.sceneDirector = sceneDirector;
 
         view.setOnGameAreaClickedAction(this::handleGameAreaClick);
         view.setOnEntitySelectedAction(entity -> setSelectedEntityId(entity.id));
@@ -39,6 +33,11 @@ public class GameController {
             view.updateCurrentPlayer(gameService.getCurrentPlayerDTO().name);
             setSelectedEntityId(selectedEntityId);
         });
+
+        // Wire up the save action conditionally
+        if (isLocalGame()) {
+            view.setOnSaveGameAction(this::handleSaveGameRequest);
+        }
     }
 
     private void handleGameAreaClick(int viewX, int viewY) {
@@ -98,6 +97,27 @@ public class GameController {
         }
 
         setSelectedEntityId(targetEntity.id);
+    }
+
+    public boolean isLocalGame() {
+        return gameService instanceof LocalGameService;
+    }
+
+    public void handleSaveGameRequest() {
+        sceneDirector.showSaveFileDialog(filePath -> {
+            if (filePath != null) {
+                try {
+                    GameDTO saveState = gameService.getGameDTO();
+
+                    GameConfigParser parser = new GameConfigParser();
+                    parser.saveLevelConfig(saveState, filePath);
+
+                    System.out.println("Game saved successfully to: " + filePath);
+                } catch (Exception e) {
+                    System.err.println("Failed to save game: " + e.getMessage());
+                }
+            }
+        });
     }
 
     public void setSelectedEntityId(String entityId) {

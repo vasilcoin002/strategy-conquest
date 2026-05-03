@@ -8,53 +8,57 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import pjvsemproj.dto.*;
-import pjvsemproj.models.entities.IGridEntity;
-import pjvsemproj.models.entities.cities.City;
 import pjvsemproj.models.entities.troopUnits.TroopType;
-import pjvsemproj.models.entities.troopUnits.TroopUnit;
-import pjvsemproj.models.game.maps.Tile;
 
 import java.util.List;
 import java.util.function.Consumer;
 
 import static pjvsemproj.views.ViewConstants.GAME_SIDE_PANEL_WIDTH;
 
-
-/**
- * UI panel displaying player info and actions.
- *
- * Allows interaction with selected entities.
- */
 public class SidePanelView {
 
     private final VBox root;
     private final Button quitBtn;
+    private Button saveBtn; // New save button
     private final Label currentPlayerLabel;
     private final Label ballanceLabel;
     private final HBox switcherBox;
-    // TODO add entity switcher (if there is more than one entity on one tile)
     private final Label entityInfoLabel;
     private final VBox actionMenuBox;
     private final Button nextTurnBtn;
 
     private Runnable onQuitGameAction;
+    private Runnable onSaveGameAction; // New save action
     private Consumer<EntityDTO> onEntitySelectedAction;
     private Runnable onNextTurnAction;
 
-    public SidePanelView() {
+    public SidePanelView(boolean isLocalGame) {
         root = new VBox(15);
         root.setPadding(new Insets(20));
         root.setPrefWidth(GAME_SIDE_PANEL_WIDTH);
         root.setStyle("-fx-background-color: #f4f4f4; -fx-border-color: #ccc; -fx-border-width: 0 0 0 1;");
 
+        // Top Buttons Container
+        HBox topButtonsBox = new HBox(10);
         quitBtn = new Button("Quit game");
-        quitBtn.setOnAction(e -> onQuitGameAction.run());
+        quitBtn.setOnAction(e -> {
+            if (onQuitGameAction != null) onQuitGameAction.run();
+        });
+
+        if (isLocalGame) {
+            saveBtn = new Button("Save Game");
+            saveBtn.setOnAction(e -> {
+                if (onSaveGameAction != null) onSaveGameAction.run();
+            });
+            topButtonsBox.getChildren().addAll(saveBtn, quitBtn);
+        } else {
+            topButtonsBox.getChildren().add(quitBtn);
+        }
 
         currentPlayerLabel = new Label("Current Player: ");
         currentPlayerLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
 
         ballanceLabel = new Label("Balance: ");
-
         switcherBox = new HBox(10);
 
         entityInfoLabel = new Label("Selected: None");
@@ -69,20 +73,18 @@ public class SidePanelView {
         nextTurnBtn.setMaxWidth(Double.MAX_VALUE);
         nextTurnBtn.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-base: #ff7e67; -fx-padding: 8px;");
 
-        nextTurnBtn.setOnAction(e -> onNextTurnAction.run());
+        nextTurnBtn.setOnAction(e -> {
+            if (onNextTurnAction != null) onNextTurnAction.run();
+        });
 
-        root.getChildren().addAll(quitBtn ,currentPlayerLabel, ballanceLabel, switcherBox, entityInfoLabel, actionMenuBox, spacer, nextTurnBtn);
+        // Add topButtonsBox instead of just quitBtn
+        root.getChildren().addAll(topButtonsBox, currentPlayerLabel, ballanceLabel, switcherBox, entityInfoLabel, actionMenuBox, spacer, nextTurnBtn);
     }
 
-    /**
-     * Reads the tile's entities list and builds the switcher if anything is there.
-     */
     public void updateForTile(TileDTO tile) {
-        // Clear previous buttons and text
         switcherBox.getChildren().clear();
         actionMenuBox.getChildren().clear();
 
-        // If the tile is empty or null, show nothing
         if (tile == null || tile.entities.isEmpty()) {
             entityInfoLabel.setText("Selected: None");
             return;
@@ -100,7 +102,7 @@ public class SidePanelView {
         }
 
         if (foundCity != null) {
-            final CityDTO finalCity = foundCity; // 'effectively final' for the button action
+            final CityDTO finalCity = foundCity;
             Button viewCityBtn = new Button("View City");
             viewCityBtn.setMaxWidth(Double.MAX_VALUE);
             viewCityBtn.setOnAction(e -> onEntitySelectedAction.accept(finalCity));
@@ -123,16 +125,14 @@ public class SidePanelView {
     public void updatePlayersBalance(List<PlayerDTO> players) {
         ballanceLabel.setText(
                 "Balance:\n" +
-                players.getFirst().name + ": " + players.getFirst().balance + "\n" +
-                players.getLast().name + ": " + players.getLast().balance + "\n"
+                        players.getFirst().name + ": " + players.getFirst().balance + "\n" +
+                        players.getLast().name + ": " + players.getLast().balance + "\n"
         );
     }
 
     public void updateCurrentPlayer(String currentPlayerName) {
         if (currentPlayerName != null) {
-            currentPlayerLabel.setText(
-                    "Current Player: " + currentPlayerName
-            );
+            currentPlayerLabel.setText("Current Player: " + currentPlayerName);
         }
     }
 
@@ -148,24 +148,16 @@ public class SidePanelView {
             String ownerName = city.ownerName != null ? city.ownerName : "Neutral";
             entityInfoLabel.setText("City (" + city.cityLevel + ")\nOwner: " + ownerName);
 
-            // TODO: Later, your Controller will provide these buttons!
             Button upgradeBtn = new Button("Upgrade City (" + city.upgradePrice + "g)");
             actionMenuBox.getChildren().add(upgradeBtn);
 
             if (city.canSpawnTroops) {
-                Button buyMilitiaBtn = new Button("Buy " + TroopType.Militia.name()
-                        + ": " + TroopType.Militia.getPrice() + " gold");
-                Button buyInfantryBtn = new Button("Buy " + TroopType.Infantry.name()
-                        + ": " + TroopType.Infantry.getPrice() + " gold");
-                Button buyCavalryBtn = new Button("Buy " + TroopType.Cavalry.name()
-                        + ": " + TroopType.Cavalry.getPrice() + " gold");
-                Button buyArtilleryBtn = new Button("Buy " + TroopType.Artillery.name()
-                        + ": " + TroopType.Artillery.getPrice() + " gold");
+                Button buyMilitiaBtn = new Button("Buy " + TroopType.Militia.name() + ": " + TroopType.Militia.getPrice() + " gold");
+                Button buyInfantryBtn = new Button("Buy " + TroopType.Infantry.name() + ": " + TroopType.Infantry.getPrice() + " gold");
+                Button buyCavalryBtn = new Button("Buy " + TroopType.Cavalry.name() + ": " + TroopType.Cavalry.getPrice() + " gold");
+                Button buyArtilleryBtn = new Button("Buy " + TroopType.Artillery.name() + ": " + TroopType.Artillery.getPrice() + " gold");
 
-                actionMenuBox.getChildren().addAll(
-                        buyMilitiaBtn, buyInfantryBtn,
-                        buyCavalryBtn, buyArtilleryBtn
-                );
+                actionMenuBox.getChildren().addAll(buyMilitiaBtn, buyInfantryBtn, buyCavalryBtn, buyArtilleryBtn);
             }
 
         } else if (entity instanceof TroopUnitDTO troop) {
@@ -192,5 +184,10 @@ public class SidePanelView {
 
     public void setOnQuitGameAction(Runnable onQuitGameAction) {
         this.onQuitGameAction = onQuitGameAction;
+    }
+
+    // New setter for the save action
+    public void setOnSaveGameAction(Runnable onSaveGameAction) {
+        this.onSaveGameAction = onSaveGameAction;
     }
 }

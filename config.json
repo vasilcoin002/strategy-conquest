@@ -15,7 +15,6 @@
   "entities": [
     {
       "entityType": "City",
-      "id": "city_vasya_1",
       "x": 2,
       "y": 2,
       "ownerName": "Vasya",
@@ -23,7 +22,6 @@
     },
     {
       "entityType": "Infantry",
-      "id": "troop_vasya_1",
       "x": 3,
       "y": 2,
       "ownerName": "Vasya",
@@ -33,7 +31,6 @@
     },
     {
       "entityType": "City",
-      "id": "city_ivan_1",
       "x": 9,
       "y": 9,
       "ownerName": "Ivan",
@@ -41,7 +38,6 @@
     },
     {
       "entityType": "Artillery",
-      "id": "troop_ivan_1",
       "x": 8,
       "y": 8,
       "ownerName": "Ivan",

@@ -8,7 +8,6 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import pjvsemproj.dto.*;
-import pjvsemproj.models.game.maps.Tile;
 import pjvsemproj.views.game.renderers.MapRenderer;
 
 import java.util.*;
@@ -18,11 +17,6 @@ import java.util.function.Consumer;
 import static pjvsemproj.views.ViewConstants.GAME_SIDE_PANEL_WIDTH;
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
-/**
- * Main game UI class.
- *
- * Responsible for rendering the map, entities, and handling user interaction.
- */
 public class GameView {
 
     private final int gameAreaWidth;
@@ -44,7 +38,8 @@ public class GameView {
 
     public GameView(
             GameDTO game,
-            Map<String, Color> ownersColors
+            Map<String, Color> ownersColors,
+            boolean isLocalGame // New parameter
     ) {
         gameAreaWidth = game.mapWidth * TILE_SIZE;
         gameAreaHeight = game.mapHeight * TILE_SIZE;
@@ -54,7 +49,9 @@ public class GameView {
         Canvas overlaysCanvas = new Canvas(gameAreaWidth, gameAreaHeight);
 
         overlaysCanvas.setOnMouseClicked(e -> {
-            onGameAreaClickedAction.accept((int)e.getX(), (int)e.getY());
+            if(onGameAreaClickedAction != null) {
+                onGameAreaClickedAction.accept((int)e.getX(), (int)e.getY());
+            }
         });
 
         entitiesGc = entitiesCanvas.getGraphicsContext2D();
@@ -63,7 +60,7 @@ public class GameView {
         StackPane mapPane = new StackPane(entitiesCanvas, overlaysCanvas);
         setBackground(mapPane);
 
-        sidePanel = new SidePanelView();
+        sidePanel = new SidePanelView(isLocalGame);
 
         root = new BorderPane();
         root.setCenter(mapPane);
@@ -112,10 +109,10 @@ public class GameView {
 
         BackgroundImage backgroundImage = new BackgroundImage(
                 grassTexture,
-                BackgroundRepeat.REPEAT,   // horizontally
-                BackgroundRepeat.REPEAT,   // vertically
+                BackgroundRepeat.REPEAT,
+                BackgroundRepeat.REPEAT,
                 BackgroundPosition.DEFAULT,
-                BackgroundSize.DEFAULT     // keep the exact 64x64 pixel size (don't stretch)
+                BackgroundSize.DEFAULT
         );
 
         return new Background(backgroundImage);
@@ -139,8 +136,6 @@ public class GameView {
         if (selectedEntity != null) {
             mapRenderer.renderSelection(overlaysGc, selectedEntity);
             sidePanel.updateEntityInfo(selectedEntity);
-            // TODO updateForTile
-//            sidePanel.updateForTile(selectedEntity.getTile());
         }
     }
 
@@ -148,9 +143,7 @@ public class GameView {
         mapRenderer.renderAvailableMoves(overlaysGc, tilesToMove);
     }
 
-    // TODO implement
     public void showSelectedEntityAvailableAttacks(Set<TileDTO> tilesToAttack) {
-
     }
 
     public void updateTile(TileDTO tile) {
@@ -168,6 +161,10 @@ public class GameView {
 
     public void setOnQuitGameAction(Runnable onQuitGameAction) {
         sidePanel.setOnQuitGameAction(onQuitGameAction);
+    }
+
+    public void setOnSaveGameAction(Runnable onSaveGameAction) {
+        sidePanel.setOnSaveGameAction(onSaveGameAction);
     }
 
     public void setOnNextTurnAction(Runnable onNextTurnAction) {
