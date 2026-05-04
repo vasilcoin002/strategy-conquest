@@ -70,7 +70,7 @@ public class CombatManager implements ITurnListener{
     public Set<TroopUnit> getAttackableTroops(TroopUnit attacker) {
         Set<TroopUnit> result = new HashSet<>();
 
-        if (!attacker.hasAttackedThisTurn()) {
+        if (attacker.hasAttackedThisTurn()) {
             return result;
         }
 
