@@ -10,8 +10,8 @@ import java.util.Set;
 
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
+// TODO fix troop can move after attack
 // TODO fix enemy troop can attack when it's not its turn
-// TODO fix enemy does not disappear from map after death
 // TODO fix city doesn't display buy buttons
 // TODO fix city isn't conquered after enemy stepped in
 // TODO on escape pressed: cancel selection or pop up dialog window
@@ -72,11 +72,13 @@ public class GameController {
     }
 
     private void handleOccupiedTileClick(TileDTO targetTile) {
+        // if entity is not selected yet
         if (selectedEntityId == null) {
             setSelectedEntityId(targetTile.entities.getLast().id);
             return;
         }
 
+        // if it's the same entity => unselect it
         for (EntityDTO entity: targetTile.entities) {
             if (Objects.equals(entity.id, selectedEntityId)) {
                 setSelectedEntityId(null);
@@ -161,8 +163,8 @@ public class GameController {
     }
 
     private void attackTroop(String attackerId, String targetId) {
-        gameService.attack(attackerId, targetId);
         TroopUnitDTO target = (TroopUnitDTO) gameService.getEntityDTO(targetId);
+        gameService.attack(attackerId, targetId);
         updateTile(target.x, target.y);
         setSelectedEntityId(null);
     }
