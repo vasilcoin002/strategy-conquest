@@ -31,15 +31,15 @@
     },
     {
       "entityType": "City",
-      "x": 9,
-      "y": 9,
+      "x": 5,
+      "y": 5,
       "ownerName": "Ivan",
       "cityLevel": "LEVEL_1"
     },
     {
       "entityType": "Artillery",
-      "x": 8,
-      "y": 8,
+      "x": 4,
+      "y": 3,
       "ownerName": "Ivan",
       "hp": 8,
       "hasMovedThisTurn": false,

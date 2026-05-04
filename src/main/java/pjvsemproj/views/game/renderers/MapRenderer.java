@@ -173,6 +173,12 @@ public class MapRenderer extends Renderer {
         clear(gc);
     }
 
+    public void renderAvailableMoves(GraphicsContext gc, Set<TileDTO> tiles) {
+        for (TileDTO tile: tiles) {
+            renderAvailableMove(gc, tile);
+        }
+    }
+
     public void renderAvailableMove(GraphicsContext gc, TileDTO tile) {
         int viewX = tile.x * TILE_SIZE;
         int viewY = tile.y * TILE_SIZE;
@@ -181,19 +187,17 @@ public class MapRenderer extends Renderer {
         gc.drawImage(image, viewX, viewY, TILE_SIZE, TILE_SIZE);
     }
 
-    public void renderAvailableMoves(GraphicsContext gc, Set<TileDTO> tiles) {
+    public void renderAvailableAttacks(GraphicsContext gc, Set<TileDTO> tiles) {
         for (TileDTO tile: tiles) {
-            renderAvailableMove(gc, tile);
+            renderAvailableAttack(gc, tile);
         }
     }
 
-    // TODO implement
-    public void renderAvailableAttacks(GraphicsContext gc, Set<TileDTO> tiles) {
-
-    }
-
-    // TODO implement
     public void renderAvailableAttack(GraphicsContext gc, TileDTO tile) {
+        int viewX = tile.x * TILE_SIZE;
+        int viewY = tile.y * TILE_SIZE;
 
+        Image image = new Image("attack_circle.png");
+        gc.drawImage(image, viewX, viewY, TILE_SIZE, TILE_SIZE);
     }
 }

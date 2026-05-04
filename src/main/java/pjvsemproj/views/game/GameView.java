@@ -147,7 +147,7 @@ public class GameView {
     }
 
     public void showSelectedEntityAvailableAttacks(Set<TileDTO> tilesToAttack) {
-        // TODO implement
+        mapRenderer.renderAvailableAttacks(overlaysGc, tilesToAttack);
     }
 
     public void updateTile(TileDTO tile) {

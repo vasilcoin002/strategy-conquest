@@ -15,7 +15,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-
+// TODO fix getAvailableTilesDTOForAttack (it returns empty list)
 /**
  * Local (single-player) implementation of GameService.
  * <p>
