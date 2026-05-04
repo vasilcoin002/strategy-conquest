@@ -5,13 +5,13 @@ import pjvsemproj.dto.*;
 import pjvsemproj.models.services.GameService;
 import pjvsemproj.views.game.GameView;
 
+import java.util.Objects;
 import java.util.Set;
 
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
 // TODO fix city doesn't display buy buttons
 // TODO fix city isn't conquered after enemy stepped in
-// TODO cancel selection when is clicked on the selected entity second time
 // TODO on escape pressed: cancel selection or pop up dialog window
 /**
  * Main controller connecting UI with game logic.
@@ -73,6 +73,13 @@ public class GameController {
         if (selectedEntityId == null) {
             setSelectedEntityId(targetTile.entities.getLast().id);
             return;
+        }
+
+        for (EntityDTO entity: targetTile.entities) {
+            if (Objects.equals(entity.id, selectedEntityId)) {
+                setSelectedEntityId(null);
+                return;
+            }
         }
 
         EntityDTO currentEntity = gameService.getEntityDTO(selectedEntityId);
