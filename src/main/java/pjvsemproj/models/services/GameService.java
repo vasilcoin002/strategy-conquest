@@ -28,6 +28,7 @@ public interface GameService {
     void upgradeCity(String cityId);
 
     void endTurn();
+    boolean isMyTurn();
 
     void quit();
 

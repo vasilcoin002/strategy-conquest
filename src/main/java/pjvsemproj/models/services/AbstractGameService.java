@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 public class AbstractGameService implements GameService {
     protected final Game game;
+    protected String clientName;
 
     protected final MovementManager movementManager;
     protected final CombatManager combatManager;
@@ -46,7 +47,7 @@ public class AbstractGameService implements GameService {
 
     @Override
     public void login(String playerName) {
-
+        clientName = playerName;
     }
 
     @Override
@@ -112,6 +113,14 @@ public class AbstractGameService implements GameService {
     @Override
     public void endTurn() {
         turnManager.endTurn();
+    }
+
+    @Override
+    public boolean isMyTurn() {
+        return Objects.equals(
+                turnManager.getCurrentPlayer().getName(),
+                clientName
+        );
     }
 
     @Override

@@ -28,11 +28,6 @@ public class LocalGameService extends AbstractGameService {
     }
 
     @Override
-    public void login(String playerName) {
-
-    }
-
-    @Override
     public void ready() {
 
     }
@@ -42,5 +37,7 @@ public class LocalGameService extends AbstractGameService {
         super.endTurn();
 
         // TODO extend it with bot's turn logic
+        // ...
+        super.endTurn();
     }
 }
