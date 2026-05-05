@@ -13,6 +13,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static pjvsemproj.models.game.GameConstants.TROOP_HEALING_PERCENT_BY_MAX_HP;
+
 
 /**
  * Handles combat logic including:
@@ -36,7 +38,7 @@ public class CombatManager implements ITurnListener{
         currentPlayer = activePlayer;
 
         getTroopsToHeal().forEach(troopUnit -> {
-            int heal = (int) (troopUnit.getMaxHealth() * 0.25);
+            int heal = (int) (troopUnit.getMaxHealth() * TROOP_HEALING_PERCENT_BY_MAX_HP);
             troopUnit.takeHeal(heal);
         });
     }

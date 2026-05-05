@@ -10,6 +10,7 @@ import java.util.Set;
 
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
+// TODO fix troop's hp doesn't rerender after it got healed
 // TODO fix city doesn't display buy buttons
 // TODO add winning screen
 // TODO on escape pressed: cancel selection or pop up dialog window

@@ -10,4 +10,5 @@ public final class GameConstants {
             "City", // city
             "Militia", "Infantry", "Cavalry", "Artillery" // troops
     };
+    public static final double TROOP_HEALING_PERCENT_BY_MAX_HP = 0.25;
 }

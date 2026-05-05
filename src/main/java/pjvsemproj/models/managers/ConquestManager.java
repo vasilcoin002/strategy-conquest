@@ -14,7 +14,7 @@ import java.util.List;
  * - detecting winner
  * - notifying listeners
  */
-public class ConquestManager {
+public class ConquestManager implements ITurnListener {
 
     private final List<Player> players;
     private Player currentPlayer;
@@ -25,6 +25,16 @@ public class ConquestManager {
     public ConquestManager(List<Player> players, Player currentPlayer) {
         this.players = players;
         this.currentPlayer = currentPlayer;
+    }
+
+    @Override
+    public void onTurnStart(Player activePlayer) {
+        currentPlayer = activePlayer;
+    }
+
+    @Override
+    public void onTurnEnd(Player endingPlayer) {
+
     }
 
     public void conquerCity(TroopUnit troopUnit, City city) {

@@ -4,6 +4,7 @@ import pjvsemproj.dto.EntityDTO;
 import pjvsemproj.dto.GameDTO;
 import pjvsemproj.dto.PlayerDTO;
 import pjvsemproj.dto.TileDTO;
+import pjvsemproj.models.game.Game;
 import pjvsemproj.models.game.maps.GameMap;
 import pjvsemproj.models.game.maps.Tile;
 import pjvsemproj.models.game.players.Player;
@@ -13,17 +14,19 @@ import pjvsemproj.server.Protocol;
 import java.util.List;
 import java.util.Set;
 
-
+// TODO implement methods which send data to server to also change local state
 /**
  * Network-based implementation of GameService.
  *
  * Sends commands to the server instead of executing them locally.
  */
-public class NetworkGameService implements GameService {
+public class NetworkGameService extends AbstractGameService {
 
     private final Client client;
 
     public NetworkGameService(Client client) {
+        // TODO change it to ask server game data to create local object of game
+        super(new Game(new GameMap(5, 5)));
         this.client = client;
     }
 
