@@ -10,8 +10,6 @@ import java.util.Set;
 
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
-// TODO fix troop can move after attack
-// TODO fix enemy troop can attack when it's not its turn
 // TODO fix city doesn't display buy buttons
 // TODO fix city isn't conquered after enemy stepped in
 // TODO on escape pressed: cancel selection or pop up dialog window
