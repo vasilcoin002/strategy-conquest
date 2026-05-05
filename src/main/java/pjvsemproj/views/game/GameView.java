@@ -91,7 +91,8 @@ public class GameView {
         sidePanel.updateCurrentPlayer(game.currentPlayerName);
     }
 
-    public void show(Stage stage) {
+    public void show(Stage stage, String clientName) {
+        stage.setTitle("Strategy Game - " + clientName);
         stage.setScene(scene);
     }
 

@@ -39,7 +39,8 @@ public class SceneDirector {
         stage.centerOnScreen();
     }
 
-    public void showGame(GameService gameService) {
+    public void showGame(GameService gameService, String clientName) {
+        gameService.login(clientName);
         List<PlayerDTO> players = gameService.getPlayersDTO();
 
         Map<String, Color> colors = new HashMap<>();
@@ -51,21 +52,23 @@ public class SceneDirector {
                 colors
         );
 
-        gameView.show(stage);
+        gameView.show(stage, clientName);
 
         GameController controller = new GameController(gameService, gameView, this);
+        controller.initialize();
 
         stage.centerOnScreen();
         stage.show();
     }
 
     public void showLocalGame() {
+        String myName = "Vasya"; // TODO this have to come from a text field
+
         GameSetupManager setupManager = new GameSetupManager();
-        Game game = setupManager.loadGame("config.json");
+        Game game = setupManager.loadLocalGame("config.json", myName);
 
         GameService gameService = new LocalGameService(game);
-
-        showGame(gameService);
+        showGame(gameService, myName);
     }
 
     public void showSaveFileDialog(Consumer<String> onFileSelected) {

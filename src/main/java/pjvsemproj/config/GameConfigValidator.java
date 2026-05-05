@@ -40,6 +40,14 @@ public class GameConfigValidator {
             throw new InvalidGameConfigException("Game must have exactly " + PLAYERS_COUNT + " players.");
         }
 
+        boolean currentPlayerFound = isCurrentPlayerFound(gameDTO);
+
+        if (!currentPlayerFound) {
+            throw new InvalidGameConfigException("Current player '" + gameDTO.currentPlayerName + "' is not in the player list.");
+        }
+    }
+
+    private static boolean isCurrentPlayerFound(GameDTO gameDTO) {
         boolean currentPlayerFound = false;
         for (PlayerDTO player : gameDTO.players) {
             if (player.name == null || player.name.isBlank()) {
@@ -52,10 +60,7 @@ public class GameConfigValidator {
                 currentPlayerFound = true;
             }
         }
-
-        if (!currentPlayerFound) {
-            throw new InvalidGameConfigException("Current player '" + gameDTO.currentPlayerName + "' is not in the player list.");
-        }
+        return currentPlayerFound;
     }
 
     private void validateEntities(GameDTO gameDTO) {
@@ -132,7 +137,6 @@ public class GameConfigValidator {
     }
 
     private void validateBaseEntity(EntityDTO entity) {
-        // Now using ENTITY_TYPES directly!
         if (!Arrays.asList(ENTITY_TYPES).contains(entity.entityType)) {
             throw new InvalidGameConfigException(String.format("Entity at (%d,%d) has an invalid entityType: %s",
                     entity.x, entity.y, entity.entityType));
@@ -150,7 +154,6 @@ public class GameConfigValidator {
             }
         }
 
-        // Now using PLAYERS_COUNT directly!
         if (playersWithCities.size() < PLAYERS_COUNT) {
             throw new InvalidGameConfigException("Cannot load game: The game is already over (one or more players have no cities).");
         }

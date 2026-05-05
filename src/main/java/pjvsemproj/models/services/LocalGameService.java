@@ -1,21 +1,11 @@
 package pjvsemproj.models.services;
 
-import pjvsemproj.dto.*;
-import pjvsemproj.models.entities.cities.City;
-import pjvsemproj.models.entities.troopUnits.TroopType;
-import pjvsemproj.models.entities.troopUnits.TroopUnit;
 import pjvsemproj.models.game.Game;
-import pjvsemproj.models.game.maps.Tile;
-import pjvsemproj.models.game.players.Player;
-import pjvsemproj.models.managers.*;
+import pjvsemproj.models.game.players.BotPlayer;
+import pjvsemproj.models.game.players.HumanPlayer;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.concurrent.CompletableFuture;
 
-// TODO fix getAvailableTilesDTOForAttack (it returns empty list)
 /**
  * Local (single-player) implementation of GameService.
  * <p>
@@ -34,10 +24,36 @@ public class LocalGameService extends AbstractGameService {
 
     @Override
     public void endTurn() {
-        super.endTurn();
+        turnManager.endTurn();
+
+        notifyBoardUpdated();
+
+        if (turnManager.getCurrentPlayer() instanceof BotPlayer) {
+            // using CompletableFuture instead of new Thread() to efficiently reuse threads
+            // from Java's built-in pool, saving memory and avoiding heavy OS thread creation.
+            CompletableFuture.runAsync(() -> {
+                playBotTurn();
+
+                endTurn();
+            });
+        }
+    }
+
+    private void playBotTurn() {
+        System.out.println("Bot is making its moves...");
+
+        // simulation of thinking
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         // TODO extend it with bot's turn logic
-        // ...
-        super.endTurn();
+    }
+
+    @Override
+    public boolean isMyTurn() {
+        return turnManager.getCurrentPlayer() instanceof HumanPlayer;
     }
 }

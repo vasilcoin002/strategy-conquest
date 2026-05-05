@@ -44,4 +44,6 @@ public interface GameService {
 
     Set<TileDTO> getAvailableTilesDTOForMovement(String unitId);
     Set<TileDTO> getAvailableTilesDTOForAttack(String unitId);
+
+    void setOnBoardUpdated(Runnable callback);
 }

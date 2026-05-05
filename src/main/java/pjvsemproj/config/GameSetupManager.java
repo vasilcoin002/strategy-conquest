@@ -6,6 +6,7 @@ import pjvsemproj.models.entities.cities.CityType;
 import pjvsemproj.models.entities.troopUnits.TroopType;
 import pjvsemproj.models.entities.troopUnits.TroopUnit;
 import pjvsemproj.models.game.Game;
+import pjvsemproj.models.game.players.BotPlayer;
 import pjvsemproj.models.game.players.HumanPlayer;
 import pjvsemproj.models.game.players.Player;
 import pjvsemproj.models.managers.utils.GridPositionHelper;
@@ -25,9 +26,11 @@ import java.util.Map;
 public class GameSetupManager {
 
     private final GameConfigParser parser;
+    private final GameConfigValidator validator;
 
     public GameSetupManager() {
         this.parser = new GameConfigParser();
+        this.validator = new GameConfigValidator();
     }
 
     /**
@@ -66,32 +69,39 @@ public class GameSetupManager {
     }
 
     /**
-     * Reads a level file and creates a game from those data.
+     * Loads a game for Single Player.
+     * The player matching 'localClientName' is human, everyone else is a Bot.
      */
-    public Game loadGame(String levelFilePath) {
+    public Game loadLocalGame(String levelFilePath, String localClientName) {
         GameDTO gameDTO = parser.parseLevelConfig(levelFilePath);
-
-        GameConfigValidator validator = new GameConfigValidator();
-        try {
-            validator.validate(gameDTO);
-        } catch (InvalidGameConfigException e) {
-            // TODO re-throw it so the SceneDirector so it can show a popup error to the user.
-            System.err.println("Config Validation Failed: " + e.getMessage());
-            throw e;
-        }
-
-        return createGameFromDTO(gameDTO);
+        validator.validate(gameDTO); // Assuming you extracted validation
+        return createGameFromDTO(gameDTO, localClientName, true);
     }
 
-    private Game createGameFromDTO(GameDTO dto) {
+    /**
+     * Loads a game for Multiplayer.
+     * All players are instantiated as HumanPlayers.
+     */
+    public Game loadNetworkGame(String levelFilePath) {
+        GameDTO gameDTO = parser.parseLevelConfig(levelFilePath);
+        validator.validate(gameDTO);
+        return createGameFromDTO(gameDTO, null, false);
+    }
+
+    private Game createGameFromDTO(GameDTO dto, String localClientName, boolean isLocalVsBot) {
         GameMap map = new GameMap(dto.mapWidth, dto.mapHeight);
         Game game = new Game(map);
-
-        // using a Map so we can easily find owners for the entities later
         Map<String, Player> loadedPlayers = new HashMap<>();
 
         for (PlayerDTO playerDTO : dto.players) {
-            Player player = new HumanPlayer(playerDTO.name, playerDTO.balance);
+            Player player;
+
+            if (isLocalVsBot && !playerDTO.name.equals(localClientName)) {
+                player = new BotPlayer(playerDTO.name, playerDTO.balance);
+            } else {
+                player = new HumanPlayer(playerDTO.name, playerDTO.balance);
+            }
+
             game.addPlayer(player);
             loadedPlayers.put(player.getName(), player);
         }

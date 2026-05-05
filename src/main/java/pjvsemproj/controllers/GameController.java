@@ -1,5 +1,6 @@
 package pjvsemproj.controllers;
 
+import javafx.application.Platform;
 import pjvsemproj.config.GameConfigParser;
 import pjvsemproj.dto.*;
 import pjvsemproj.models.services.GameService;
@@ -10,6 +11,7 @@ import java.util.Set;
 
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
+// TODO change text on the button to "PlayerName's turn" when it's enemy's turn
 // TODO fix troop's hp doesn't rerender after it got healed
 // TODO fix city doesn't display buy buttons
 // TODO add winning screen
@@ -36,13 +38,39 @@ public class GameController {
         view.setOnSaveGameAction(this::handleSaveGameRequest);
         view.setOnQuitGameAction(this::handleQuitGameRequest);
 
-        view.setOnNextTurnAction(() -> {
-            gameService.endTurn();
+//        view.setOnNextTurnAction(() -> {
+//            gameService.endTurn();
+//            view.setNextTurnButtonDisabled(true);
+//            view.setNextTurnButtonDisabled(!gameService.isMyTurn());
+//
+//            view.updatePlayersBalance(gameService.getPlayersDTO());
+//            view.updateCurrentPlayer(gameService.getCurrentPlayerDTO().name);
+//            setSelectedEntityId(selectedEntityId);
+//        });
+    }
 
-            view.updatePlayersBalance(gameService.getPlayersDTO());
-            view.updateCurrentPlayer(gameService.getCurrentPlayerDTO().name);
-            setSelectedEntityId(selectedEntityId);
+    // Inside GameController.java
+
+    public void initialize() {
+        // 1. Tell the service how to update the UI
+        gameService.setOnBoardUpdated(() -> {
+            // We MUST use Platform.runLater because the Service might
+            // trigger this from a background thread!
+            Platform.runLater(() -> {
+//                view.redrawMap();
+//                view.setNextTurnButtonDisabled(!gameService.isMyTurn());
+                view.updatePlayersBalance(gameService.getPlayersDTO());
+                view.updateCurrentPlayer(gameService.getCurrentPlayerDTO().name);
+
+                // Lock or unlock the button depending on if it's our turn now
+                view.setNextTurnButtonDisabled(!gameService.isMyTurn());
+                setSelectedEntityId(selectedEntityId);
+            });
         });
+
+        // 2. The Next Turn button is incredibly simple now
+        // Just end the turn. The Service handles the rest!
+        view.setOnNextTurnAction(gameService::endTurn);
     }
 
     private void handleGameAreaClick(int viewX, int viewY) {

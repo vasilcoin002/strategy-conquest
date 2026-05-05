@@ -25,6 +25,8 @@ public class AbstractGameService implements GameService {
     protected final TurnManager turnManager;
     protected final ConquestManager conquestManager;
 
+    protected Runnable onBoardUpdated;
+
     public AbstractGameService(Game game) {
         this.game = game;
 
@@ -38,6 +40,16 @@ public class AbstractGameService implements GameService {
 
         this.combatManager = new CombatManager(this.game.getMap(), turnManager.getCurrentPlayer());
         this.economyManager = new EconomyManager(turnManager.getCurrentPlayer());
+
+        this.turnManager.addTurnListener(new ITurnListener() {
+            @Override
+            public void onTurnStart(Player activePlayer) {
+                game.setCurrentPlayer(activePlayer); // Syncs the state
+            }
+
+            @Override
+            public void onTurnEnd(Player endingPlayer) {}
+        });
 
         this.turnManager.addTurnListener(movementManager);
         this.turnManager.addTurnListener(combatManager);
@@ -68,6 +80,8 @@ public class AbstractGameService implements GameService {
             return;
         }
         movementManager.moveTroopUnit(troopUnit, tile);
+
+        notifyBoardUpdated();
     }
 
     public void addWinListener(IWinListener listener) {
@@ -87,6 +101,8 @@ public class AbstractGameService implements GameService {
             return;
         }
         combatManager.attackTroop(attacker, target);
+
+        notifyBoardUpdated();
     }
 
     @Override
@@ -98,6 +114,8 @@ public class AbstractGameService implements GameService {
 
         TroopType type = TroopType.valueOf(troopType);
         economyManager.buyTroopUnit(type, city);
+
+        notifyBoardUpdated();
     }
 
     @Override
@@ -108,11 +126,15 @@ public class AbstractGameService implements GameService {
         }
 
         economyManager.upgradeCity(city);
+
+        notifyBoardUpdated();
     }
 
     @Override
     public void endTurn() {
         turnManager.endTurn();
+
+        notifyBoardUpdated();
     }
 
     @Override
@@ -216,5 +238,16 @@ public class AbstractGameService implements GameService {
         return availableTiles.stream()
                 .map(TileDTO::new)
                 .collect(Collectors.toSet());
+    }
+
+    @Override
+    public void setOnBoardUpdated(Runnable callback) {
+        onBoardUpdated = callback;
+    }
+
+    protected void notifyBoardUpdated() {
+        if (onBoardUpdated != null) {
+            onBoardUpdated.run();
+        }
     }
 }
