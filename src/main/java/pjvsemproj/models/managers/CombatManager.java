@@ -135,6 +135,8 @@ public class CombatManager implements ITurnListener{
             GridPositionHelper.removeFromBoard(target);
         }
         attacker.setHasAttackedThisTurn(true);
+        // added to forbid moving after attack
+        attacker.setHasMovedThisTurn(true);
 
         return true;
     }
