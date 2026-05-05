@@ -80,6 +80,7 @@ public class GameSetupManager {
         //  any entity isn't beyond the map
         //  any entity isn't over other entity of the same type
         //  any troop doesn't have negative hp
+        //  any troop doesn't have more hp than maxHp
         return createGameFromDTO(gameDTO);
     }
 
