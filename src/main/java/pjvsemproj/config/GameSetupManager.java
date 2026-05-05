@@ -65,12 +65,21 @@ public class GameSetupManager {
         return game;
     }
 
-    // TODO add checks for valid values
     /**
      * Reads a level file and creates a game from those data.
      */
     public Game loadGame(String levelFilePath) {
         GameDTO gameDTO = parser.parseLevelConfig(levelFilePath);
+        // TODO add checks:
+        //  game doesn't have a winner
+        //  game has exactly two players
+        //  current player's name is real one's player name
+        //  players don't have negative balance
+        //  map is a least 5x5
+        //  any entity type is a real entity type
+        //  any entity isn't beyond the map
+        //  any entity isn't over other entity of the same type
+        //  any troop doesn't have negative hp
         return createGameFromDTO(gameDTO);
     }
 

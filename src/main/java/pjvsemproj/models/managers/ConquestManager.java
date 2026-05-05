@@ -3,6 +3,7 @@ package pjvsemproj.models.managers;
 import pjvsemproj.models.entities.cities.City;
 import pjvsemproj.models.entities.troopUnits.TroopUnit;
 import pjvsemproj.models.game.players.Player;
+import pjvsemproj.models.managers.utils.OwnershipHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,10 +28,16 @@ public class ConquestManager {
     }
 
     public void conquerCity(TroopUnit troopUnit, City city) {
-
+        if (troopUnit.getOwner() == currentPlayer) {
+            OwnershipHelper.transferCity(city, troopUnit.getOwner());
+        }
+        if (winnerExists()) {
+            announceWinner(currentPlayer);
+        }
     }
 
-    public boolean checkIfWinnerExists() {
+    // TODO implement winnerExists
+    public boolean winnerExists() {
         return false;
     }
 

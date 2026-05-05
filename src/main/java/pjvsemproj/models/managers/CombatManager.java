@@ -104,7 +104,6 @@ public class CombatManager implements ITurnListener{
         return result;
     }
 
-
     public Set<Tile> getAttackableTiles(TroopUnit attacker) {
         Set<Tile> tiles = new HashSet<>();
         for (TroopUnit troop : getAttackableTroops(attacker)) {

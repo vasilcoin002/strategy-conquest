@@ -1,6 +1,6 @@
 {
-  "mapWidth": 15,
-  "mapHeight": 10,
+  "mapWidth": 7,
+  "mapHeight": 7,
   "currentPlayerName": "Vasya",
   "players": [
     {
@@ -21,7 +21,7 @@
       "cityLevel": "LEVEL_2"
     },
     {
-      "entityType": "Infantry",
+      "entityType": "Militia",
       "x": 3,
       "y": 2,
       "ownerName": "Vasya",
@@ -33,6 +33,13 @@
       "entityType": "City",
       "x": 5,
       "y": 5,
+      "ownerName": "Ivan",
+      "cityLevel": "LEVEL_1"
+    },
+    {
+      "entityType": "City",
+      "x": 6,
+      "y": 6,
       "ownerName": "Ivan",
       "cityLevel": "LEVEL_1"
     },

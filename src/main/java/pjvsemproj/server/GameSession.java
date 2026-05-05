@@ -30,6 +30,7 @@ public class GameSession {
     private final CombatManager combatManager;
     private final EconomyManager economyManager;
     private final TurnManager turnManager;
+    private final ConquestManager conquestManager;
 
     private boolean player1Ready = false;
     private boolean player2Ready = false;
@@ -47,7 +48,9 @@ public class GameSession {
 
         this.turnManager = new TurnManager(player1, player2, game.getCurrentPlayer());
 
-        this.movementManager = new MovementManager(this.map, turnManager.getCurrentPlayer());
+        this.conquestManager = new ConquestManager(game.getPlayers(), turnManager.getCurrentPlayer());
+        this.movementManager = new MovementManager(
+                this.map, turnManager.getCurrentPlayer(), conquestManager);
         this.combatManager = new CombatManager(map, turnManager.getCurrentPlayer());
         this.economyManager = new EconomyManager(turnManager.getCurrentPlayer());
 

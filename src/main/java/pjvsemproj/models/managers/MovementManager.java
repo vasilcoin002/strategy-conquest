@@ -1,5 +1,8 @@
 package pjvsemproj.models.managers;
 
+import pjvsemproj.models.entities.Entity;
+import pjvsemproj.models.entities.IGridEntity;
+import pjvsemproj.models.entities.cities.City;
 import pjvsemproj.models.entities.troopUnits.TroopUnit;
 import pjvsemproj.models.game.maps.GameMap;
 import pjvsemproj.models.managers.utils.MovementNode;
@@ -20,14 +23,12 @@ public class MovementManager implements ITurnListener {
 
     private Player currentPlayer;
     private final GameMap gameMap;
+    private final ConquestManager conquestManager;
 
-//    public MovementManager(GameMap gameMap) {
-//        this(null, gameMap);
-//    }
-
-    public MovementManager(GameMap gameMap, Player currentPlayer) {
+    public MovementManager(GameMap gameMap, Player currentPlayer, ConquestManager conquestManager) {
         this.currentPlayer = currentPlayer;
         this.gameMap = gameMap;
+        this.conquestManager = conquestManager;
     }
 
     @Override
@@ -134,6 +135,12 @@ public class MovementManager implements ITurnListener {
         boolean moved = GridPositionHelper.moveEntity(troopUnit, targetTile);
         if (moved) {
             troopUnit.setHasMovedThisTurn(true);
+        }
+
+        for (IGridEntity entity : targetTile.getEntities()) {
+            if (entity instanceof City city) {
+                conquestManager.conquerCity(troopUnit, city);
+            }
         }
 
         return moved;

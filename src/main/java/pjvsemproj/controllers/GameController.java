@@ -11,7 +11,7 @@ import java.util.Set;
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
 // TODO fix city doesn't display buy buttons
-// TODO fix city isn't conquered after enemy stepped in
+// TODO add winning screen
 // TODO on escape pressed: cancel selection or pop up dialog window
 /**
  * Main controller connecting UI with game logic.
@@ -69,6 +69,7 @@ public class GameController {
         setSelectedEntityId(null);
     }
 
+    // TODO refactor method
     private void handleOccupiedTileClick(TileDTO targetTile) {
         // if entity is not selected yet
         if (selectedEntityId == null) {
@@ -95,7 +96,6 @@ public class GameController {
                 setSelectedEntityId(targetTile.entities.getLast().id);
                 return;
             }
-
             // if troop can move on target tile
             if (tilesToMove.contains(targetTile)) {
                 moveTroop(selectedEntityId, targetTile.x, targetTile.y);

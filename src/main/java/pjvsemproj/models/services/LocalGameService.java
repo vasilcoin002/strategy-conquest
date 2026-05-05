@@ -38,10 +38,12 @@ public class LocalGameService implements GameService {
         Player player2 = game.getPlayers().get(1);
         this.turnManager = new TurnManager(player1, player2, game.getCurrentPlayer());
 
-        this.movementManager = new MovementManager(this.game.getMap(), turnManager.getCurrentPlayer());
+        this.conquestManager = new ConquestManager(game.getPlayers(), turnManager.getCurrentPlayer());
+        this.movementManager = new MovementManager(
+                game.getMap(), turnManager.getCurrentPlayer(), conquestManager);
+
         this.combatManager = new CombatManager(this.game.getMap(), turnManager.getCurrentPlayer());
         this.economyManager = new EconomyManager(turnManager.getCurrentPlayer());
-        this.conquestManager = new ConquestManager(game.getPlayers(), turnManager.getCurrentPlayer());
 
         this.turnManager.addTurnListener(movementManager);
         this.turnManager.addTurnListener(combatManager);
@@ -71,9 +73,6 @@ public class LocalGameService implements GameService {
             return;
         }
         movementManager.moveTroopUnit(troopUnit, tile);
-        if (conquestManager.checkIfWinnerExists()) {
-            conquestManager.announceWinner(troopUnit.getOwner());
-        }
     }
 
     @Override
