@@ -70,17 +70,16 @@ public class GameSetupManager {
      */
     public Game loadGame(String levelFilePath) {
         GameDTO gameDTO = parser.parseLevelConfig(levelFilePath);
-        // TODO add checks:
-        //  game doesn't have a winner
-        //  game has exactly two players
-        //  current player's name is real one's player name
-        //  players don't have negative balance
-        //  map is a least 5x5
-        //  any entity type is a real entity type
-        //  any entity isn't beyond the map
-        //  any entity isn't over other entity of the same type
-        //  any troop doesn't have negative hp
-        //  any troop doesn't have more hp than maxHp
+
+        GameConfigValidator validator = new GameConfigValidator();
+        try {
+            validator.validate(gameDTO);
+        } catch (InvalidGameConfigException e) {
+            // TODO re-throw it so the SceneDirector so it can show a popup error to the user.
+            System.err.println("Config Validation Failed: " + e.getMessage());
+            throw e;
+        }
+
         return createGameFromDTO(gameDTO);
     }
 

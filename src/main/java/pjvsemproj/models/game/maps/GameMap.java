@@ -1,6 +1,11 @@
 package pjvsemproj.models.game.maps;
 
 
+import pjvsemproj.config.InvalidGameConfigException;
+
+import static pjvsemproj.models.game.GameConstants.MIN_MAP_HEIGHT;
+import static pjvsemproj.models.game.GameConstants.MIN_MAP_WIDTH;
+
 /**
  * Represents the game world as a 2D grid of tiles.
  *
@@ -25,8 +30,11 @@ public class GameMap {
 
     // TODO Test initializing with negative values, 0 and 1
     public GameMap(int width, int height) {
-        if (width < 2 || height < 2) {
-            throw new IllegalArgumentException("map width and height must be ≥ 2");
+        if (width < MIN_MAP_WIDTH || height < MIN_MAP_HEIGHT) {
+            throw new InvalidGameConfigException(
+                    "map width must be ≥ " + MIN_MAP_WIDTH + "; " +
+                    "map height must be ≥ " + MIN_MAP_HEIGHT
+            );
         }
 
         this.tiles = new Tile[width][height];
