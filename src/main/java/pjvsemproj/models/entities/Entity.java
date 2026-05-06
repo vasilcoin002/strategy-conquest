@@ -8,7 +8,7 @@ import java.util.UUID;
 
 /**
  * Base abstract implementation of an entity placed on the game map.
- *
+ * <p>
  * Stores a unique identifier, current tile position, and passability flag.
  * Serves as a common parent for all map entities such as cities and troop units.
  */
@@ -19,7 +19,12 @@ public abstract class Entity implements IGridEntity {
     protected final boolean isPassable;
 
     protected Entity(Tile intialTile, boolean isPassable) {
-        this.id = UUID.randomUUID().toString();
+        this(UUID.randomUUID().toString(), intialTile, isPassable);
+    }
+
+    protected Entity(String id, Tile intialTile, boolean isPassable) {
+        // if incoming id is empty => assign the random one and if it's not => assign it
+        this.id = (id == null || id.isBlank()) ? UUID.randomUUID().toString() : id;
         this.tile = intialTile;
         this.isPassable = isPassable;
     }
@@ -30,8 +35,6 @@ public abstract class Entity implements IGridEntity {
      *
      * @return current tile or {@code null} if not placed
      */
-
-
     @Override
     public Tile getTile() {
         return tile;

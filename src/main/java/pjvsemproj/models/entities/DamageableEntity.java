@@ -13,9 +13,14 @@ public abstract class DamageableEntity extends Entity implements Damageable {
     protected int health;
     protected int maxHealth;
 
-    protected DamageableEntity(Tile intialTile, boolean isPassable) {
+    public DamageableEntity(Tile intialTile, boolean isPassable) {
         super(intialTile, isPassable);
     }
+
+    public DamageableEntity(String id, Tile intialTile, boolean isPassable) {
+        super(id, intialTile, isPassable);
+    }
+
 
     /**
      * Applies damage to this entity.

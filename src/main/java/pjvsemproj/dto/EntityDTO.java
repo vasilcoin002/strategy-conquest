@@ -5,8 +5,7 @@ package pjvsemproj.dto;
  */
 public class EntityDTO {
     // TODO remove transient from every id and make constructors accept it with the id
-    // adding transient to tell Gson to not serialize it
-    public final transient String id;
+    public final String id;
     public final String entityType; // e.g., "CITY", "INFANTRY", "CAVALRY"
     public final int x;
     public final int y;

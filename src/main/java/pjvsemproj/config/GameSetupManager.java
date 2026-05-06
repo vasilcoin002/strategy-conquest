@@ -88,6 +88,7 @@ public class GameSetupManager {
         return createGameFromDTO(gameDTO, null, false);
     }
 
+    // TODO refactor this method
     private Game createGameFromDTO(GameDTO dto, String localClientName, boolean isLocalVsBot) {
         GameMap map = new GameMap(dto.mapWidth, dto.mapHeight);
         Game game = new Game(map);
@@ -120,7 +121,7 @@ public class GameSetupManager {
 
             if (entityDTO instanceof CityDTO cityDTO) {
                 CityType type = CityType.valueOf(cityDTO.cityLevel);
-                City city = new City(tile, type);
+                City city = new City(cityDTO.id, tile, type);
 
                 GridPositionHelper.placeEntity(city, tile);
                 OwnershipHelper.transferCity(city, owner);
@@ -129,7 +130,7 @@ public class GameSetupManager {
                 TroopType type = TroopType.valueOf(troopDTO.entityType);
 
                 TroopUnit troop = new TroopUnit(
-                        type, tile,
+                        troopDTO.id, type, tile,
                         troopDTO.hasMovedThisTurn, troopDTO.hasAttackedThisTurn
                 );
 

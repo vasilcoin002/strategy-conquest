@@ -62,7 +62,7 @@ public class SceneDirector {
     }
 
     public void showLocalGame() {
-        String myName = "Vasya"; // TODO this have to come from a text field
+        String myName = "Vasya"; // TODO this has to come from a text field
 
         GameSetupManager setupManager = new GameSetupManager();
         Game game = setupManager.loadLocalGame("config.json", myName);

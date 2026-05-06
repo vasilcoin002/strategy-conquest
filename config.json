@@ -14,6 +14,7 @@
   ],
   "entities": [
     {
+      "id": "vasya's city",
       "entityType": "City",
       "x": 2,
       "y": 2,

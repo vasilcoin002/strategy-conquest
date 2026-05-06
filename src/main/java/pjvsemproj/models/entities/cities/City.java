@@ -6,6 +6,8 @@ import pjvsemproj.models.entities.Upgradable;
 import pjvsemproj.models.game.players.Player;
 import pjvsemproj.models.game.maps.Tile;
 
+import java.util.UUID;
+
 
 /**
  * Represents a city placed on the map.
@@ -18,19 +20,18 @@ public class City extends Entity implements Upgradable<CityType>, Ownable {
     private Player owner;
     private CityType cityType;
 
-    public City(Tile tile, CityType cityType) {
-        super(tile, true);
-        this.cityType = cityType;
-    }
-
     public City(CityType cityType) {
         this(null, cityType);
     }
 
-//    public City(Tile tile, CityType cityType, Player owner) {
-//        this(tile, cityType);
-//        this.owner = owner;
-//    }
+    public City(Tile tile, CityType cityType) {
+        this(UUID.randomUUID().toString(), tile, cityType);
+    }
+
+    public City(String id, Tile tile, CityType cityType) {
+        super(id, tile, true);
+        this.cityType = cityType;
+    }
 
     /**
      * Checks whether the city can be upgraded.

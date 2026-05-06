@@ -8,7 +8,7 @@ import pjvsemproj.models.game.players.Player;
 
 /**
  * Represents a troop unit controlled by a player.
- *
+ * <p>
  * A troop unit has health, damage range, movement range,
  * attack range and per-turn movement and attack state.
  */
@@ -34,8 +34,15 @@ public class TroopUnit extends DamageableEntity implements Movable, IDamager, Ow
     }
 
     public TroopUnit(TroopType troopType, Tile tile,
-                     boolean hasMovedThisTurn, boolean hasAttackedThisTurn) {
-        super(tile, false);
+                     boolean hasMovedThisTurn, boolean hasAttackedThisTurn
+    ) {
+        this(java.util.UUID.randomUUID().toString(), troopType, tile, hasMovedThisTurn, hasAttackedThisTurn);
+    }
+
+    public TroopUnit(String id, TroopType troopType, Tile tile,
+                     boolean hasMovedThisTurn, boolean hasAttackedThisTurn
+    ) {
+        super(id, tile, false);
 
         this.name = troopType.name();
 
@@ -55,12 +62,11 @@ public class TroopUnit extends DamageableEntity implements Movable, IDamager, Ow
      *
      * @return generated damage value
      */
-
     @Override
     public int calculateDamage() {
         int additionalDamageRange = maxDamage - minDamage;
         // casting to float Math.random() because Math.round() returns float if there is argument of type double
-        return minDamage + Math.round(additionalDamageRange * (float)Math.random());
+        return minDamage + Math.round(additionalDamageRange * (float) Math.random());
     }
 
     public String getName() {
