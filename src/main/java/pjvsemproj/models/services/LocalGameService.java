@@ -6,6 +6,7 @@ import pjvsemproj.models.game.players.HumanPlayer;
 
 import java.util.concurrent.CompletableFuture;
 
+// TODO fix human can control bot's troops (maybe entities)
 /**
  * Local (single-player) implementation of GameService.
  * <p>

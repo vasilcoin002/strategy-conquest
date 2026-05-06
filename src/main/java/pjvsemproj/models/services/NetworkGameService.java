@@ -24,95 +24,56 @@ public class NetworkGameService extends AbstractGameService {
 
     private final Client client;
 
-    public NetworkGameService(Client client) {
-        // TODO change it to ask server game data to create local object of game
-        super(new Game(new GameMap(5, 5)));
+    public NetworkGameService(Client client, Game game) {
+        super(game);
         this.client = client;
     }
 
     @Override
     public void login(String playerName) {
         client.sendToServer(Protocol.LOGIN, playerName);
+        super.login(playerName);
     }
 
     @Override
     public void ready() {
         client.ready();
+        super.ready();
     }
 
     @Override
     public void moveUnit(String unitId, int x, int y) {
         client.moveUnit(unitId, x, y);
+        super.moveUnit(unitId, x, y);
     }
 
     @Override
     public void attack(String attackerId, String targetId) {
         client.attack(attackerId, targetId);
+        super.attack(attackerId, targetId);
     }
 
     @Override
     public void buyUnit(String cityId, String troopType) {
         client.buyUnit(cityId, troopType);
+        super.buyUnit(cityId, troopType);
     }
 
     @Override
     public void upgradeCity(String cityId) {
         client.upgradeCity(cityId);
+        super.upgradeCity(cityId);
     }
 
     @Override
     public void endTurn() {
         client.endTurn();
+        super.endTurn();
     }
 
     @Override
     public void quit() {
         client.quit();
-
-    }
-
-    @Override
-    public GameDTO getGameDTO() {
-        return null;
-    }
-
-    @Override
-    public EntityDTO getEntityDTO(String entityId) {
-        return null;
-    }
-
-    @Override
-    public int getMapWidth() {
-        return 0;
-    }
-
-    @Override
-    public int getMapHeight() {
-        return 0;
-    }
-
-    @Override
-    public TileDTO getTileDTO(int x, int y) {
-        return null;
-    }
-
-    @Override
-    public List<PlayerDTO> getPlayersDTO() {
-        return List.of();
-    }
-
-    @Override
-    public PlayerDTO getCurrentPlayerDTO() {
-        return null;
-    }
-
-    @Override
-    public Set<TileDTO> getAvailableTilesDTOForMovement(String unitId) {
-        return Set.of();
-    }
-
-    @Override
-    public Set<TileDTO> getAvailableTilesDTOForAttack(String unitId) {
-        return Set.of();
+        super.quit();
     }
 }

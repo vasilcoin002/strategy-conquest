@@ -1,14 +1,10 @@
 package pjvsemproj.dto;
 
-import pjvsemproj.models.entities.IGridEntity;
-import pjvsemproj.models.entities.Ownable;
-import pjvsemproj.models.entities.cities.City;
-import pjvsemproj.models.entities.troopUnits.TroopUnit;
-
 /**
  * Container representing a single entity to be placed on the map.
  */
 public class EntityDTO {
+    // TODO remove transient from every id and make constructors accept it with the id
     // adding transient to tell Gson to not serialize it
     public final transient String id;
     public final String entityType; // e.g., "CITY", "INFANTRY", "CAVALRY"

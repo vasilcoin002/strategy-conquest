@@ -150,6 +150,11 @@ public class AbstractGameService implements GameService {
         System.out.println("Game quit");
     }
 
+    @Override
+    public String getClientName() {
+        return clientName;
+    }
+
     protected TroopUnit findTroopById(String id) {
         for (Player player : game.getPlayers()) {
             for (TroopUnit troopUnit : player.getTroops()) {

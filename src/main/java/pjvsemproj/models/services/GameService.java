@@ -32,6 +32,8 @@ public interface GameService {
 
     void quit();
 
+    String getClientName();
+
     GameDTO getGameDTO();
     EntityDTO getEntityDTO(String entityId);
 
