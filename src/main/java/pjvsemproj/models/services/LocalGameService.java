@@ -12,7 +12,7 @@ import java.util.concurrent.CompletableFuture;
  * <p>
  * Directly interacts with managers to execute game actions.
  */
-public class LocalGameService extends AbstractGameService {
+public class LocalGameService extends AbstractClientService {
 
     public LocalGameService(Game game) {
         super(game);

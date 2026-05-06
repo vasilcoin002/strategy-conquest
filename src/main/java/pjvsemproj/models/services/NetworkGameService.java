@@ -1,18 +1,8 @@
 package pjvsemproj.models.services;
 
-import pjvsemproj.dto.EntityDTO;
-import pjvsemproj.dto.GameDTO;
-import pjvsemproj.dto.PlayerDTO;
-import pjvsemproj.dto.TileDTO;
 import pjvsemproj.models.game.Game;
-import pjvsemproj.models.game.maps.GameMap;
-import pjvsemproj.models.game.maps.Tile;
-import pjvsemproj.models.game.players.Player;
 import pjvsemproj.server.Client;
 import pjvsemproj.server.Protocol;
-
-import java.util.List;
-import java.util.Set;
 
 // TODO implement methods which send data to server to also change local state
 /**
@@ -20,7 +10,7 @@ import java.util.Set;
  *
  * Sends commands to the server instead of executing them locally.
  */
-public class NetworkGameService extends AbstractGameService {
+public class NetworkGameService extends AbstractClientService {
 
     private final Client client;
 

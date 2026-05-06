@@ -9,23 +9,18 @@ import pjvsemproj.models.game.maps.Tile;
 import pjvsemproj.models.game.players.Player;
 import pjvsemproj.models.managers.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
-public class AbstractGameService implements GameService {
+public class AbstractGameService implements CoreGameService {
+
     protected final Game game;
-    protected String clientName;
 
     protected final MovementManager movementManager;
     protected final CombatManager combatManager;
     protected final EconomyManager economyManager;
     protected final TurnManager turnManager;
     protected final ConquestManager conquestManager;
-
-    protected Runnable onBoardUpdated;
 
     public AbstractGameService(Game game) {
         this.game = game;
@@ -58,16 +53,6 @@ public class AbstractGameService implements GameService {
     }
 
     @Override
-    public void login(String playerName) {
-        clientName = playerName;
-    }
-
-    @Override
-    public void ready() {
-
-    }
-
-    @Override
     public void moveUnit(String unitId, int x, int y) {
         TroopUnit troopUnit = findTroopById(unitId);
         if (troopUnit == null) {
@@ -80,8 +65,6 @@ public class AbstractGameService implements GameService {
             return;
         }
         movementManager.moveTroopUnit(troopUnit, tile);
-
-        notifyBoardUpdated();
     }
 
     public void addWinListener(IWinListener listener) {
@@ -101,8 +84,6 @@ public class AbstractGameService implements GameService {
             return;
         }
         combatManager.attackTroop(attacker, target);
-
-        notifyBoardUpdated();
     }
 
     @Override
@@ -114,8 +95,6 @@ public class AbstractGameService implements GameService {
 
         TroopType type = TroopType.valueOf(troopType);
         economyManager.buyTroopUnit(type, city);
-
-        notifyBoardUpdated();
     }
 
     @Override
@@ -126,33 +105,11 @@ public class AbstractGameService implements GameService {
         }
 
         economyManager.upgradeCity(city);
-
-        notifyBoardUpdated();
     }
 
     @Override
     public void endTurn() {
         turnManager.endTurn();
-
-        notifyBoardUpdated();
-    }
-
-    @Override
-    public boolean isMyTurn() {
-        return Objects.equals(
-                turnManager.getCurrentPlayer().getName(),
-                clientName
-        );
-    }
-
-    @Override
-    public void quit() {
-        System.out.println("Game quit");
-    }
-
-    @Override
-    public String getClientName() {
-        return clientName;
     }
 
     protected TroopUnit findTroopById(String id) {
@@ -243,16 +200,5 @@ public class AbstractGameService implements GameService {
         return availableTiles.stream()
                 .map(TileDTO::new)
                 .collect(Collectors.toSet());
-    }
-
-    @Override
-    public void setOnBoardUpdated(Runnable callback) {
-        onBoardUpdated = callback;
-    }
-
-    protected void notifyBoardUpdated() {
-        if (onBoardUpdated != null) {
-            onBoardUpdated.run();
-        }
     }
 }

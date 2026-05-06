@@ -14,11 +14,7 @@ import java.util.Set;
  *
  * Acts as an abstraction layer between UI/network and game logic.
  */
-public interface GameService {
-
-    void login(String playerName);
-
-    void ready();
+public interface CoreGameService {
 
     void moveUnit(String unitId, int x, int y);
 
@@ -28,11 +24,6 @@ public interface GameService {
     void upgradeCity(String cityId);
 
     void endTurn();
-    boolean isMyTurn();
-
-    void quit();
-
-    String getClientName();
 
     GameDTO getGameDTO();
     EntityDTO getEntityDTO(String entityId);
@@ -47,5 +38,4 @@ public interface GameService {
     Set<TileDTO> getAvailableTilesDTOForMovement(String unitId);
     Set<TileDTO> getAvailableTilesDTOForAttack(String unitId);
 
-    void setOnBoardUpdated(Runnable callback);
 }

@@ -2,13 +2,7 @@ package pjvsemproj;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import pjvsemproj.config.GameSetupManager;
 import pjvsemproj.controllers.SceneDirector;
-import pjvsemproj.models.game.Game;
-import pjvsemproj.models.game.maps.GameMap;
-import pjvsemproj.models.game.players.HumanPlayer;
-import pjvsemproj.models.services.GameService;
-import pjvsemproj.models.services.LocalGameService;
 
 public class HelloApplication extends Application {
 

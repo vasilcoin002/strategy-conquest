@@ -3,7 +3,8 @@ package pjvsemproj.controllers;
 import javafx.application.Platform;
 import pjvsemproj.config.GameConfigParser;
 import pjvsemproj.dto.*;
-import pjvsemproj.models.services.GameService;
+import pjvsemproj.models.services.CoreGameService;
+import pjvsemproj.models.services.ClientGameEngine;
 import pjvsemproj.views.game.GameView;
 
 import java.util.Objects;
@@ -22,12 +23,12 @@ import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 public class GameController {
 
     private final GameView view;
-    private final GameService gameService;
+    private final ClientGameEngine gameService;
     private final SceneDirector sceneDirector;
 
     private String selectedEntityId;
 
-    public GameController(GameService gameService, GameView view, SceneDirector sceneDirector) {
+    public GameController(ClientGameEngine gameService, GameView view, SceneDirector sceneDirector) {
         this.gameService = gameService;
         this.view = view;
         this.sceneDirector = sceneDirector;
@@ -100,7 +101,7 @@ public class GameController {
 
     // TODO refactor method
     private void handleOccupiedTileClick(TileDTO targetTile) {
-        // if entity is not selected yet
+        // if entity is not selected yet => select the very top entity on tile
         if (selectedEntityId == null) {
             setSelectedEntityId(targetTile.entities.getLast().id);
             return;
@@ -209,7 +210,7 @@ public class GameController {
         return view;
     }
 
-    public GameService getGameService() {
+    public CoreGameService getGameService() {
         return gameService;
     }
 

@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 import pjvsemproj.config.GameSetupManager;
 import pjvsemproj.dto.PlayerDTO;
 import pjvsemproj.models.game.Game;
-import pjvsemproj.models.services.GameService;
+import pjvsemproj.models.services.ClientGameEngine;
 import pjvsemproj.models.services.LocalGameService;
 import pjvsemproj.views.MainMenuView;
 import pjvsemproj.views.game.GameView;
@@ -39,7 +39,7 @@ public class SceneDirector {
         stage.centerOnScreen();
     }
 
-    public void showGame(GameService gameService, String clientName) {
+    public void showGame(ClientGameEngine gameService, String clientName) {
         gameService.login(clientName);
         List<PlayerDTO> players = gameService.getPlayersDTO();
 
@@ -67,7 +67,7 @@ public class SceneDirector {
         GameSetupManager setupManager = new GameSetupManager();
         Game game = setupManager.loadLocalGame("config.json", myName);
 
-        GameService gameService = new LocalGameService(game);
+        ClientGameEngine gameService = new LocalGameService(game);
         showGame(gameService, myName);
     }
 
