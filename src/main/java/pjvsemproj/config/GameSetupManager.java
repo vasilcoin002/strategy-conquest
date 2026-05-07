@@ -89,6 +89,8 @@ public class GameSetupManager {
     }
 
     // TODO refactor this method
+    // TODO add default values
+    //  (for example if there is no currentPlayerName, then assign the first player as the current one and so on)
     private Game createGameFromDTO(GameDTO dto, String localClientName, boolean isLocalVsBot) {
         GameMap map = new GameMap(dto.mapWidth, dto.mapHeight);
         Game game = new Game(map);

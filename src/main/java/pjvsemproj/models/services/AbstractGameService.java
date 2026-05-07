@@ -53,18 +53,18 @@ public class AbstractGameService implements CoreGameService {
     }
 
     @Override
-    public void moveUnit(String unitId, int x, int y) {
+    public boolean moveUnit(String unitId, int x, int y) {
         TroopUnit troopUnit = findTroopById(unitId);
         if (troopUnit == null) {
-            return;
+            return false;
         }
         Tile tile = game.getMap().getTile(x, y);
         Set<Tile> availableTiles = movementManager.getAvailableTilesForMovement(troopUnit);
 
         if (!availableTiles.contains(tile)) {
-            return;
+            return false;
         }
-        movementManager.moveTroopUnit(troopUnit, tile);
+        return movementManager.moveTroopUnit(troopUnit, tile);
     }
 
     public void addWinListener(IWinListener listener) {
@@ -72,39 +72,39 @@ public class AbstractGameService implements CoreGameService {
     }
 
     @Override
-    public void attack(String attackerId, String targetId) {
+    public boolean attack(String attackerId, String targetId) {
         TroopUnit attacker = findTroopById(attackerId);
         TroopUnit target = findTroopById(targetId);
         if (attacker == null || target == null) {
-            return;
+            return false;
         }
         Set<TroopUnit> attackableTroops = combatManager.getAttackableTroops(attacker);
 
         if (!attackableTroops.contains(target)) {
-            return;
+            return false;
         }
-        combatManager.attackTroop(attacker, target);
+        return combatManager.attackTroop(attacker, target);
     }
 
     @Override
-    public void buyUnit(String cityId, String troopType) {
+    public boolean buyUnit(String cityId, String troopType) {
         City city = findCityById(cityId);
         if (city == null) {
-            return;
+            return false;
         }
 
         TroopType type = TroopType.valueOf(troopType);
-        economyManager.buyTroopUnit(type, city);
+        return economyManager.buyTroopUnit(type, city);
     }
 
     @Override
-    public void upgradeCity(String cityId) {
+    public boolean upgradeCity(String cityId) {
         City city = findCityById(cityId);
         if (city == null) {
-            return;
+            return false;
         }
 
-        economyManager.upgradeCity(city);
+        return economyManager.upgradeCity(city);
     }
 
     @Override

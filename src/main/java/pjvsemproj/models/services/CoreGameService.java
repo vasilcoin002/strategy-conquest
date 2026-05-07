@@ -8,7 +8,7 @@ import pjvsemproj.dto.TileDTO;
 import java.util.List;
 import java.util.Set;
 
-
+// TODO change action methods return type from void to boolean
 /**
  * Defines the interface for interacting with the game.
  *
@@ -16,12 +16,12 @@ import java.util.Set;
  */
 public interface CoreGameService {
 
-    void moveUnit(String unitId, int x, int y);
+    boolean moveUnit(String unitId, int x, int y);
 
-    void attack(String attackerId, String targetId);
+    boolean attack(String attackerId, String targetId);
 
-    void buyUnit(String cityId, String troopType);
-    void upgradeCity(String cityId);
+    boolean buyUnit(String cityId, String troopType);
+    boolean upgradeCity(String cityId);
 
     void endTurn();
 

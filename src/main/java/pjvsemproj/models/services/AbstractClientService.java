@@ -74,27 +74,31 @@ public class AbstractClientService extends AbstractGameService implements Client
     }
 
     @Override
-    public void moveUnit(String unitId, int x, int y) {
+    public boolean moveUnit(String unitId, int x, int y) {
         super.moveUnit(unitId, x, y);
         notifyBoardUpdated();
+        return false;
     }
 
     @Override
-    public void attack(String attackerId, String targetId) {
+    public boolean attack(String attackerId, String targetId) {
         super.attack(attackerId, targetId);
         notifyBoardUpdated();
+        return false;
     }
 
     @Override
-    public void buyUnit(String cityId, String troopType) {
+    public boolean buyUnit(String cityId, String troopType) {
         super.buyUnit(cityId, troopType);
         notifyBoardUpdated();
+        return false;
     }
 
     @Override
-    public void upgradeCity(String cityId) {
+    public boolean upgradeCity(String cityId) {
         super.upgradeCity(cityId);
         notifyBoardUpdated();
+        return false;
     }
 
     @Override

@@ -1,18 +1,18 @@
 package pjvsemproj.server;
 
-import pjvsemproj.models.entities.cities.City;
+import pjvsemproj.dto.CityDTO;
+import pjvsemproj.dto.PlayerDTO;
+import pjvsemproj.dto.TroopUnitDTO;
 import pjvsemproj.models.entities.troopUnits.TroopType;
-import pjvsemproj.models.entities.troopUnits.TroopUnit;
-import pjvsemproj.models.game.Game;
-import pjvsemproj.models.game.maps.GameMap;
-import pjvsemproj.models.game.maps.Tile;
 import pjvsemproj.models.game.players.Player;
-import pjvsemproj.models.managers.*;
+import pjvsemproj.models.services.CoreGameService;
+
+import java.util.Objects;
 
 
 /**
  * Represents a multiplayer game session between two players.
- *
+ * <p>
  * Coordinates game logic and synchronizes state between clients.
  */
 public class GameSession {
@@ -23,60 +23,43 @@ public class GameSession {
 
     private final Player player1;
     private final Player player2;
-    private final Game game;
 
-    private final GameMap map;
-    private final MovementManager movementManager;
-    private final CombatManager combatManager;
-    private final EconomyManager economyManager;
-    private final TurnManager turnManager;
-    private final ConquestManager conquestManager;
+    private final CoreGameService gameService;
 
     private boolean player1Ready = false;
     private boolean player2Ready = false;
     private boolean gameStarted = false;
 
-    public GameSession(GameServer gameServer, Connection connection1, Connection connection2, GameMap map, Game game) {
+    public GameSession(GameServer gameServer, Connection c1, Connection c2, CoreGameService gameService) {
         this.gameServer = gameServer;
-        this.connection1 = connection1;
-        this.connection2 = connection2;
+        this.connection1 = c1;
+        this.connection2 = c2;
+
+        this.gameService = gameService;
 
         this.player1 = connection1.getPlayer();
         this.player2 = connection2.getPlayer();
-        this.game = game;
-        this.map = game.getMap();
-
-        this.turnManager = new TurnManager(player1, player2, game.getCurrentPlayer());
-
-        this.conquestManager = new ConquestManager(game.getPlayers(), turnManager.getCurrentPlayer());
-        this.movementManager = new MovementManager(
-                this.map, turnManager.getCurrentPlayer(), conquestManager);
-        this.combatManager = new CombatManager(map, turnManager.getCurrentPlayer());
-        this.economyManager = new EconomyManager(turnManager.getCurrentPlayer());
-
-        this.turnManager.addTurnListener(movementManager);
-        this.turnManager.addTurnListener(combatManager);
-        this.turnManager.addTurnListener(economyManager);
     }
 
-    public void startGame(){
-        if(gameStarted){
+    public void startGame() {
+        if (gameStarted) {
             return;
         }
 
         gameStarted = true;
-        connection1.sendToClient(Protocol.GAME_STARTED,player1.getName(), player2.getName());
+        connection1.sendToClient(Protocol.GAME_STARTED, player1.getName(), player2.getName());
         connection2.sendToClient(Protocol.GAME_STARTED, player1.getName(), player2.getName());
 
-        Player currentPlayer = turnManager.getCurrentPlayer();
+        PlayerDTO currentPlayer = gameService.getCurrentPlayerDTO();
 
-        connection1.sendToClient(Protocol.TURN_STARTED, currentPlayer.getName());
-        connection2.sendToClient(Protocol.TURN_STARTED, currentPlayer.getName());
+        connection1.sendToClient(Protocol.TURN_STARTED, currentPlayer.name);
+        connection2.sendToClient(Protocol.TURN_STARTED, currentPlayer.name);
 
-        turnManager.startTurn(currentPlayer);
+        // TODO think about necessity of the line below
+//        turnManager.startTurn(currentPlayer);
     }
 
-    public synchronized void handleReady(Connection connection){
+    public synchronized void handleReady(Connection connection) {
         if (gameStarted) {
             connection.sendToClient(Protocol.ERROR, "GAME_ALREADY_STARTED");
             return;
@@ -95,26 +78,27 @@ public class GameSession {
         }
     }
 
-    public synchronized void onMove(Connection connection, String unitId, int x, int y){
+    public synchronized void onMove(Connection connection, String unitId, int x, int y) {
         if (!gameStarted) {
             connection.sendToClient(Protocol.ERROR, "GAME_NOT_STARTED");
             return;
         }
 
-        Player currentPlayer = turnManager.getCurrentPlayer();
+        PlayerDTO currentPlayer = gameService.getCurrentPlayerDTO();
 
-        if (connection.getPlayer() != currentPlayer) {
+        if (!Objects.equals(connection.getPlayer().getName(), currentPlayer.name)) {
             connection.sendToClient(Protocol.ERROR, "NOT_YOUR_TURN");
             return;
         }
-        TroopUnit unit = findUnitById(unitId);
 
-        if (unit == null) {
-            connection.sendToClient(Protocol.ERROR, "UNIT_NOT_FOUND");
+        boolean success;
+        try {
+            success = gameService.moveUnit(unitId, x, y);
+        } catch (Exception e) {
+            // TODO make gameService methods throw exceptions (in this case null pointer exception)
+            connection.sendToClient(Protocol.ERROR, e.getMessage());
             return;
         }
-        Tile targetTile = map.getTile(x, y);
-        boolean success = movementManager.moveTroopUnit(unit, targetTile);
 
         if (!success) {
             connection.sendToClient(Protocol.ERROR, "MOVE_FAILED");
@@ -125,112 +109,126 @@ public class GameSession {
         connection2.sendToClient(Protocol.UNIT_MOVED, unitId, String.valueOf(x), String.valueOf(y));
     }
 
-    public synchronized void onAttack(Connection connection, String attackerId, String targetId){
+    public synchronized void onAttack(Connection connection, String attackerId, String targetId) {
         if (!gameStarted) {
             connection.sendToClient(Protocol.ERROR, "GAME_NOT_STARTED");
             return;
         }
 
-        Player currentPlayer = turnManager.getCurrentPlayer();
-        if (connection.getPlayer() != currentPlayer) {
+        PlayerDTO currentPlayer = gameService.getCurrentPlayerDTO();
+        if (!Objects.equals(connection.getPlayer().getName(), currentPlayer.name)) {
             connection.sendToClient(Protocol.ERROR, "NOT_YOUR_TURN");
             return;
         }
-        TroopUnit attacker = findUnitById(attackerId);
-        if (attacker == null) {
-            connection.sendToClient(Protocol.ERROR, "UNIT_NOT_FOUND");
+
+        boolean success;
+        try {
+            success = gameService.attack(attackerId, targetId);
+        } catch (Exception e) {
+            // TODO make gameService methods throw exceptions (in this case null pointer exception)
+            connection.sendToClient(Protocol.ERROR, e.getMessage());
             return;
         }
-        TroopUnit target = findUnitById(targetId);
-        if(target == null){
-            connection.sendToClient(Protocol.ERROR, "TARGET_NOT_FOUND");
-        }
-        boolean success = combatManager.attackTroop(attacker, target);
+
         if (!success) {
             connection.sendToClient(Protocol.ERROR, "ATTACK_FAILED");
             return;
         }
 
-        connection1.sendToClient(Protocol.UNIT_ATTACKED, attackerId, targetId, String.valueOf(target.getHealth()));
-        connection2.sendToClient(Protocol.UNIT_ATTACKED, attackerId, targetId, String.valueOf(target.getHealth()));
+        TroopUnitDTO target = (TroopUnitDTO) gameService.getEntityDTO(targetId);
 
-        if(target.isDead()){
+
+        connection1.sendToClient(Protocol.UNIT_ATTACKED, attackerId, targetId, String.valueOf(target.hp));
+        connection2.sendToClient(Protocol.UNIT_ATTACKED, attackerId, targetId, String.valueOf(target.hp));
+
+        if (target.hp == 0) {
             connection1.sendToClient(Protocol.UNIT_DIED, targetId);
             connection2.sendToClient(Protocol.UNIT_DIED, targetId);
         }
     }
 
-    public synchronized void onUnitPurchase(Connection connection, String cityId, String troopType){
+    public synchronized void onUnitPurchase(Connection connection, String cityId, String troopType) {
         if (!gameStarted) {
             connection.sendToClient(Protocol.ERROR, "GAME_NOT_STARTED");
             return;
         }
 
-        Player currentPlayer = turnManager.getCurrentPlayer();
-        if (connection.getPlayer() != currentPlayer) {
+        PlayerDTO currentPlayer = gameService.getCurrentPlayerDTO();
+        if (!Objects.equals(connection.getPlayer().getName(), currentPlayer.name)) {
             connection.sendToClient(Protocol.ERROR, "NOT_YOUR_TURN");
             return;
         }
 
-        City city = findCityById(cityId);
-        if(city == null){
-            connection.sendToClient(Protocol.ERROR, "CITY_NOT_FOUND");
+        boolean success;
+        try {
+            success = gameService.buyUnit(cityId, troopType);
+        } catch (Exception e) {
+            // TODO make gameService methods throw exceptions (in this case null pointer exception)
+            connection.sendToClient(Protocol.ERROR, e.getMessage());
             return;
         }
 
-        boolean success = economyManager.buyTroopUnit(TroopType.valueOf(troopType), city);
-        if(!success){
+        if (!success) {
             connection.sendToClient(Protocol.ERROR, "ERROR_BUYING_TROOP");
             return;
         }
+        // TODO change it so both connections receive the same messages
         connection1.sendToClient(Protocol.BUY_UNIT, String.valueOf(TroopType.valueOf(troopType)));
         connection2.sendToClient(Protocol.UNIT_BOUGHT, String.valueOf(TroopType.valueOf(troopType)));
     }
-    public synchronized void onCityUpgrade(Connection connection, String cityId){
+
+    public synchronized void onCityUpgrade(Connection connection, String cityId) {
         if (!gameStarted) {
             connection.sendToClient(Protocol.ERROR, "GAME_NOT_STARTED");
             return;
         }
 
-        Player currentPlayer = turnManager.getCurrentPlayer();
-        if (connection.getPlayer() != currentPlayer) {
+        PlayerDTO currentPlayer = gameService.getCurrentPlayerDTO();
+        if (!Objects.equals(connection.getPlayer().getName(), currentPlayer.name)) {
             connection.sendToClient(Protocol.ERROR, "NOT_YOUR_TURN");
             return;
         }
 
-        City city = findCityById(cityId);
-        if(city == null){
-            connection.sendToClient(Protocol.ERROR, "CITY_NOT_FOUND");
+        boolean success;
+        try {
+            success = gameService.upgradeCity(cityId);
+        } catch (Exception e) {
+            // TODO make gameService methods throw exceptions (in this case null pointer exception)
+            connection.sendToClient(Protocol.ERROR, e.getMessage());
             return;
         }
 
-        boolean success = economyManager.upgradeCity(city);
-        if(!success){
+        if (!success) {
             connection.sendToClient(Protocol.ERROR, "UPGRADE_CITY_FAILURE");
             return;
         }
-        connection1.sendToClient(Protocol.UPGRADE_CITY, cityId, city.getCityType().name(), String.valueOf(currentPlayer.getBalance()));
-        connection2.sendToClient(Protocol.CITY_UPGRADED, cityId, city.getCityType().name());
+
+        CityDTO city = (CityDTO) gameService.getEntityDTO(cityId);
+
+        // TODO change it so both connections receive the same messages
+        connection1.sendToClient(Protocol.UPGRADE_CITY, cityId, city.cityLevel, String.valueOf(currentPlayer.balance));
+        connection2.sendToClient(Protocol.CITY_UPGRADED, cityId, city.cityLevel);
     }
 
-    public synchronized void onEndTurn(Connection connection){
+    public synchronized void onEndTurn(Connection connection) {
         if (!gameStarted) {
             connection.sendToClient(Protocol.ERROR, "GAME_NOT_STARTED");
             return;
         }
 
-        Player currentPlayer = turnManager.getCurrentPlayer();
-        if (connection.getPlayer() != currentPlayer) {
+        PlayerDTO currentPlayer = gameService.getCurrentPlayerDTO();
+        if (!Objects.equals(connection.getPlayer().getName(), currentPlayer.name)) {
             connection.sendToClient(Protocol.ERROR, "NOT_YOUR_TURN");
             return;
         }
-        turnManager.endTurn();
-        Player newCurrentPlayer = turnManager.getCurrentPlayer();
+        gameService.endTurn();
+        PlayerDTO newCurrentPlayer = gameService.getCurrentPlayerDTO();
 
-        connection1.sendToClient(Protocol.TURN_STARTED, newCurrentPlayer.getName());
-        connection2.sendToClient(Protocol.TURN_STARTED, newCurrentPlayer.getName());
+        connection1.sendToClient(Protocol.TURN_STARTED, newCurrentPlayer.name);
+        connection2.sendToClient(Protocol.TURN_STARTED, newCurrentPlayer.name);
     }
-    public synchronized void onPlayerQuit(Connection connection){
+
+    public synchronized void onPlayerQuit(Connection connection) {
         Connection otherConnection;
         if (connection == connection1) {
             otherConnection = connection2;
@@ -245,7 +243,7 @@ public class GameSession {
         gameServer.removeSession(this);
     }
 
-    public synchronized void onPlayerDisconnect(Connection connection){
+    public synchronized void onPlayerDisconnect(Connection connection) {
         Player disconnectedPlayer = connection.getPlayer();
         Connection otherConnection;
 
@@ -264,33 +262,11 @@ public class GameSession {
         gameServer.removeSession(this);
     }
 
-    private TroopUnit findUnitById(String unitId){
-        for(Player player: game.getPlayers()){
-            for(TroopUnit troopUnit: player.getTroops()){
-                if(troopUnit.getId().equals(unitId)){
-                    return troopUnit;
-                }
-            }
-        }
-        return null;
-    }
-
-    private City findCityById(String cityId){
-        for(Player player: game.getPlayers()){
-            for(City city: player.getCities()){
-                if(city.getId().equals(cityId)){
-                    return city;
-                }
-            }
-        }
-        return null;
-    }
-
-    public Connection getConnection1(){
+    public Connection getConnection1() {
         return connection1;
     }
 
-    public Connection getConnection2(){
+    public Connection getConnection2() {
         return connection2;
     }
 }

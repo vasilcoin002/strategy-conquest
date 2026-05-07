@@ -27,8 +27,6 @@ public class LocalGameService extends AbstractClientService {
     public void endTurn() {
         turnManager.endTurn();
 
-        notifyBoardUpdated();
-
         if (turnManager.getCurrentPlayer() instanceof BotPlayer) {
             // using CompletableFuture instead of new Thread() to efficiently reuse threads
             // from Java's built-in pool, saving memory and avoiding heavy OS thread creation.

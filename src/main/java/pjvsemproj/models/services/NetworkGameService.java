@@ -4,7 +4,8 @@ import pjvsemproj.models.game.Game;
 import pjvsemproj.server.Client;
 import pjvsemproj.server.Protocol;
 
-// TODO implement methods which send data to server to also change local state
+// TODO change methods which send data to server to also check server response to change local state
+//  for example moveUnit(x, y) should check if there is a positive response from server before moving it locally
 /**
  * Network-based implementation of GameService.
  *
@@ -32,27 +33,31 @@ public class NetworkGameService extends AbstractClientService {
     }
 
     @Override
-    public void moveUnit(String unitId, int x, int y) {
+    public boolean moveUnit(String unitId, int x, int y) {
         client.moveUnit(unitId, x, y);
         super.moveUnit(unitId, x, y);
+        return false;
     }
 
     @Override
-    public void attack(String attackerId, String targetId) {
+    public boolean attack(String attackerId, String targetId) {
         client.attack(attackerId, targetId);
         super.attack(attackerId, targetId);
+        return false;
     }
 
     @Override
-    public void buyUnit(String cityId, String troopType) {
+    public boolean buyUnit(String cityId, String troopType) {
         client.buyUnit(cityId, troopType);
         super.buyUnit(cityId, troopType);
+        return false;
     }
 
     @Override
-    public void upgradeCity(String cityId) {
+    public boolean upgradeCity(String cityId) {
         client.upgradeCity(cityId);
         super.upgradeCity(cityId);
+        return false;
     }
 
     @Override
