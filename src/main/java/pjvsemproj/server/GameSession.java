@@ -95,7 +95,6 @@ public class GameSession {
         try {
             success = gameService.moveUnit(unitId, x, y);
         } catch (Exception e) {
-            // TODO make gameService methods throw exceptions (in this case null pointer exception)
             connection.sendToClient(Protocol.ERROR, e.getMessage());
             return;
         }
@@ -125,7 +124,6 @@ public class GameSession {
         try {
             success = gameService.attack(attackerId, targetId);
         } catch (Exception e) {
-            // TODO make gameService methods throw exceptions (in this case null pointer exception)
             connection.sendToClient(Protocol.ERROR, e.getMessage());
             return;
         }
@@ -163,7 +161,6 @@ public class GameSession {
         try {
             success = gameService.buyUnit(cityId, troopType);
         } catch (Exception e) {
-            // TODO make gameService methods throw exceptions (in this case null pointer exception)
             connection.sendToClient(Protocol.ERROR, e.getMessage());
             return;
         }
@@ -193,7 +190,6 @@ public class GameSession {
         try {
             success = gameService.upgradeCity(cityId);
         } catch (Exception e) {
-            // TODO make gameService methods throw exceptions (in this case null pointer exception)
             connection.sendToClient(Protocol.ERROR, e.getMessage());
             return;
         }

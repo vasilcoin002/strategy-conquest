@@ -55,9 +55,7 @@ public class AbstractGameService implements CoreGameService {
     @Override
     public boolean moveUnit(String unitId, int x, int y) {
         TroopUnit troopUnit = findTroopById(unitId);
-        if (troopUnit == null) {
-            return false;
-        }
+
         Tile tile = game.getMap().getTile(x, y);
         Set<Tile> availableTiles = movementManager.getAvailableTilesForMovement(troopUnit);
 
@@ -75,9 +73,7 @@ public class AbstractGameService implements CoreGameService {
     public boolean attack(String attackerId, String targetId) {
         TroopUnit attacker = findTroopById(attackerId);
         TroopUnit target = findTroopById(targetId);
-        if (attacker == null || target == null) {
-            return false;
-        }
+
         Set<TroopUnit> attackableTroops = combatManager.getAttackableTroops(attacker);
 
         if (!attackableTroops.contains(target)) {
@@ -89,9 +85,6 @@ public class AbstractGameService implements CoreGameService {
     @Override
     public boolean buyUnit(String cityId, String troopType) {
         City city = findCityById(cityId);
-        if (city == null) {
-            return false;
-        }
 
         TroopType type = TroopType.valueOf(troopType);
         return economyManager.buyTroopUnit(type, city);
@@ -100,9 +93,6 @@ public class AbstractGameService implements CoreGameService {
     @Override
     public boolean upgradeCity(String cityId) {
         City city = findCityById(cityId);
-        if (city == null) {
-            return false;
-        }
 
         return economyManager.upgradeCity(city);
     }
@@ -120,7 +110,7 @@ public class AbstractGameService implements CoreGameService {
                 }
             }
         }
-        return null;
+        throw new EntityNotFoundException("TROOP_UNIT", id);
     }
 
     protected City findCityById(String id) {
@@ -131,7 +121,7 @@ public class AbstractGameService implements CoreGameService {
                 }
             }
         }
-        return null;
+        throw new EntityNotFoundException("CITY", id);
     }
 
     @Override
