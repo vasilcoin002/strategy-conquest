@@ -25,7 +25,7 @@ public class LocalGameService extends AbstractClientService {
 
     @Override
     public void endTurn() {
-        turnManager.endTurn();
+        super.endTurn();
 
         if (turnManager.getCurrentPlayer() instanceof BotPlayer) {
             // using CompletableFuture instead of new Thread() to efficiently reuse threads
