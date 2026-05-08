@@ -23,10 +23,10 @@
     },
     {
       "entityType": "Militia",
-      "x": 3,
+      "x": 2,
       "y": 2,
       "ownerName": "Vasya",
-      "hp": 20,
+      "hp": 1,
       "hasMovedThisTurn": false,
       "hasAttackedThisTurn": false
     },

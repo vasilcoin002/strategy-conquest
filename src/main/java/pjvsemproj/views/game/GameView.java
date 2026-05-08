@@ -96,6 +96,24 @@ public class GameView {
         stage.setScene(scene);
     }
 
+    public void redrawMap(GameDTO game) {
+        mapRenderer.clear(entitiesGc);
+
+        List<CityDTO> cities = new ArrayList<>();
+        List<TroopUnitDTO> troops = new ArrayList<>();
+
+        for (EntityDTO entity : game.entities) {
+            if (entity instanceof CityDTO city) {
+                cities.add(city);
+            } else if (entity instanceof TroopUnitDTO troopUnit) {
+                troops.add(troopUnit);
+            }
+        }
+
+        mapRenderer.renderCities(entitiesGc, cities, ownersColors);
+        mapRenderer.renderTroops(entitiesGc, troops, ownersColors);
+    }
+
     public void updatePlayersBalance(List<PlayerDTO> players) {
         sidePanel.updatePlayersBalance(players);
     }

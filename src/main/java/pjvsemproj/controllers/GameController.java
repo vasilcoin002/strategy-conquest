@@ -13,7 +13,6 @@ import java.util.Set;
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
 // TODO change text on the button to "PlayerName's turn" when it's enemy's turn
-// TODO fix troop's hp doesn't rerender after it got healed
 // TODO add winning screen
 // TODO on escape pressed: cancel selection or pop up dialog window
 /**
@@ -37,16 +36,6 @@ public class GameController {
 
         view.setOnSaveGameAction(this::handleSaveGameRequest);
         view.setOnQuitGameAction(this::handleQuitGameRequest);
-
-//        view.setOnNextTurnAction(() -> {
-//            gameService.endTurn();
-//            view.setNextTurnButtonDisabled(true);
-//            view.setNextTurnButtonDisabled(!gameService.isMyTurn());
-//
-//            view.updatePlayersBalance(gameService.getPlayersDTO());
-//            view.updateCurrentPlayer(gameService.getCurrentPlayerDTO().name);
-//            setSelectedEntityId(selectedEntityId);
-//        });
     }
 
     // Inside GameController.java
@@ -58,18 +47,16 @@ public class GameController {
             // trigger this from a background thread!
             Platform.runLater(() -> {
 //                view.redrawMap();
-//                view.setNextTurnButtonDisabled(!gameService.isMyTurn());
+                view.setNextTurnButtonDisabled(!gameService.isMyTurn());
+                view.redrawMap(gameService.getGameDTO());
                 view.updatePlayersBalance(gameService.getPlayersDTO());
                 view.updateCurrentPlayer(gameService.getCurrentPlayerDTO().name);
 
                 // Lock or unlock the button depending on if it's our turn now
-                view.setNextTurnButtonDisabled(!gameService.isMyTurn());
                 setSelectedEntityId(selectedEntityId);
             });
         });
 
-        // 2. The Next Turn button is incredibly simple now
-        // Just end the turn. The Service handles the rest!
         view.setOnNextTurnAction(gameService::endTurn);
     }
 
