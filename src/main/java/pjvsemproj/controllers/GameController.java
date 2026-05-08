@@ -14,7 +14,6 @@ import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
 // TODO change text on the button to "PlayerName's turn" when it's enemy's turn
 // TODO fix troop's hp doesn't rerender after it got healed
-// TODO fix city doesn't display buy buttons
 // TODO add winning screen
 // TODO on escape pressed: cancel selection or pop up dialog window
 /**
@@ -164,7 +163,13 @@ public class GameController {
     public void setSelectedEntityId(String entityId) {
         this.selectedEntityId = entityId;
         EntityDTO entity = gameService.getEntityDTO(entityId);
-        view.setSelectedEntity(entity);
+
+        boolean isOwner = false;
+        if (entity != null) {
+            isOwner = Objects.equals(entity.ownerName, gameService.getClientName());
+        }
+
+        view.setSelectedEntity(entity, isOwner);
 
         TileDTO tile = null;
         if (entity != null) {

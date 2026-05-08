@@ -15,6 +15,7 @@ import java.util.function.Consumer;
 
 import static pjvsemproj.views.ViewConstants.GAME_SIDE_PANEL_WIDTH;
 
+// TODO add scrolling to actionBox, because if it's not like this, it breaks game interface
 /**
  * UI panel displaying player info and actions.
  * Allows interaction with selected entities.
@@ -59,13 +60,11 @@ public class SidePanelView {
 
         currentPlayerLabel = new Label("Current Player: ");
         currentPlayerLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
-
         ballanceLabel = new Label("Balance: ");
 
         switcherBox = new HBox(10);
 
         entityInfoLabel = new Label("Selected: None");
-        entityInfoLabel.setWrapText(true);
 
         actionMenuBox = new VBox(10);
 
@@ -87,10 +86,10 @@ public class SidePanelView {
      */
     public void updateForTile(TileDTO tile) {
         switcherBox.getChildren().clear();
-        actionMenuBox.getChildren().clear();
+//        actionMenuBox.getChildren().clear();
 
         if (tile == null || tile.entities.isEmpty()) {
-            entityInfoLabel.setText("Selected: None");
+//            entityInfoLabel.setText("Selected: None");
             return;
         }
 
@@ -145,23 +144,25 @@ public class SidePanelView {
         actionMenuBox.getChildren().clear();
     }
 
-    public void updateEntityInfo(EntityDTO entity) {
+    public void updateEntityInfo(EntityDTO entity, boolean isOwner) {
         actionMenuBox.getChildren().clear();
 
         if (entity instanceof CityDTO city) {
             String ownerName = city.ownerName != null ? city.ownerName : "Neutral";
             entityInfoLabel.setText("City (" + city.cityLevel + ")\nOwner: " + ownerName);
 
-            Button upgradeBtn = new Button("Upgrade City (" + city.upgradePrice + "g)");
-            actionMenuBox.getChildren().add(upgradeBtn);
+            if (isOwner) {
+                Button upgradeBtn = new Button("Upgrade City (" + city.upgradePrice + "g)");
+                actionMenuBox.getChildren().add(upgradeBtn);
 
-            if (city.canSpawnTroops) {
-                Button buyMilitiaBtn = new Button("Buy " + TroopType.Militia.name() + ": " + TroopType.Militia.getPrice() + " gold");
-                Button buyInfantryBtn = new Button("Buy " + TroopType.Infantry.name() + ": " + TroopType.Infantry.getPrice() + " gold");
-                Button buyCavalryBtn = new Button("Buy " + TroopType.Cavalry.name() + ": " + TroopType.Cavalry.getPrice() + " gold");
-                Button buyArtilleryBtn = new Button("Buy " + TroopType.Artillery.name() + ": " + TroopType.Artillery.getPrice() + " gold");
+                if (city.canSpawnTroops) {
+                    Button buyMilitiaBtn = new Button("Buy " + TroopType.Militia.name() + ": " + TroopType.Militia.getPrice() + " gold");
+                    Button buyInfantryBtn = new Button("Buy " + TroopType.Infantry.name() + ": " + TroopType.Infantry.getPrice() + " gold");
+                    Button buyCavalryBtn = new Button("Buy " + TroopType.Cavalry.name() + ": " + TroopType.Cavalry.getPrice() + " gold");
+                    Button buyArtilleryBtn = new Button("Buy " + TroopType.Artillery.name() + ": " + TroopType.Artillery.getPrice() + " gold");
 
-                actionMenuBox.getChildren().addAll(buyMilitiaBtn, buyInfantryBtn, buyCavalryBtn, buyArtilleryBtn);
+                    actionMenuBox.getChildren().addAll(buyMilitiaBtn, buyInfantryBtn, buyCavalryBtn, buyArtilleryBtn);
+                }
             }
 
         } else if (entity instanceof TroopUnitDTO troop) {

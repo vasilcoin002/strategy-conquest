@@ -130,7 +130,7 @@ public class GameView {
         return selectedEntity;
     }
 
-    public void setSelectedEntity(EntityDTO selectedEntity) {
+    public void setSelectedEntity(EntityDTO selectedEntity, boolean isOwner) {
         this.selectedEntity = selectedEntity;
 
         mapRenderer.clear(overlaysGc);
@@ -139,7 +139,7 @@ public class GameView {
 
         if (selectedEntity != null) {
             mapRenderer.renderSelection(overlaysGc, selectedEntity);
-            sidePanel.updateEntityInfo(selectedEntity);
+            sidePanel.updateEntityInfo(selectedEntity, isOwner);
         }
     }
 
