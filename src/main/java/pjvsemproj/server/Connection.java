@@ -10,14 +10,14 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Connection implements Runnable{
+public class Connection implements Runnable {
 
     // TODO handleMove, handleAttack, handleBuyUnit, handleUpgradeCity, handleEndTurn
 
     private static final Logger LOGGER = Logger.getLogger(Connection.class.getName());
     private final GameServer server;
     private final Socket socket;
-    private Player player;
+    //    private Player player;
     private String playerName;
     private BufferedReader in;
     private PrintWriter out;
@@ -30,16 +30,16 @@ public class Connection implements Runnable{
 
     @Override
     public void run() {
-        try{
+        try {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream(), true);
 
             boolean running = true;
-            while (running){
+            while (running) {
                 String msg = in.readLine();
                 LOGGER.log(Level.INFO, "Server received from {0}: >>>{1}<<<",
                         new Object[]{playerName, msg});
-                if(msg != null){
+                if (msg != null) {
                     running = processIncomingMessage(msg);
                 } else {
                     running = false;
@@ -53,28 +53,28 @@ public class Connection implements Runnable{
         }
     }
 
-    private boolean processIncomingMessage(String msg){
+    private boolean processIncomingMessage(String msg) {
         String[] tokens = msg.split("\\|", -1);
         Protocol actionCode = Protocol.valueOf(tokens[0]);
 
-        switch(actionCode){
+        switch (actionCode) {
             case LOGIN:
                 return handleLogin(tokens);
 
             case READY:
-               return handleReady();
+                return handleReady();
 
             case MOVE:
-               return handleMove(tokens);
+                return handleMove(tokens);
 
             case ATTACK:
-               return handleAttack(tokens);
+                return handleAttack(tokens);
 
             case BUY_UNIT:
-               return  handleBuyUnit(tokens);
+                return handleBuyUnit(tokens);
 
             case UPGRADE_CITY:
-               return handleUpgradeCity(tokens);
+                return handleUpgradeCity(tokens);
 
             case END_TURN:
                 return handleEndTurn();
@@ -89,7 +89,7 @@ public class Connection implements Runnable{
         }
     }
 
-    public void sendToClient(Protocol code, String... args){
+    public void sendToClient(Protocol code, String... args) {
         StringBuilder msg = new StringBuilder(code.toString());
 
         for (String arg : args) {
@@ -99,17 +99,21 @@ public class Connection implements Runnable{
         out.println(msg);
     }
 
-    private boolean handleLogin(String[] tokens){
-        if (tokens.length < 2){
+    private boolean handleLogin(String[] tokens) {
+        if (tokens.length < 2) {
             sendToClient(Protocol.ERROR, "LOGIN_REQUIRES_NAME");
             return true;
         }
+
         String requestedName = tokens[1].trim();
         boolean accepted = server.registerConnection(this, requestedName);
+
         if (!accepted) {
             sendToClient(Protocol.ERROR, "NAME_ALREADY_TAKEN");
             return true;
         }
+
+        this.playerName = requestedName;
         sendToClient(Protocol.OK, "LOGIN_ACCEPTED");
         return true;
     }
@@ -129,9 +133,9 @@ public class Connection implements Runnable{
         return true;
     }
 
-    private boolean handleMove(String[] tokens){
+    private boolean handleMove(String[] tokens) {
 
-        if(!isLoggedIn()){
+        if (!isLoggedIn()) {
             sendToClient(Protocol.ERROR, "NOT_LOGGED_IN");
         }
 
@@ -141,19 +145,19 @@ public class Connection implements Runnable{
         }
         String unitId = tokens[1];
 
-        try{
+        try {
             int x = Integer.parseInt(tokens[2]);
             int y = Integer.parseInt(tokens[3]);
             session.onMove(this, unitId, x, y);
-        } catch (NumberFormatException ex){
+        } catch (NumberFormatException ex) {
             sendToClient(Protocol.ERROR, "INVALID_COORDINATES");
         }
 
         return true;
     }
 
-    private boolean handleAttack(String[] tokens){
-        if(!isLoggedIn()) {
+    private boolean handleAttack(String[] tokens) {
+        if (!isLoggedIn()) {
             sendToClient(Protocol.ERROR, "NOT_LOGGED_IN");
             return true;
         }
@@ -175,8 +179,8 @@ public class Connection implements Runnable{
         return true;
     }
 
-    private boolean handleBuyUnit(String[] tokens){
-        if(!isLoggedIn()) {
+    private boolean handleBuyUnit(String[] tokens) {
+        if (!isLoggedIn()) {
             sendToClient(Protocol.ERROR, "NOT_LOGGED_IN");
             return true;
         }
@@ -198,8 +202,8 @@ public class Connection implements Runnable{
         return true;
     }
 
-    private boolean handleUpgradeCity(String[] tokens){
-        if(!isLoggedIn()) {
+    private boolean handleUpgradeCity(String[] tokens) {
+        if (!isLoggedIn()) {
             sendToClient(Protocol.ERROR, "NOT_LOGGED_IN");
             return true;
         }
@@ -220,8 +224,8 @@ public class Connection implements Runnable{
         return true;
     }
 
-    private boolean handleEndTurn(){
-        if(!isLoggedIn()) {
+    private boolean handleEndTurn() {
+        if (!isLoggedIn()) {
             sendToClient(Protocol.ERROR, "NOT_LOGGED_IN");
             return true;
         }
@@ -242,7 +246,7 @@ public class Connection implements Runnable{
     }
 
     private boolean isLoggedIn() {
-        return player != null;
+        return playerName != null;
     }
 
     public void quit() {
@@ -256,7 +260,11 @@ public class Connection implements Runnable{
         }
     }
 
-    public Player getPlayer() {
-        return player;
+    public void setSession(GameSession session) {
+        this.session = session;
+    }
+
+    public String getPlayerName() {
+        return playerName;
     }
 }

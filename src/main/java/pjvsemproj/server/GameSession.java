@@ -7,6 +7,7 @@ import pjvsemproj.models.entities.troopUnits.TroopType;
 import pjvsemproj.models.game.players.Player;
 import pjvsemproj.models.services.CoreGameService;
 
+import java.util.List;
 import java.util.Objects;
 
 
@@ -21,9 +22,6 @@ public class GameSession {
     private final Connection connection1;
     private final Connection connection2;
 
-    private final Player player1;
-    private final Player player2;
-
     private final CoreGameService gameService;
 
     private boolean player1Ready = false;
@@ -36,9 +34,6 @@ public class GameSession {
         this.connection2 = c2;
 
         this.gameService = gameService;
-
-        this.player1 = connection1.getPlayer();
-        this.player2 = connection2.getPlayer();
     }
 
     public void startGame() {
@@ -47,16 +42,20 @@ public class GameSession {
         }
 
         gameStarted = true;
-        connection1.sendToClient(Protocol.GAME_STARTED, player1.getName(), player2.getName());
-        connection2.sendToClient(Protocol.GAME_STARTED, player1.getName(), player2.getName());
+
+        List<PlayerDTO> players = gameService.getPlayersDTO();
+        String p1Name = players.get(0).name;
+        String p2Name = players.get(1).name;
+
+        connection1.sendToClient(Protocol.GAME_STARTED, p1Name, p2Name);
+        connection2.sendToClient(Protocol.GAME_STARTED, p1Name, p2Name);
 
         PlayerDTO currentPlayer = gameService.getCurrentPlayerDTO();
 
         connection1.sendToClient(Protocol.TURN_STARTED, currentPlayer.name);
         connection2.sendToClient(Protocol.TURN_STARTED, currentPlayer.name);
 
-        // TODO think about necessity of the line below
-//        turnManager.startTurn(currentPlayer);
+        // not calling startFirstTurn to leave game like in configuration
     }
 
     public synchronized void handleReady(Connection connection) {
@@ -86,7 +85,7 @@ public class GameSession {
 
         PlayerDTO currentPlayer = gameService.getCurrentPlayerDTO();
 
-        if (!Objects.equals(connection.getPlayer().getName(), currentPlayer.name)) {
+        if (!Objects.equals(connection.getPlayerName(), currentPlayer.name)) {
             connection.sendToClient(Protocol.ERROR, "NOT_YOUR_TURN");
             return;
         }
@@ -115,7 +114,7 @@ public class GameSession {
         }
 
         PlayerDTO currentPlayer = gameService.getCurrentPlayerDTO();
-        if (!Objects.equals(connection.getPlayer().getName(), currentPlayer.name)) {
+        if (!Objects.equals(connection.getPlayerName(), currentPlayer.name)) {
             connection.sendToClient(Protocol.ERROR, "NOT_YOUR_TURN");
             return;
         }
@@ -152,7 +151,7 @@ public class GameSession {
         }
 
         PlayerDTO currentPlayer = gameService.getCurrentPlayerDTO();
-        if (!Objects.equals(connection.getPlayer().getName(), currentPlayer.name)) {
+        if (!Objects.equals(connection.getPlayerName(), currentPlayer.name)) {
             connection.sendToClient(Protocol.ERROR, "NOT_YOUR_TURN");
             return;
         }
@@ -181,7 +180,7 @@ public class GameSession {
         }
 
         PlayerDTO currentPlayer = gameService.getCurrentPlayerDTO();
-        if (!Objects.equals(connection.getPlayer().getName(), currentPlayer.name)) {
+        if (!Objects.equals(connection.getPlayerName(), currentPlayer.name)) {
             connection.sendToClient(Protocol.ERROR, "NOT_YOUR_TURN");
             return;
         }
@@ -213,10 +212,11 @@ public class GameSession {
         }
 
         PlayerDTO currentPlayer = gameService.getCurrentPlayerDTO();
-        if (!Objects.equals(connection.getPlayer().getName(), currentPlayer.name)) {
+        if (!Objects.equals(connection.getPlayerName(), currentPlayer.name)) {
             connection.sendToClient(Protocol.ERROR, "NOT_YOUR_TURN");
             return;
         }
+
         gameService.endTurn();
         PlayerDTO newCurrentPlayer = gameService.getCurrentPlayerDTO();
 
@@ -240,7 +240,7 @@ public class GameSession {
     }
 
     public synchronized void onPlayerDisconnect(Connection connection) {
-        Player disconnectedPlayer = connection.getPlayer();
+        String disconnectedPlayerName = connection.getPlayerName();
         Connection otherConnection;
 
         if (connection == connection1) {
@@ -251,7 +251,7 @@ public class GameSession {
         if (otherConnection != null) {
             otherConnection.sendToClient(
                     Protocol.QUIT,
-                    disconnectedPlayer != null ? disconnectedPlayer.getName() : "UNKNOWN"
+                    disconnectedPlayerName != null ? disconnectedPlayerName : "UNKNOWN"
             );
         }
 
