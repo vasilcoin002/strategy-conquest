@@ -3,6 +3,7 @@ package pjvsemproj.views.game;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -15,14 +16,15 @@ import java.util.function.Consumer;
 
 import static pjvsemproj.views.ViewConstants.GAME_SIDE_PANEL_WIDTH;
 
-// TODO add scrolling to actionBox, because if it's not like this, it breaks game interface
 /**
  * UI panel displaying player info and actions.
  * Allows interaction with selected entities.
  */
 public class SidePanelView {
 
-    private final VBox root;
+    private final ScrollPane root;   // The new scrolling container
+    private final VBox contentBox;
+
     private final Button quitBtn;
     private final Button saveBtn;
     private final Label currentPlayerLabel;
@@ -38,33 +40,30 @@ public class SidePanelView {
     private Runnable onNextTurnAction;
 
     public SidePanelView() {
-        root = new VBox(15);
-        root.setPadding(new Insets(20));
-        root.setPrefWidth(GAME_SIDE_PANEL_WIDTH);
-        root.setStyle("-fx-background-color: #f4f4f4; -fx-border-color: #ccc; -fx-border-width: 0 0 0 1;");
+        contentBox = new VBox(15);
+        contentBox.setPadding(new Insets(20));
+        contentBox.setStyle("-fx-background-color: #f4f4f4;");
 
-        // Top Buttons Container
         HBox topButtonsBox = new HBox(10);
 
         saveBtn = new Button("Save Game");
         saveBtn.setOnAction(e -> {
             if (onSaveGameAction != null) onSaveGameAction.run();
         });
-
         quitBtn = new Button("Quit game");
         quitBtn.setOnAction(e -> {
             if (onQuitGameAction != null) onQuitGameAction.run();
         });
-
         topButtonsBox.getChildren().addAll(saveBtn, quitBtn);
 
         currentPlayerLabel = new Label("Current Player: ");
         currentPlayerLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
         ballanceLabel = new Label("Balance: ");
+        ballanceLabel.setMinHeight(Region.USE_PREF_SIZE);
 
         switcherBox = new HBox(10);
-
         entityInfoLabel = new Label("Selected: None");
+        entityInfoLabel.setMinHeight(Region.USE_PREF_SIZE);
 
         actionMenuBox = new VBox(10);
 
@@ -78,7 +77,18 @@ public class SidePanelView {
             if (onNextTurnAction != null) onNextTurnAction.run();
         });
 
-        root.getChildren().addAll(topButtonsBox, currentPlayerLabel, ballanceLabel, switcherBox, entityInfoLabel, actionMenuBox, spacer, nextTurnBtn);
+        contentBox.getChildren().addAll(topButtonsBox, currentPlayerLabel, ballanceLabel, switcherBox, entityInfoLabel, actionMenuBox, spacer, nextTurnBtn);
+
+        root = new ScrollPane(contentBox);
+        root.setPrefWidth(GAME_SIDE_PANEL_WIDTH);
+
+        root.setFitToWidth(true);  // Stops elements from squishing horizontally
+        root.setFitToHeight(true); // Allows your 'spacer' to push the Next Turn button to the bottom!
+
+        root.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);     // Hide horizontal scroll
+        root.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED); // Show vertical scroll only when full
+
+        root.setStyle("-fx-background: #f4f4f4; -fx-background-color: transparent; -fx-border-color: #ccc; -fx-border-width: 0 0 0 1;");
     }
 
     /**
@@ -121,7 +131,7 @@ public class SidePanelView {
         }
     }
 
-    public VBox getView() {
+    public ScrollPane getView() {    // Update return type
         return root;
     }
 
