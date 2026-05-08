@@ -18,6 +18,8 @@ import static pjvsemproj.models.game.GameConstants.MIN_MAP_WIDTH;
  */
 public class GameMap {
     private final Tile[][] tiles;
+
+    // TODO Test initializing with negative values, 0 and 1
     /**
      * Creates a new game map with specified dimensions.
      *
@@ -27,8 +29,6 @@ public class GameMap {
      * @param height number of rows (Y dimension)
      * @throws IllegalArgumentException if width or height < 2
      */
-
-    // TODO Test initializing with negative values, 0 and 1
     public GameMap(int width, int height) {
         if (width < MIN_MAP_WIDTH || height < MIN_MAP_HEIGHT) {
             throw new InvalidGameConfigException(

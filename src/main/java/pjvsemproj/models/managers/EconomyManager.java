@@ -59,7 +59,6 @@ public class EconomyManager implements ITurnListener {
      * @return true if upgrade was successful
      */
 
-    // TODO test
     public boolean upgradeCity(City city) {
         if (!canPlayerUpgradeCity(city, currentPlayer)) return false;
 
@@ -79,7 +78,6 @@ public class EconomyManager implements ITurnListener {
      * Attempts to buy a troop unit in a city.
      */
 
-    // TODO test
     public boolean buyTroopUnit(TroopType troopType, City city) {
         if (!canPlayerBuyTroopUnit(troopType, city, currentPlayer)) return false;
 

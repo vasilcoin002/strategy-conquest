@@ -4,7 +4,6 @@ package pjvsemproj.dto;
  * Container representing a single entity to be placed on the map.
  */
 public class EntityDTO {
-    // TODO remove transient from every id and make constructors accept it with the id
     public final String id;
     public final String entityType; // e.g., "CITY", "INFANTRY", "CAVALRY"
     public final int x;

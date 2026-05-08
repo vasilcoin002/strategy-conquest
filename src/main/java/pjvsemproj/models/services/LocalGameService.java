@@ -6,7 +6,7 @@ import pjvsemproj.models.game.players.HumanPlayer;
 
 import java.util.concurrent.CompletableFuture;
 
-// TODO fix human can control bot's troops (maybe entities)
+// TODO fix setting up with bot's first turn blocks next turn button disabled for the rest of the game
 /**
  * Local (single-player) implementation of GameService.
  * <p>
@@ -48,7 +48,7 @@ public class LocalGameService extends AbstractClientService {
             e.printStackTrace();
         }
 
-        // TODO extend it with bot's turn logic
+        // TODO extend playBotTurn with bot's turn logic
     }
 
     @Override

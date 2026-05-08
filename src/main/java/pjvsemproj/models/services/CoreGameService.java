@@ -8,7 +8,6 @@ import pjvsemproj.dto.TileDTO;
 import java.util.List;
 import java.util.Set;
 
-// TODO change action methods return type from void to boolean
 /**
  * Defines the interface for interacting with the game.
  *

@@ -17,7 +17,6 @@ import pjvsemproj.models.game.maps.Tile;
 import java.util.HashMap;
 import java.util.Map;
 
-// TODO write unit tests
 /**
  * Responsible for initializing game state.
  *

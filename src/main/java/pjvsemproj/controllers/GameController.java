@@ -12,7 +12,6 @@ import java.util.Set;
 
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
-// TODO change text on the button to "PlayerName's turn" when it's enemy's turn
 // TODO add winning screen
 // TODO on escape pressed: cancel selection or pop up dialog window
 /**
@@ -187,10 +186,6 @@ public class GameController {
         gameService.attack(attackerId, targetId);
         updateTile(target.x, target.y);
         setSelectedEntityId(null);
-    }
-
-    private void conquerCity(TroopUnitDTO conquerer, CityDTO city) {
-        // TODO finish
     }
 
     public void updateTile(int x, int y) {
