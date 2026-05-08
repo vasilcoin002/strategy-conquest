@@ -36,6 +36,9 @@ public class CombatManager implements ITurnListener{
     @Override
     public void onTurnStart(Player activePlayer) {
         currentPlayer = activePlayer;
+        activePlayer.getTroops().forEach(
+                troop -> troop.setHasAttackedThisTurn(false)
+        );
 
         getTroopsToHeal().forEach(troopUnit -> {
             int heal = (int) (troopUnit.getMaxHealth() * TROOP_HEALING_PERCENT_BY_MAX_HP);

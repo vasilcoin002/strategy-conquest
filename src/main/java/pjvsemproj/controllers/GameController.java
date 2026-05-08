@@ -12,7 +12,6 @@ import java.util.Set;
 
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
-// TODO fix troop can't attack second time (there is no red circle)
 // TODO change text on the button to "PlayerName's turn" when it's enemy's turn
 // TODO fix troop's hp doesn't rerender after it got healed
 // TODO fix city doesn't display buy buttons
