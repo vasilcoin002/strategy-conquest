@@ -63,6 +63,7 @@ public class GameConfigValidator {
         return currentPlayerFound;
     }
 
+    // TODO add validation if there is no entities with the same id
     private void validateEntities(GameDTO gameDTO) {
         if (gameDTO.entities == null || gameDTO.entities.isEmpty()) return;
 
@@ -130,8 +131,8 @@ public class GameConfigValidator {
         }
 
         int maxHp = type.maxHealth;
-        if (troopDTO.hp < 0 || troopDTO.hp > maxHp) {
-            throw new InvalidGameConfigException(String.format("Troop '%s' at (%d,%d) has invalid HP (%d). Must be between 0 and %d.",
+        if (troopDTO.hp <= 0 || troopDTO.hp > maxHp) {
+            throw new InvalidGameConfigException(String.format("Troop '%s' at (%d,%d) has invalid HP (%d). Must be between 1 and %d.",
                     troopDTO.entityType, troopDTO.x, troopDTO.y, troopDTO.hp, maxHp));
         }
     }

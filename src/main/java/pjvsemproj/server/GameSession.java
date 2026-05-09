@@ -4,7 +4,6 @@ import pjvsemproj.dto.CityDTO;
 import pjvsemproj.dto.PlayerDTO;
 import pjvsemproj.dto.TroopUnitDTO;
 import pjvsemproj.models.entities.troopUnits.TroopType;
-import pjvsemproj.models.game.players.Player;
 import pjvsemproj.models.services.CoreGameService;
 
 import java.util.List;
