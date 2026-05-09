@@ -8,12 +8,12 @@ import pjvsemproj.dto.TroopUnitDTO;
 import pjvsemproj.models.entities.cities.CityType;
 import pjvsemproj.models.entities.troopUnits.TroopType;
 
-import static pjvsemproj.models.game.GameConstants.*;
-
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static pjvsemproj.models.game.GameConstants.*;
 
 public class GameConfigValidator {
 
@@ -40,30 +40,30 @@ public class GameConfigValidator {
             throw new InvalidGameConfigException("Game must have exactly " + PLAYERS_COUNT + " players.");
         }
 
-        boolean currentPlayerFound = isCurrentPlayerFound(gameDTO);
+        boolean currentPlayerFound = false;
+
+        for (PlayerDTO player : gameDTO.players) {
+            validateSinglePlayer(player); // Enforces name and balance rules
+
+            if (player.name.equals(gameDTO.currentPlayerName)) {
+                currentPlayerFound = true;
+            }
+        }
 
         if (!currentPlayerFound) {
             throw new InvalidGameConfigException("Current player '" + gameDTO.currentPlayerName + "' is not in the player list.");
         }
     }
 
-    private static boolean isCurrentPlayerFound(GameDTO gameDTO) {
-        boolean currentPlayerFound = false;
-        for (PlayerDTO player : gameDTO.players) {
-            if (player.name == null || player.name.isBlank()) {
-                throw new InvalidGameConfigException("Player name cannot be empty.");
-            }
-            if (player.balance < 0) {
-                throw new InvalidGameConfigException("Player '" + player.name + "' has a negative balance: " + player.balance);
-            }
-            if (player.name.equals(gameDTO.currentPlayerName)) {
-                currentPlayerFound = true;
-            }
+    private void validateSinglePlayer(PlayerDTO player) {
+        if (player.name == null || player.name.isBlank()) {
+            throw new InvalidGameConfigException("Player name cannot be empty.");
         }
-        return currentPlayerFound;
+        if (player.balance < 0) {
+            throw new InvalidGameConfigException("Player '" + player.name + "' has a negative balance: " + player.balance);
+        }
     }
 
-    // TODO add validation if there is no entities with the same id
     private void validateEntities(GameDTO gameDTO) {
         if (gameDTO.entities == null || gameDTO.entities.isEmpty()) return;
 
@@ -71,36 +71,46 @@ public class GameConfigValidator {
                 .map(p -> p.name)
                 .collect(Collectors.toSet());
 
+        Set<String> seenIds = new HashSet<>();
         Set<String> occupiedCityTiles = new HashSet<>();
         Set<String> occupiedTroopTiles = new HashSet<>();
 
         for (EntityDTO entity : gameDTO.entities) {
-            validateEntityBounds(entity, gameDTO.mapWidth, gameDTO.mapHeight);
-            validateEntityOwner(entity, validPlayerNames);
-
-            String tileKey = entity.x + "," + entity.y;
-
-            if (entity instanceof CityDTO cityDTO) {
-                validateCity(cityDTO, tileKey, occupiedCityTiles);
-            } else if (entity instanceof TroopUnitDTO troopDTO) {
-                validateTroop(troopDTO, tileKey, occupiedTroopTiles);
-            } else {
-                validateBaseEntity(entity);
-            }
+            validateGenericEntityRules(entity, gameDTO, validPlayerNames, seenIds);
+            validateSpecificEntityRules(entity, occupiedCityTiles, occupiedTroopTiles);
         }
     }
 
-    private void validateEntityBounds(EntityDTO entity, int mapWidth, int mapHeight) {
-        if (entity.x < 0 || entity.x >= mapWidth || entity.y < 0 || entity.y >= mapHeight) {
+    private void validateGenericEntityRules(EntityDTO entity, GameDTO gameDTO, Set<String> validPlayerNames, Set<String> seenIds) {
+        // 1. Validate ID Uniqueness
+        if (entity.id != null && !entity.id.isBlank()) {
+            if (!seenIds.add(entity.id)) {
+                throw new InvalidGameConfigException("Duplicate entity ID found in configuration: " + entity.id);
+            }
+        }
+
+        // 2. Validate Bounds
+        if (entity.x < 0 || entity.x >= gameDTO.mapWidth || entity.y < 0 || entity.y >= gameDTO.mapHeight) {
             throw new InvalidGameConfigException(String.format("Entity '%s' is out of map bounds at (%d,%d)",
                     entity.entityType, entity.x, entity.y));
         }
-    }
 
-    private void validateEntityOwner(EntityDTO entity, Set<String> validPlayerNames) {
+        // 3. Validate Owner Identity
         if (entity.ownerName != null && !validPlayerNames.contains(entity.ownerName)) {
             throw new InvalidGameConfigException(String.format("Entity '%s' at (%d,%d) belongs to an unknown player: %s",
                     entity.entityType, entity.x, entity.y, entity.ownerName));
+        }
+    }
+
+    private void validateSpecificEntityRules(EntityDTO entity, Set<String> occupiedCityTiles, Set<String> occupiedTroopTiles) {
+        String tileKey = entity.x + "," + entity.y;
+
+        if (entity instanceof CityDTO cityDTO) {
+            validateCity(cityDTO, tileKey, occupiedCityTiles);
+        } else if (entity instanceof TroopUnitDTO troopDTO) {
+            validateTroop(troopDTO, tileKey, occupiedTroopTiles);
+        } else {
+            validateBaseEntity(entity);
         }
     }
 
@@ -147,15 +157,13 @@ public class GameConfigValidator {
     private void validateWinnerStatus(GameDTO gameDTO) {
         if (gameDTO.entities == null) return;
 
-        Set<String> playersWithCities = new HashSet<>();
+        long playersWithCitiesCount = gameDTO.entities.stream()
+                .filter(e -> e instanceof CityDTO && e.ownerName != null)
+                .map(e -> e.ownerName)
+                .distinct()
+                .count();
 
-        for (EntityDTO entity : gameDTO.entities) {
-            if (entity instanceof CityDTO && entity.ownerName != null) {
-                playersWithCities.add(entity.ownerName);
-            }
-        }
-
-        if (playersWithCities.size() < PLAYERS_COUNT) {
+        if (playersWithCitiesCount < PLAYERS_COUNT) {
             throw new InvalidGameConfigException("Cannot load game: The game is already over (one or more players have no cities).");
         }
     }
