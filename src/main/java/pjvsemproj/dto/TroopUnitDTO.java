@@ -3,13 +3,13 @@ package pjvsemproj.dto;
 import pjvsemproj.models.entities.troopUnits.TroopUnit;
 
 public class TroopUnitDTO extends EntityDTO {
-    public final Integer hp;
+    public Integer hp;
     // adding transient to tell Gson to not serialize it
-    public final transient int maxHp;
-    public final transient int minDamage;
-    public final transient int maxDamage;
-    public final Boolean hasMovedThisTurn;
-    public final Boolean hasAttackedThisTurn;
+    public transient int maxHp;
+    public transient int minDamage;
+    public transient int maxDamage;
+    public Boolean hasMovedThisTurn;
+    public Boolean hasAttackedThisTurn;
 
     public TroopUnitDTO(
             String id, String entityType, int x, int y, String ownerName,

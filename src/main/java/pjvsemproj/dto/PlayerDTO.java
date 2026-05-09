@@ -6,7 +6,7 @@ import pjvsemproj.models.game.players.Player;
  * Container representing a player.
  */
 public class PlayerDTO {
-    public final String name;
+    public String name;
     public Integer balance;
 
     public PlayerDTO(String name, int balance) {

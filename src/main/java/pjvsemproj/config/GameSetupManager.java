@@ -25,10 +25,12 @@ import java.util.Map;
 public class GameSetupManager {
 
     private final GameConfigParser parser;
+    private final GameConfigSanitizer sanitizer;
     private final GameConfigValidator validator;
 
     public GameSetupManager() {
         this.parser = new GameConfigParser();
+        this.sanitizer = new GameConfigSanitizer();
         this.validator = new GameConfigValidator();
     }
 
@@ -73,7 +75,10 @@ public class GameSetupManager {
      */
     public Game loadLocalGame(String levelFilePath, String localClientName) {
         GameDTO gameDTO = parser.parseLevelConfig(levelFilePath);
-        validator.validate(gameDTO); // Assuming you extracted validation
+
+        sanitizer.sanitize(gameDTO);
+        validator.validate(gameDTO);
+
         return createGameFromDTO(gameDTO, localClientName, true);
     }
 
@@ -83,13 +88,14 @@ public class GameSetupManager {
      */
     public Game loadNetworkGame(String levelFilePath) {
         GameDTO gameDTO = parser.parseLevelConfig(levelFilePath);
+
+        sanitizer.sanitize(gameDTO);
         validator.validate(gameDTO);
+
         return createGameFromDTO(gameDTO, null, false);
     }
 
     // TODO refactor this method
-    // TODO add default values
-    //  (for example if there is no currentPlayerName, then assign the first player as the current one and so on)
     private Game createGameFromDTO(GameDTO dto, String localClientName, boolean isLocalVsBot) {
         GameMap map = new GameMap(dto.mapWidth, dto.mapHeight);
         Game game = new Game(map);

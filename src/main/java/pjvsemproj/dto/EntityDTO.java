@@ -4,11 +4,11 @@ package pjvsemproj.dto;
  * Container representing a single entity to be placed on the map.
  */
 public class EntityDTO {
-    public final String id;
-    public final String entityType; // e.g., "CITY", "INFANTRY", "CAVALRY"
-    public final int x;
-    public final int y;
-    public final String ownerName;
+    public String id;
+    public String entityType; // e.g., "CITY", "INFANTRY", "CAVALRY"
+    public int x;
+    public int y;
+    public String ownerName;
 
     public EntityDTO(String id, String entityType, int x, int y, String ownerName) {
         this.id = id;

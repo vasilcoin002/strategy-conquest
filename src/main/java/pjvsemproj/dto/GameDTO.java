@@ -12,10 +12,10 @@ import java.util.List;
  * Container holding the raw data for a game level.
  */
 public class GameDTO {
-    public final int mapWidth;
-    public final int mapHeight;
-    public final List<EntityDTO> entities;
-    public final List<PlayerDTO> players;
+    public Integer mapWidth;
+    public Integer mapHeight;
+    public List<EntityDTO> entities;
+    public List<PlayerDTO> players;
     public String currentPlayerName;
 
     public GameDTO(

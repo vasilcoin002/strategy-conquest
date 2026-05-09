@@ -3,14 +3,14 @@ package pjvsemproj.dto;
 import pjvsemproj.models.entities.cities.City;
 
 public class CityDTO extends EntityDTO {
-    public final String cityLevel;
+    public String cityLevel;
     // adding transient to tell Gson to not serialize it
-    public final transient int upgradePrice;
-    public final transient boolean canBeUpgraded;
-    public final transient int goldProducedPerRound;
+    public transient int upgradePrice;
+    public transient boolean canBeUpgraded;
+    public transient int goldProducedPerRound;
 
     // Attribute shows if tile on which stands city is currently blocked or not
-    public final transient boolean canSpawnTroops;
+    public transient boolean canSpawnTroops;
 
     public CityDTO(
             String id, String entityType, int x, int y, String ownerName,
