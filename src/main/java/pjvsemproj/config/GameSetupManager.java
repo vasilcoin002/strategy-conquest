@@ -15,11 +15,12 @@ import pjvsemproj.models.game.maps.GameMap;
 import pjvsemproj.models.game.maps.Tile;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Responsible for initializing game state.
- *
+ * <p>
  * Can create test scenarios or load game from configuration files.
  */
 public class GameSetupManager {
@@ -48,10 +49,9 @@ public class GameSetupManager {
         OwnershipHelper.addTroopUnitToPlayer(p1StartUnit, p1);
         GridPositionHelper.placeEntity(p1StartUnit, p1CityTile);
 
-
+        // Opposite side of the map
         City p2City = new City(CityType.LEVEL_1);
         OwnershipHelper.transferCity(p2City, p2);
-        // Opposite side of the map
         Tile p2CityTile = map.getTile(map.getWidth() - 2, map.getHeight() - 2);
         GridPositionHelper.placeEntity(p2City, p2CityTile);
 
@@ -95,15 +95,29 @@ public class GameSetupManager {
         return createGameFromDTO(gameDTO, null, false);
     }
 
-    // TODO refactor this method
+    /**
+     * Creates game from parsed game settings
+     */
     private Game createGameFromDTO(GameDTO dto, String localClientName, boolean isLocalVsBot) {
         GameMap map = new GameMap(dto.mapWidth, dto.mapHeight);
         Game game = new Game(map);
+
+        Map<String, Player> loadedPlayers = loadPlayers(game, dto.players, localClientName, isLocalVsBot);
+
+        setCurrentPlayer(game, loadedPlayers, dto.currentPlayerName);
+        loadEntities(map, dto.entities, loadedPlayers);
+
+        return game;
+    }
+
+    /**
+     * Loads parsed players to the game object
+     */
+    private Map<String, Player> loadPlayers(Game game, List<PlayerDTO> playerDTOs, String localClientName, boolean isLocalVsBot) {
         Map<String, Player> loadedPlayers = new HashMap<>();
 
-        for (PlayerDTO playerDTO : dto.players) {
+        for (PlayerDTO playerDTO : playerDTOs) {
             Player player;
-
             if (isLocalVsBot && !playerDTO.name.equals(localClientName)) {
                 player = new BotPlayer(playerDTO.name, playerDTO.balance);
             } else {
@@ -114,42 +128,63 @@ public class GameSetupManager {
             loadedPlayers.put(player.getName(), player);
         }
 
-        Player currentPlayer = loadedPlayers.get(dto.currentPlayerName);
+        return loadedPlayers;
+    }
+
+    /**
+     * Loads current player to the game object by their name
+     */
+    private void setCurrentPlayer(Game game, Map<String, Player> loadedPlayers, String currentPlayerName) {
+        Player currentPlayer = loadedPlayers.get(currentPlayerName);
         if (currentPlayer != null) {
             game.setCurrentPlayer(currentPlayer);
         } else {
             System.err.println("Warning: Current player from save not found. Defaulting to Player 1.");
             game.setCurrentPlayer(game.getPlayers().getFirst());
         }
+    }
 
-        for (EntityDTO entityDTO : dto.entities) {
+    /**
+     * Loads parsed entities to the game object
+     */
+    private void loadEntities(GameMap map, List<EntityDTO> entityDTOs, Map<String, Player> loadedPlayers) {
+        for (EntityDTO entityDTO : entityDTOs) {
             Tile tile = map.getTile(entityDTO.x, entityDTO.y);
             Player owner = loadedPlayers.get(entityDTO.ownerName);
 
             if (entityDTO instanceof CityDTO cityDTO) {
-                CityType type = CityType.valueOf(cityDTO.cityLevel);
-                City city = new City(cityDTO.id, tile, type);
-
-                GridPositionHelper.placeEntity(city, tile);
-                OwnershipHelper.transferCity(city, owner);
-
+                spawnCity(cityDTO, tile, owner);
             } else if (entityDTO instanceof TroopUnitDTO troopDTO) {
-                TroopType type = TroopType.valueOf(troopDTO.entityType);
-
-                TroopUnit troop = new TroopUnit(
-                        troopDTO.id, type, tile,
-                        troopDTO.hasMovedThisTurn, troopDTO.hasAttackedThisTurn
-                );
-
-                troop.setHealth(troopDTO.hp);
-                troop.setHasMovedThisTurn(troopDTO.hasMovedThisTurn);
-                troop.setHasAttackedThisTurn(troopDTO.hasAttackedThisTurn);
-
-                GridPositionHelper.placeEntity(troop, tile);
-                OwnershipHelper.addTroopUnitToPlayer(troop, owner);
+                spawnTroop(troopDTO, tile, owner);
             }
         }
+    }
 
-        return game;
+    /**
+     * Loads parsed city to game
+     */
+    private void spawnCity(CityDTO cityDTO, Tile tile, Player owner) {
+        CityType type = CityType.valueOf(cityDTO.cityLevel);
+        City city = new City(cityDTO.id, tile, type);
+
+        GridPositionHelper.placeEntity(city, tile);
+        OwnershipHelper.transferCity(city, owner);
+    }
+
+    /**
+     * Loads parsed troop unit to game
+     */
+    private void spawnTroop(TroopUnitDTO troopDTO, Tile tile, Player owner) {
+        TroopType type = TroopType.valueOf(troopDTO.entityType);
+
+        TroopUnit troop = new TroopUnit(
+                troopDTO.id, type, tile,
+                troopDTO.hasMovedThisTurn, troopDTO.hasAttackedThisTurn
+        );
+
+        troop.setHealth(troopDTO.hp);
+
+        GridPositionHelper.placeEntity(troop, tile);
+        OwnershipHelper.addTroopUnitToPlayer(troop, owner);
     }
 }
