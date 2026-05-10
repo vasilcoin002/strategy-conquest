@@ -165,14 +165,14 @@ public class SidePanelView {
             entityInfoLabel.setText("City (" + city.cityLevel + ")\nOwner: " + ownerName);
 
             if (isOwner) {
-                Button upgradeBtn = new Button("Upgrade City (" + city.upgradePrice + "g)");
-
-                upgradeBtn.setOnAction(e -> {
-                    if (onUpgradeCityAction != null) onUpgradeCityAction.accept(city.id);
-                });
-
-                actionMenuBox.getChildren().add(upgradeBtn);
-
+                if (city.canBeUpgraded) {
+                    Button upgradeBtn = new Button("Upgrade City (" + city.upgradePrice + "g)");
+                    upgradeBtn.setOnAction(e -> {
+                        if (onUpgradeCityAction != null) onUpgradeCityAction.accept(city.id);
+                    });
+                    actionMenuBox.getChildren().add(upgradeBtn);
+                }
+                
                 if (city.canSpawnTroops) {
                     Button buyMilitiaBtn = new Button("Buy " + TroopType.Militia.name() + ": " + TroopType.Militia.getPrice() + " gold");
                     Button buyInfantryBtn = new Button("Buy " + TroopType.Infantry.name() + ": " + TroopType.Infantry.getPrice() + " gold");
