@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 
 /**
@@ -36,6 +37,11 @@ public class MainMenuView {
         playerNameInput.setPromptText("Enter your player name (e.g., Vasya)");
         playerNameInput.setMaxWidth(350);
         playerNameInput.setStyle("-fx-font-size: 16px; -fx-padding: 10px;");
+        playerNameInput.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ESCAPE) {
+                root.requestFocus(); // make text field drop focus
+            }
+        });
 
         errorLabel = new Label();
         errorLabel.setStyle("-fx-text-fill: #ff6b6b; -fx-font-size: 14px; -fx-font-weight: bold;");

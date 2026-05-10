@@ -39,8 +39,8 @@
     },
     {
       "entityType": "Artillery",
-      "x": 3,
-      "y": 3,
+      "x": 4,
+      "y": 4,
       "ownerName": "Ivan",
       "hp": 8,
       "hasMovedThisTurn": false,
