@@ -7,7 +7,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
-// TODO show setup config errors in main menu
 // TODO fix focusing on clientName input by default
 /**
  * Main menu UI of the game.

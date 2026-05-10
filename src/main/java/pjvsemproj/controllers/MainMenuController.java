@@ -48,7 +48,12 @@ public class MainMenuController {
         boolean enableLogs = view.isLoggerEnabled();
         System.out.println("Triggered Local Game Load. Logging Enabled: " + enableLogs);
 
-        director.showLocalGame(playerName);
+        try {
+            director.showLocalGame(playerName);
+        } catch (Exception e) {
+            view.showError("Error loading game: " + e.getMessage());
+            System.err.println("Game load failed: " + e.getMessage());
+        }
     }
 
     /**
@@ -66,7 +71,12 @@ public class MainMenuController {
         boolean enableLogs = view.isLoggerEnabled();
         System.out.println("Triggered Multiplayer Game Load. Logging Enabled: " + enableLogs);
 
-        director.showMultiplayerGame(playerName);
+        try {
+            director.showMultiplayerGame(playerName);
+        } catch (Exception e) {
+            view.showError("Error connecting to server: " + e.getMessage());
+            System.err.println("Connection failed: " + e.getMessage());
+        }
     }
 
     private void handleExit() {
