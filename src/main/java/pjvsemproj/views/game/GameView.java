@@ -182,6 +182,14 @@ public class GameView {
         sidePanel.setOnEntitySelectedAction(onEntitySelectedAction);
     }
 
+    public void setOnBuyUnitAction(BiConsumer<String, String> onBuyUnitAction) {
+        sidePanel.setOnBuyUnitAction(onBuyUnitAction);
+    }
+
+    public void setOnUpgradeCityAction(Consumer<String> onUpgradeCityAction) {
+        sidePanel.setOnUpgradeCityAction(onUpgradeCityAction);
+    }
+
     public void setOnQuitGameAction(Runnable onQuitGameAction) {
         sidePanel.setOnQuitGameAction(onQuitGameAction);
     }

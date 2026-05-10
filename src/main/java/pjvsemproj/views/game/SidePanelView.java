@@ -12,6 +12,7 @@ import pjvsemproj.dto.*;
 import pjvsemproj.models.entities.troopUnits.TroopType;
 
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static pjvsemproj.views.ViewConstants.GAME_SIDE_PANEL_WIDTH;
@@ -38,6 +39,8 @@ public class SidePanelView {
     private Runnable onSaveGameAction;
     private Consumer<EntityDTO> onEntitySelectedAction;
     private Runnable onNextTurnAction;
+    private BiConsumer<String, String> onBuyUnitAction;
+    private Consumer<String> onUpgradeCityAction;
 
     public SidePanelView() {
         contentBox = new VBox(15);
@@ -163,6 +166,11 @@ public class SidePanelView {
 
             if (isOwner) {
                 Button upgradeBtn = new Button("Upgrade City (" + city.upgradePrice + "g)");
+
+                upgradeBtn.setOnAction(e -> {
+                    if (onUpgradeCityAction != null) onUpgradeCityAction.accept(city.id);
+                });
+
                 actionMenuBox.getChildren().add(upgradeBtn);
 
                 if (city.canSpawnTroops) {
@@ -170,6 +178,11 @@ public class SidePanelView {
                     Button buyInfantryBtn = new Button("Buy " + TroopType.Infantry.name() + ": " + TroopType.Infantry.getPrice() + " gold");
                     Button buyCavalryBtn = new Button("Buy " + TroopType.Cavalry.name() + ": " + TroopType.Cavalry.getPrice() + " gold");
                     Button buyArtilleryBtn = new Button("Buy " + TroopType.Artillery.name() + ": " + TroopType.Artillery.getPrice() + " gold");
+
+                    buyMilitiaBtn.setOnAction(e -> triggerBuy(city.id, TroopType.Militia.name()));
+                    buyInfantryBtn.setOnAction(e -> triggerBuy(city.id, TroopType.Infantry.name()));
+                    buyCavalryBtn.setOnAction(e -> triggerBuy(city.id, TroopType.Cavalry.name()));
+                    buyArtilleryBtn.setOnAction(e -> triggerBuy(city.id, TroopType.Artillery.name()));
 
                     actionMenuBox.getChildren().addAll(buyMilitiaBtn, buyInfantryBtn, buyCavalryBtn, buyArtilleryBtn);
                 }
@@ -183,6 +196,20 @@ public class SidePanelView {
                     "\nMoved: " + (troop.hasMovedThisTurn ? "Yes" : "No") +
                     "\nAttacked: " + (troop.hasAttackedThisTurn ? "Yes" : "No"));
         }
+    }
+
+    private void triggerBuy(String cityId, String troopType) {
+        if (onBuyUnitAction != null) {
+            onBuyUnitAction.accept(cityId, troopType);
+        }
+    }
+
+    public void setOnBuyUnitAction(BiConsumer<String, String> onBuyUnitAction) {
+        this.onBuyUnitAction = onBuyUnitAction;
+    }
+
+    public void setOnUpgradeCityAction(Consumer<String> onUpgradeCityAction) {
+        this.onUpgradeCityAction = onUpgradeCityAction;
     }
 
     public void setNextTurnButtonDisabled(boolean disabled) {

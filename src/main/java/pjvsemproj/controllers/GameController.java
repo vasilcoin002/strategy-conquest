@@ -35,6 +35,9 @@ public class GameController {
 
         view.setOnSaveGameAction(this::handleSaveGameRequest);
         view.setOnQuitGameAction(this::handleQuitGameRequest);
+
+        view.setOnBuyUnitAction(this::handleBuyUnit);
+        view.setOnUpgradeCityAction(this::handleUpgradeCity);
     }
 
     // Inside GameController.java
@@ -125,6 +128,23 @@ public class GameController {
         }
 
         setSelectedEntityId(targetEntity.id);
+    }
+
+    private void handleBuyUnit(String cityId, String troopType) {
+        gameService.buyUnit(cityId, troopType);
+        EntityDTO city = gameService.getEntityDTO(cityId);
+        updateTile(city.x, city.y);
+
+        setSelectedEntityId(cityId);
+    }
+
+    // TODO remove update city button if city is now of max level
+    private void handleUpgradeCity(String cityId) {
+        gameService.upgradeCity(cityId);
+//        EntityDTO city = gameService.getEntityDTO(cityId);
+//        updateTile(city.x, city.y);
+
+        setSelectedEntityId(cityId);
     }
 
     public void handleSaveGameRequest() {

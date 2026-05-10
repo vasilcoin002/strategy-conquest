@@ -4,6 +4,7 @@ import pjvsemproj.models.entities.cities.City;
 import pjvsemproj.models.entities.troopUnits.TroopType;
 import pjvsemproj.models.entities.troopUnits.TroopUnit;
 import pjvsemproj.models.game.players.Player;
+import pjvsemproj.models.managers.utils.GridPositionHelper;
 import pjvsemproj.models.managers.utils.OwnershipHelper;
 
 
@@ -84,6 +85,7 @@ public class EconomyManager implements ITurnListener {
         currentPlayer.spendGold(troopType.getPrice());
         TroopUnit troopUnit = new TroopUnit(troopType, city);
         OwnershipHelper.addTroopUnitToPlayer(troopUnit, currentPlayer);
+        GridPositionHelper.placeEntity(troopUnit, city.getTile());
         return true;
     }
 
