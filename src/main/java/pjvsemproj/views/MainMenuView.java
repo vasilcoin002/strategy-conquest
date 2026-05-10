@@ -1,5 +1,6 @@
 package pjvsemproj.views;
 
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -7,7 +8,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
-// TODO fix focusing on clientName input by default
 /**
  * Main menu UI of the game.
  *
@@ -68,6 +68,12 @@ public class MainMenuView {
 
         // Add the toggle right above the Exit button
         root.getChildren().addAll(title, playerNameInput, errorLabel, localGameBtn, multiGameBtn, loggerToggle, exitBtn);
+
+        // allow the background to hold focus
+        root.setFocusTraversable(true);
+        // steal the focus immediately after the scene finishes rendering
+        Platform.runLater(root::requestFocus);
+        root.setOnMouseClicked(event -> root.requestFocus());
     }
 
     public VBox getRoot() {
