@@ -32,7 +32,6 @@ public class MainMenuController {
         view.setOnExitAction(this::handleExit);
     }
 
-    // TODO add checking if client name is at least one of those in config
     /**
      * Handles local game start.
      */

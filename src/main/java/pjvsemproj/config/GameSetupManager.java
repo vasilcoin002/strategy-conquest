@@ -79,7 +79,20 @@ public class GameSetupManager {
         sanitizer.sanitize(gameDTO);
         validator.validate(gameDTO);
 
+        validateClientNameExists(gameDTO, localClientName);
+
         return createGameFromDTO(gameDTO, localClientName, true);
+    }
+
+    private void validateClientNameExists(GameDTO gameDTO, String clientName) {
+        boolean nameFound = gameDTO.players.stream()
+                .anyMatch(player -> player.name.equals(clientName));
+
+        if (!nameFound) {
+            throw new InvalidGameConfigException(
+                    "Player name '" + clientName + "' was not found in the save file!"
+            );
+        }
     }
 
     /**
