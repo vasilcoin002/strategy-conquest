@@ -1,9 +1,12 @@
 package pjvsemproj.models.services;
 
+import pjvsemproj.dto.TileDTO;
 import pjvsemproj.models.game.Game;
+import pjvsemproj.models.game.players.BotExecutor;
 import pjvsemproj.models.game.players.BotPlayer;
 import pjvsemproj.models.game.players.HumanPlayer;
 
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 // TODO fix setting up with bot's first turn blocks next turn button disabled for the rest of the game
@@ -48,7 +51,16 @@ public class LocalGameService extends AbstractClientService {
             e.printStackTrace();
         }
 
-        // TODO extend playBotTurn with bot's turn logic
+        BotExecutor bot = new BotExecutor(this);
+        bot.playTurnActionsOnly();
+    }
+
+    public Set<TileDTO> getBotAttackTiles(String unitId) {
+        return getAvailableTilesDTOForAttackInternal(unitId);
+    }
+
+    public Set<TileDTO> getBotMoveTiles(String unitId) {
+        return getAvailableTilesDTOForMovementInternal(unitId);
     }
 
     @Override

@@ -131,4 +131,12 @@ public class AbstractClientService extends AbstractGameService implements Client
         if (!troopBelongsToClient(unitId)) return new HashSet<>();
         return super.getAvailableTilesDTOForAttack(unitId);
     }
+
+    protected Set<TileDTO> getAvailableTilesDTOForAttackInternal(String unitId) {
+        return super.getAvailableTilesDTOForAttack(unitId);
+    }
+
+    protected Set<TileDTO> getAvailableTilesDTOForMovementInternal(String unitId) {
+        return super.getAvailableTilesDTOForMovement(unitId);
+    }
 }
