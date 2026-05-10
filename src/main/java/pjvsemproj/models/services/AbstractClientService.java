@@ -8,14 +8,22 @@ import pjvsemproj.models.game.players.Player;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Consumer;
 
 public class AbstractClientService extends AbstractGameService implements ClientGameEngine {
 
     protected String clientName;
+    protected Consumer<String> onGameOver;
     protected Runnable onBoardUpdated;
 
     public AbstractClientService(Game game) {
         super(game);
+
+        super.addWinListener(winner -> {
+            if (onGameOver != null) {
+                onGameOver.accept(winner.getName());
+            }
+        });
     }
 
     @Override
@@ -50,6 +58,11 @@ public class AbstractClientService extends AbstractGameService implements Client
         }
 
         System.out.println("Game quit");
+    }
+
+    @Override
+    public void setOnGameOver(Consumer<String> callback) {
+        this.onGameOver = callback;
     }
 
     @Override

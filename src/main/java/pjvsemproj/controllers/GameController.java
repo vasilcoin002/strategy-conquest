@@ -40,15 +40,11 @@ public class GameController {
         view.setOnUpgradeCityAction(this::handleUpgradeCity);
     }
 
-    // Inside GameController.java
-
     public void initialize() {
-        // 1. Tell the service how to update the UI
         gameService.setOnBoardUpdated(() -> {
             // We MUST use Platform.runLater because the Service might
-            // trigger this from a background thread!
+            // trigger this from a background thread
             Platform.runLater(() -> {
-//                view.redrawMap();
                 view.setNextTurnButtonDisabled(!gameService.isMyTurn());
                 view.redrawMap(gameService.getGameDTO());
                 view.updatePlayersBalance(gameService.getPlayersDTO());
@@ -56,6 +52,13 @@ public class GameController {
 
                 // Lock or unlock the button depending on if it's our turn now
                 setSelectedEntityId(selectedEntityId);
+            });
+        });
+
+        gameService.setOnGameOver(winnerName -> {
+            Platform.runLater(() -> {
+                // TODO Show winning screen popup here
+                System.out.println("GAME OVER! The winner is: " + winnerName);
             });
         });
 
@@ -73,7 +76,6 @@ public class GameController {
             return;
         }
 
-        // Handle occupied tile
         handleOccupiedTileClick(tile);
     }
 
@@ -87,7 +89,6 @@ public class GameController {
         setSelectedEntityId(null);
     }
 
-    // TODO refactor method
     private void handleOccupiedTileClick(TileDTO targetTile) {
         // if entity is not selected yet => select the very top entity on tile
         if (selectedEntityId == null) {
@@ -138,11 +139,8 @@ public class GameController {
         setSelectedEntityId(cityId);
     }
 
-    // TODO remove update city button if city is now of max level
     private void handleUpgradeCity(String cityId) {
         gameService.upgradeCity(cityId);
-//        EntityDTO city = gameService.getEntityDTO(cityId);
-//        updateTile(city.x, city.y);
 
         setSelectedEntityId(cityId);
     }
