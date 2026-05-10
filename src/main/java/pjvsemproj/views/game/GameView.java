@@ -1,5 +1,6 @@
 package pjvsemproj.views.game;
 
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -51,12 +52,6 @@ public class GameView {
         Canvas entitiesCanvas = new Canvas(gameAreaWidth, gameAreaHeight);
         Canvas overlaysCanvas = new Canvas(gameAreaWidth, gameAreaHeight);
 
-        overlaysCanvas.setOnMouseClicked(e -> {
-            if(onGameAreaClickedAction != null) {
-                onGameAreaClickedAction.accept((int)e.getX(), (int)e.getY());
-            }
-        });
-
         entitiesGc = entitiesCanvas.getGraphicsContext2D();
         overlaysGc = overlaysCanvas.getGraphicsContext2D();
 
@@ -68,6 +63,14 @@ public class GameView {
         root = new BorderPane();
         root.setCenter(mapPane);
         root.setRight(sidePanel.getView());
+
+        overlaysCanvas.setOnMouseClicked(e -> {
+            if(onGameAreaClickedAction != null) {
+                onGameAreaClickedAction.accept((int)e.getX(), (int)e.getY());
+            }
+            // steal focus back when clicking the map!
+            root.requestFocus();
+        });
 
         setBackground(mapPane);
         scene = new Scene(root, gameAreaWidth + GAME_SIDE_PANEL_WIDTH, gameAreaHeight);
@@ -89,6 +92,11 @@ public class GameView {
 
         sidePanel.updatePlayersBalance(game.players);
         sidePanel.updateCurrentPlayer(game.currentPlayerName);
+
+        // allow the main game root to hold focus
+        root.setFocusTraversable(true);
+        // steal the focus immediately after the scene renders
+        Platform.runLater(root::requestFocus);
     }
 
     public void show(Stage stage, String clientName) {
@@ -159,6 +167,9 @@ public class GameView {
             mapRenderer.renderSelection(overlaysGc, selectedEntity);
             sidePanel.updateEntityInfo(selectedEntity, isOwner);
         }
+
+        // steal the focus back to the main container
+        root.requestFocus();
     }
 
     public void showSelectedEntityAvailableMoves(Set<TileDTO> tilesToMove) {
