@@ -12,7 +12,6 @@ import java.util.Set;
 
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
-// TODO add winning screen
 // TODO on escape pressed: cancel selection or pop up dialog window
 /**
  * Main controller connecting UI with game logic.
@@ -57,7 +56,6 @@ public class GameController {
 
         gameService.setOnGameOver(winnerName -> {
             Platform.runLater(() -> {
-                // TODO Show winning screen popup here
                 sceneDirector.showGameOverPopup(winnerName);
                 System.out.println("GAME OVER! The winner is: " + winnerName);
             });

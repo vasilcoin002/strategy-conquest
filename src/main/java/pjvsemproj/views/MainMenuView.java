@@ -4,10 +4,11 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
-
-
+// TODO show setup config errors in main menu
+// TODO fix focusing on clientName input by default
 /**
  * Main menu UI of the game.
  *
@@ -16,6 +17,8 @@ import javafx.scene.layout.VBox;
 public class MainMenuView {
     private final VBox root;
     private final CheckBox loggerToggle; // The new toggle
+    private final TextField playerNameInput;
+    private final Label errorLabel;
 
     // Callbacks
     private Runnable onLoadLocalGameAction;
@@ -29,6 +32,16 @@ public class MainMenuView {
 
         Label title = new Label("STRATEGY CONQUEST");
         title.setStyle("-fx-text-fill: white; -fx-font-size: 36px; -fx-font-weight: bold;");
+
+        playerNameInput = new TextField();
+        playerNameInput.setPromptText("Enter your player name (e.g., Vasya)");
+        playerNameInput.setMaxWidth(350);
+        playerNameInput.setStyle("-fx-font-size: 16px; -fx-padding: 10px;");
+
+        errorLabel = new Label();
+        errorLabel.setStyle("-fx-text-fill: #ff6b6b; -fx-font-size: 14px; -fx-font-weight: bold;");
+        errorLabel.setVisible(false);
+        errorLabel.setManaged(false);
 
         Button localGameBtn = new Button("Load local game (versus computer)");
         localGameBtn.setOnAction(e -> {
@@ -55,11 +68,15 @@ public class MainMenuView {
         styleButton(exitBtn);
 
         // Add the toggle right above the Exit button
-        root.getChildren().addAll(title, localGameBtn, multiGameBtn, loggerToggle, exitBtn);
+        root.getChildren().addAll(title, playerNameInput, errorLabel, localGameBtn, multiGameBtn, loggerToggle, exitBtn);
     }
 
     public VBox getRoot() {
         return root;
+    }
+
+    public String getPlayerName() {
+        return playerNameInput.getText().trim();
     }
 
     /**
@@ -76,5 +93,17 @@ public class MainMenuView {
     private void styleButton(Button btn) {
         btn.setPrefWidth(350);
         btn.setStyle("-fx-font-size: 16px; -fx-padding: 10px;");
+    }
+
+    public void showError(String message) {
+        errorLabel.setText(message);
+        errorLabel.setVisible(true);
+        errorLabel.setManaged(true);
+    }
+
+    public void clearError() {
+        errorLabel.setVisible(false);
+        errorLabel.setManaged(false);
+        errorLabel.setText("");
     }
 }

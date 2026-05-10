@@ -31,32 +31,42 @@ public class MainMenuController {
         view.setOnLoadMultiplayerGameAction(this::handleLoadMultiplayerGame);
         view.setOnExitAction(this::handleExit);
     }
+
+    // TODO add checking if client name is at least one of those in config
     /**
      * Handles local game start.
      */
     private void handleLoadLocalGame() {
-        // 1. Read the state of the toggle
+        String playerName = view.getPlayerName();
+
+        if (playerName.isEmpty()) {
+            view.showError("You must enter a player name before starting!");
+            return;
+        }
+        view.clearError();
+
         boolean enableLogs = view.isLoggerEnabled();
-
-        // 2. Apply it to your logging system (pseudo-code depending on your setup)
-        // LoggerConfig.setEnabled(enableLogs);
-
         System.out.println("Triggered Local Game Load. Logging Enabled: " + enableLogs);
 
-        // 3. Continue loading the game...
-        director.showLocalGame();
+        director.showLocalGame(playerName);
     }
+
     /**
      * Handles multiplayer game start.
      */
     private void handleLoadMultiplayerGame() {
+        String playerName = view.getPlayerName();
+
+        if (playerName.isEmpty()) {
+            view.showError("You must enter a player name before starting!");
+            return;
+        }
+        view.clearError();
+
         boolean enableLogs = view.isLoggerEnabled();
-
-        // LoggerConfig.setEnabled(enableLogs);
-
         System.out.println("Triggered Multiplayer Game Load. Logging Enabled: " + enableLogs);
 
-        // Continue loading the game...
+        director.showMultiplayerGame(playerName);
     }
 
     private void handleExit() {

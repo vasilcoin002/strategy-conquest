@@ -46,7 +46,6 @@ public class ConquestManager implements ITurnListener {
         }
     }
 
-    // TODO implement winnerExists
     public boolean winnerExists() {
         long playersWithCities = players.stream()
                 .filter(player -> !player.getCities().isEmpty())

@@ -64,14 +64,19 @@ public class SceneDirector {
         stage.show();
     }
 
-    public void showLocalGame() {
-        String myName = "Vasya"; // TODO this has to come from a text field
-
+    public void showLocalGame(String clientName) {
         GameSetupManager setupManager = new GameSetupManager();
-        Game game = setupManager.loadLocalGame("config.json", myName);
+        Game game = setupManager.loadLocalGame("config.json", clientName);
 
         ClientGameEngine gameService = new LocalGameService(game);
-        showGame(gameService, myName);
+        showGame(gameService, clientName);
+    }
+
+    public void showMultiplayerGame(String clientName) {
+        // TODO: In the future, this is where you will instantiate your
+        // Client object, connect to the Server, and then create the NetworkGameService!
+
+        System.out.println("Connecting to network game as: " + clientName);
     }
 
     public void showSaveFileDialog(Consumer<String> onFileSelected) {
