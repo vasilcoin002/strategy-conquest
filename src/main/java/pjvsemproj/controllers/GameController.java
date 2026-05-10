@@ -58,6 +58,7 @@ public class GameController {
         gameService.setOnGameOver(winnerName -> {
             Platform.runLater(() -> {
                 // TODO Show winning screen popup here
+                sceneDirector.showGameOverPopup(winnerName);
                 System.out.println("GAME OVER! The winner is: " + winnerName);
             });
         });

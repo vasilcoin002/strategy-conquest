@@ -1,8 +1,10 @@
 package pjvsemproj.controllers;
 
+import javafx.event.Event;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import pjvsemproj.config.GameSetupManager;
 import pjvsemproj.dto.PlayerDTO;
@@ -10,6 +12,7 @@ import pjvsemproj.models.game.Game;
 import pjvsemproj.models.services.ClientGameEngine;
 import pjvsemproj.models.services.LocalGameService;
 import pjvsemproj.views.MainMenuView;
+import pjvsemproj.views.game.GameOverView;
 import pjvsemproj.views.game.GameView;
 
 import java.io.File;
@@ -84,5 +87,25 @@ public class SceneDirector {
         if (file != null) {
             onFileSelected.accept(file.getAbsolutePath());
         }
+    }
+
+    public void showGameOverPopup(String winnerName) {
+        GameOverView popupView = new GameOverView(winnerName);
+
+        Stage popupStage = new Stage();
+        popupStage.initModality(Modality.APPLICATION_MODAL);
+        popupStage.initOwner(this.stage);
+        popupStage.setTitle("Game Over");
+        popupStage.setScene(popupView.getScene());
+
+        // ADD THIS LINE: Completely disables the "X" close button
+        popupStage.setOnCloseRequest(Event::consume);
+
+        popupView.setOnMainMenuAction(() -> {
+            popupStage.close();
+            showMainMenu();
+        });
+
+        popupStage.showAndWait();
     }
 }
