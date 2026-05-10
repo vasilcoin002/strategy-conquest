@@ -16,7 +16,7 @@ import javafx.scene.layout.VBox;
  */
 public class MainMenuView {
     private final VBox root;
-    private final CheckBox loggerToggle; // The new toggle
+    private final CheckBox loggerToggle;
     private final TextField playerNameInput;
     private final Label errorLabel;
 
@@ -58,7 +58,6 @@ public class MainMenuView {
             if (onLoadMultiplayerGameAction != null) onLoadMultiplayerGameAction.run();
         });
 
-        // --- THE LOGGER TOGGLE ---
         loggerToggle = new CheckBox("Enable Console Logging");
         loggerToggle.setStyle("-fx-text-fill: white; -fx-font-size: 16px;");
         loggerToggle.setSelected(true); // Default to checked
@@ -72,7 +71,6 @@ public class MainMenuView {
         styleButton(multiGameBtn);
         styleButton(exitBtn);
 
-        // Add the toggle right above the Exit button
         root.getChildren().addAll(title, playerNameInput, errorLabel, localGameBtn, multiGameBtn, loggerToggle, exitBtn);
 
         // allow the background to hold focus

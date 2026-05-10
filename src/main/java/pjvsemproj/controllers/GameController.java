@@ -12,7 +12,6 @@ import java.util.Set;
 
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
-// TODO on escape pressed: cancel selection or pop up dialog window
 /**
  * Main controller connecting UI with game logic.
  */
@@ -31,6 +30,11 @@ public class GameController {
 
         view.setOnGameAreaClickedAction(this::handleGameAreaClick);
         view.setOnEntitySelectedAction(entity -> setSelectedEntityId(entity.id));
+        view.setOnEscapeAction(() -> {
+            if (selectedEntityId != null) {
+                setSelectedEntityId(null);
+            }
+        });
 
         view.setOnSaveGameAction(this::handleSaveGameRequest);
         view.setOnQuitGameAction(this::handleQuitGameRequest);

@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -39,6 +40,7 @@ public class GameView {
 
     private EntityDTO selectedEntity;
 
+    private Runnable onEscapeAction;
     private BiConsumer<Integer, Integer> onGameAreaClickedAction;
 
     public GameView(
@@ -74,6 +76,11 @@ public class GameView {
 
         setBackground(mapPane);
         scene = new Scene(root, gameAreaWidth + GAME_SIDE_PANEL_WIDTH, gameAreaHeight);
+        scene.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ESCAPE) {
+                if (onEscapeAction != null) onEscapeAction.run();
+            }
+        });
 
         mapRenderer = new MapRenderer();
 
@@ -183,6 +190,10 @@ public class GameView {
     public void updateTile(TileDTO tile) {
         mapRenderer.clearTile(entitiesGc, tile);
         mapRenderer.renderTile(entitiesGc, tile, ownersColors);
+    }
+
+    public void setOnEscapeAction(Runnable onEscapeAction) {
+        this.onEscapeAction = onEscapeAction;
     }
 
     public void setOnGameAreaClickedAction(BiConsumer<Integer, Integer> onGameAreaClickedAction) {
