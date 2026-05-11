@@ -56,11 +56,11 @@ public class LocalGameService extends AbstractClientService {
     }
 
     public Set<TileDTO> getBotAttackTiles(String unitId) {
-        return getAvailableTilesDTOForAttackInternal(unitId);
+        return getUnrestrictedAttackTiles(unitId);
     }
 
     public Set<TileDTO> getBotMoveTiles(String unitId) {
-        return getAvailableTilesDTOForMovementInternal(unitId);
+        return getUnrestrictedMovementTiles(unitId);
     }
 
     @Override

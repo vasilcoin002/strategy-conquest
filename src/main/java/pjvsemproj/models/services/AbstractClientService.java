@@ -132,11 +132,11 @@ public class AbstractClientService extends AbstractGameService implements Client
         return super.getAvailableTilesDTOForAttack(unitId);
     }
 
-    protected Set<TileDTO> getAvailableTilesDTOForAttackInternal(String unitId) {
+    protected Set<TileDTO> getUnrestrictedAttackTiles(String unitId) {
         return super.getAvailableTilesDTOForAttack(unitId);
     }
 
-    protected Set<TileDTO> getAvailableTilesDTOForMovementInternal(String unitId) {
+    protected Set<TileDTO> getUnrestrictedMovementTiles(String unitId) {
         return super.getAvailableTilesDTOForMovement(unitId);
     }
 }
