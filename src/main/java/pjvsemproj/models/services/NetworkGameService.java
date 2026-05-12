@@ -7,7 +7,9 @@ import pjvsemproj.models.game.players.Player;
 import pjvsemproj.models.managers.utils.GridPositionHelper;
 import pjvsemproj.models.managers.utils.OwnershipHelper;
 import pjvsemproj.server.Client;
+import pjvsemproj.server.NetworkGameListener;
 import pjvsemproj.server.Protocol;
+import pjvsemproj.server.ServerEventListener;
 
 // TODO change methods which send data to server to also check server response to change local state
 //  for example moveUnit(x, y) should check if there is a positive response from server before moving it locally
@@ -22,6 +24,9 @@ public class NetworkGameService extends AbstractClientService {
     public NetworkGameService(Client client, Game game) {
         super(game);
         this.client = client;
+
+        client.setServerEventListener(new NetworkGameListener(this) {
+        });
     }
 
     @Override

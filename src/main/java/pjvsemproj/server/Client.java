@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 public class Client implements Runnable {
 
     private static final Logger LOGGER = Logger.getLogger(Client.class.getName());
+    private ServerEventListener listener;
 
     private final String host;
     private final int port;
@@ -82,6 +83,7 @@ public class Client implements Runnable {
 
             case TURN_STARTED:
                 String currentPlayer = tokens[1];
+                listener.onTurnStarted(currentPlayer);
                 LOGGER.info("Turn started: " + currentPlayer);
                 break;
 
@@ -89,6 +91,7 @@ public class Client implements Runnable {
                 String unitId = tokens[1];
                 int x = Integer.parseInt(tokens[2]);
                 int y = Integer.parseInt(tokens[3]);
+                listener.onUnitMoved(unitId, x, y);
                 LOGGER.info("Unit moved: " + unitId + " -> (" + x + "," + y + ")");
                 break;
 
@@ -96,17 +99,20 @@ public class Client implements Runnable {
                 String attackerId = tokens[1];
                 String targetId = tokens[2];
                 int newHp = Integer.parseInt(tokens[3]);
+                listener.onUnitAttacked(attackerId, targetId, newHp);
                 LOGGER.info("Attack: " + attackerId + " -> " + targetId + " HP=" + newHp);
                 break;
 
             case UNIT_DIED:
                 String deadUnit = tokens[1];
+                listener.onUnitDied(deadUnit);
                 LOGGER.info("Unit died: " + deadUnit);
                 break;
 
             case CITY_UPGRADED:
                 String cityId = tokens[1];
                 String newLevel = tokens[2];
+                listener.onCityUpgraded(cityId, newLevel);
                 LOGGER.info("City upgraded: " + cityId + " -> " + newLevel);
                 break;
 
@@ -167,5 +173,9 @@ public class Client implements Runnable {
 
     public void quit(){
         sendToServer(Protocol.QUIT);
+    }
+
+    public void setServerEventListener(ServerEventListener listener){
+        this.listener = listener;
     }
 }
