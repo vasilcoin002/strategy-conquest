@@ -12,25 +12,26 @@ public class NetworkGameListener implements ServerEventListener {
 
     @Override
     public void onUnitMoved(String unitId, int x, int y) {
+        service.applyServerMove(unitId, x, y);
     }
 
     @Override
     public void onUnitAttacked(String attackerId, String targetId, int newHp) {
-
+        service.applyServerAttack(attackerId, targetId, newHp);
     }
 
     @Override
     public void onUnitDied(String unitId) {
-
+        service.applyServerUnitDeath(unitId);
     }
 
     @Override
     public void onTurnStarted(String playerName) {
-
+        service.applyServerTurnStarted(playerName);
     }
 
     @Override
-    public void onCityUpgraded(String cityId) {
-
+    public void onCityUpgraded(String cityId, String newLevel) {
+        service.applyServerCityUpgrade(cityId, newLevel);
     }
 }

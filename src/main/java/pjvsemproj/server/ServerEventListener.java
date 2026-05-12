@@ -14,5 +14,5 @@ public interface ServerEventListener {
 
     void onTurnStarted(String playerName);
 
-    void onCityUpgraded(String cityId);
+    void onCityUpgraded(String cityId, String newLevel);
 }
