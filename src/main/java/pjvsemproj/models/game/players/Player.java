@@ -91,7 +91,7 @@ public abstract class Player {
     }
 
     public boolean spendGold(int gold) {
-        if (balance > gold) {
+        if (balance >= gold) {
             balance -= gold;
             return true;
         }

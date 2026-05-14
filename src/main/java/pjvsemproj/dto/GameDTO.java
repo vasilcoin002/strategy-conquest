@@ -40,13 +40,17 @@ public class GameDTO {
         this.currentPlayerName = new PlayerDTO(game.getCurrentPlayer()).name;
 
         this.entities = new ArrayList<>();
-        for (Player player: game.getPlayers()) {
-            for (City city: player.getCities()) {
+        for (Player player : game.getPlayers()) {
+            for (City city : player.getCities()) {
                 this.entities.add(new CityDTO(city));
             }
-            for (TroopUnit troopUnit: player.getTroops()) {
+            for (TroopUnit troopUnit : player.getTroops()) {
                 this.entities.add(new TroopUnitDTO(troopUnit));
             }
         }
+    }
+
+    public GameDTO() {
+
     }
 }

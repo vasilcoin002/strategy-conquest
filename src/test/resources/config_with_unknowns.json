@@ -1,0 +1,9 @@
+{
+  "mapWidth": 12,
+  "mapHeight": 12,
+  "foo": true,
+  "randomNonsense": [1, 2, 3],
+  "currentPlayerName": "Alice",
+  "players": [],
+  "entities": []
+}

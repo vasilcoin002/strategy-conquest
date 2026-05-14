@@ -12,8 +12,6 @@ public final class ConfigDefaultValues {
 
     // players
     public static final int DEFAULT_INIT_BALANCE = 0;
-    public static final String DEFAULT_PLAYER_1_NAME = "Player 1";
-    public static final String DEFAULT_PLAYER_2_NAME = "Player 2";
     public static final int DEFAULT_CURRENT_PLAYER_NUM = 1;
 
     // troops

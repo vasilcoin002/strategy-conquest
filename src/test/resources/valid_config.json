@@ -22,6 +22,7 @@
       "cityLevel": "LEVEL_1"
     },
     {
+      "id": "vasya's troop",
       "entityType": "Militia",
       "x": 1,
       "y": 1,
@@ -31,6 +32,7 @@
       "hasAttackedThisTurn": false
     },
     {
+      "id": "ivan's city",
       "entityType": "City",
       "x": 4,
       "y": 4,
@@ -38,6 +40,7 @@
       "cityLevel": "LEVEL_1"
     },
     {
+      "id": "ivan's troop",
       "entityType": "Artillery",
       "x": 4,
       "y": 4,

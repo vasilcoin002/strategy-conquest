@@ -111,7 +111,7 @@ public class GameSetupManager {
     /**
      * Creates game from parsed game settings
      */
-    private Game createGameFromDTO(GameDTO dto, String localClientName, boolean isLocalVsBot) {
+    Game createGameFromDTO(GameDTO dto, String localClientName, boolean isLocalVsBot) {
         GameMap map = new GameMap(dto.mapWidth, dto.mapHeight);
         Game game = new Game(map);
 

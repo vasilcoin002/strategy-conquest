@@ -37,7 +37,6 @@ public class EconomyManager implements ITurnListener {
      *
      * @return total gold income
      */
-
     public int countProducedGold() {
         return currentPlayer.getCities().stream().reduce(
             0, (accumulator, city) ->
@@ -59,7 +58,6 @@ public class EconomyManager implements ITurnListener {
      * @param city target city
      * @return true if upgrade was successful
      */
-
     public boolean upgradeCity(City city) {
         if (!canPlayerUpgradeCity(city, currentPlayer)) return false;
 
@@ -78,7 +76,6 @@ public class EconomyManager implements ITurnListener {
     /**
      * Attempts to buy a troop unit in a city.
      */
-
     public boolean buyTroopUnit(TroopType troopType, City city) {
         if (!canPlayerBuyTroopUnit(troopType, city, currentPlayer)) return false;
 
