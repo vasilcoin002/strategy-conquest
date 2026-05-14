@@ -4,6 +4,7 @@ import pjvsemproj.models.entities.IGridEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Represents a single map tile.
@@ -47,5 +48,19 @@ public class Tile {
 
     public List<IGridEntity> getEntities() {
         return entities;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Tile tile = (Tile) o;
+        // The tiles are "equal" if their coordinates match
+        return x == tile.x && y == tile.y;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
     }
 }

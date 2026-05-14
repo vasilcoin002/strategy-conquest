@@ -37,9 +37,15 @@ public class ConquestManager implements ITurnListener {
 
     }
 
-    public void conquerCity(TroopUnit troopUnit, City city) {
-        if (troopUnit.getOwner() == currentPlayer) {
-            OwnershipHelper.transferCity(city, troopUnit.getOwner());
+    public void conquerCity(TroopUnit attacker, City city) {
+        if (!attacker.getTile().equals(city.getTile())) {
+            throw new IllegalStateException(
+                    "Conquest failed: Attacker at " + attacker.getTile() +
+                            " is not on the city tile at " + city.getTile()
+            );
+        }
+        if (attacker.getOwner() == currentPlayer) {
+            OwnershipHelper.transferCity(city, attacker.getOwner());
         }
         if (winnerExists()) {
             announceWinner(currentPlayer);
