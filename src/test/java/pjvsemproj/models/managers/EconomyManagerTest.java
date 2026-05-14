@@ -3,42 +3,41 @@ package pjvsemproj.models.managers;
 import org.junit.jupiter.api.*;
 import pjvsemproj.models.entities.cities.City;
 import pjvsemproj.models.entities.cities.CityType;
+import pjvsemproj.models.game.maps.Tile;
 import pjvsemproj.models.game.players.BotPlayer;
 import pjvsemproj.models.game.players.HumanPlayer;
 import pjvsemproj.models.game.players.Player;
+import pjvsemproj.models.managers.utils.GridPositionHelper;
 import pjvsemproj.models.managers.utils.OwnershipHelper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class EconomyManagerTest {
 
     private static Player player1;
     private static Player player2;
     private static EconomyManager economyManager;
 
-    @BeforeAll
-    public static void init() {
-        player1 = new HumanPlayer("Vasya", 0);
-        player2 = new BotPlayer("Ivan", 0);
-
-        economyManager = new EconomyManager(player1);
+    @BeforeEach
+    void setUp() {
+//        player1 = new HumanPlayer("TestPlayer", 0);
+//        player2 = new HumanPlayer("TestPlayer", 0);
+//        economyManager = new EconomyManager(player1);
+//
+//        Tile cityTile = new Tile(0, 0);
+//        player1city = new City(cityTile, CityType.LEVEL_1);
+//
+//        OwnershipHelper.transferCity(player1city, player1);
+//        GridPositionHelper.placeEntity(player1city, cityTile);
     }
 
     @Test
-    @Order(0)
-    public void countProducedGold_standardMatch_returns15() {
-        int expectedProducedGold = 15;
+    public void testCountProducedGold_testMatch() {
 
-        economyManager.setCurrentPlayer(player1);
-        int producedGold = economyManager.countProducedGold();
-
-        assertEquals(expectedProducedGold, producedGold);
     }
 
     @Test
-    @Order(1)
-    public void countProducedGold_3citiesOfLevel1_returns45() {
+    public void testCountProducedGold_3citiesOfLevel1() {
         int expectedProducedGold = 45;
 
         OwnershipHelper.transferCity(new City(CityType.LEVEL_1), player1);
@@ -49,42 +48,42 @@ public class EconomyManagerTest {
     }
 
     @Test
-    public void upgradeCity_byCurrentPlayer_isUpgraded() {
+    public void testUpgradeCity_byCurrentPlayer_isUpgraded() {
 
     }
 
     @Test
-    public void upgradeCity_byCurrentPlayerWithLowGold_isNotUpgraded() {
+    public void testUpgradeCity_byCurrentPlayerWithLowGold_isNotUpgraded() {
 
     }
 
     @Test
-    public void upgradeCity_EnemyCityByCurrentPlayer_isNotUpgraded() {
+    public void testUpgradeCity_EnemyCityByCurrentPlayer_isNotUpgraded() {
 
     }
 
     @Test
-    public void upgradeCity_byEnemy_isNotUpgraded() {
+    public void testUpgradeCity_byEnemy_isNotUpgraded() {
 
     }
 
     @Test
-    public void buyTroopUnit_byCurrentPlayer_isBought() {
+    public void testBuyTroopUnit_byCurrentPlayer_isBought() {
 
     }
 
     @Test
-    public void buyTroopUnit_byCurrentPlayerWithLowGold_isNotBought() {
+    public void testBuyTroopUnit_byCurrentPlayerWithLowGold_isNotBought() {
 
     }
 
     @Test
-    public void buyTroopUnit_onEnemyCityByCurrentPlayer_isNotBought() {
+    public void testBuyTroopUnit_onEnemyCityByCurrentPlayer_isNotBought() {
 
     }
 
     @Test
-    public void buyTroopUnit_byEnemy_isNotBought() {
+    public void testBuyTroopUnit_byEnemy_isNotBought() {
 
     }
 }

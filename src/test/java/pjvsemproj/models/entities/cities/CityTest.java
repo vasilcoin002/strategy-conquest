@@ -1,35 +1,30 @@
 package pjvsemproj.models.entities.cities;
 
 import org.junit.jupiter.api.Test;
-import pjvsemproj.models.game.Game;
-import pjvsemproj.models.game.players.HumanPlayer;
-import pjvsemproj.models.game.players.Player;
+import static org.junit.jupiter.api.Assertions.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-public class CityTest {
-
-    private static Game game;
-    private static Player player1;
-    private static Player player2;
-
-//    @BeforeAll
-//    public static void init() {
-//        GameSetupManager gsm = new GameSetupManager();
-//        player1 = new HumanPlayer("Vasya", 0);
-//        player2 = new BotPlayer("Ivan", 0);
-//        game = gsm.setupTestMatch(
-//                new GameMap(25, 25),
-//                player1,
-//                player2
-//        );
-//    }
+class CityTest {
 
     @Test
-    public void getOwner_returnsPlayerClassInsteadOfIOwnerInterface() {
-        City p1city = player1.getCities().getFirst();
-        Player player = p1city.getOwner();
+    void testCityUpgradeSequence() {
+        City city = new City(CityType.LEVEL_1);
 
-        assertEquals(HumanPlayer.class, player.getClass());
+        // Initial state
+        assertTrue(city.canBeUpgraded());
+        assertEquals(CityType.LEVEL_1, city.getCurrentLevel());
+
+        // First upgrade
+        city.upgrade();
+        assertEquals(CityType.LEVEL_2, city.getCurrentLevel());
+        assertTrue(city.canBeUpgraded());
+
+        // Second upgrade
+        city.upgrade();
+        assertEquals(CityType.LEVEL_3, city.getCurrentLevel());
+        assertFalse(city.canBeUpgraded());
+
+        // Attempting to upgrade past the maximum level should do nothing and not throw errors
+        city.upgrade();
+        assertEquals(CityType.LEVEL_3, city.getCurrentLevel());
     }
 }
