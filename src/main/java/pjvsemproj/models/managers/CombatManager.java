@@ -15,7 +15,8 @@ import java.util.Set;
 
 import static pjvsemproj.models.game.GameConstants.TROOP_HEALING_PERCENT_BY_MAX_HP;
 
-
+// TODO optimize getAttackableTroops
+//  change the loop bounds to only check the bounding box around the attacker (now it checks entire map)
 /**
  * Handles combat logic including:
  * - attacking
@@ -28,11 +29,23 @@ public class CombatManager implements ITurnListener{
     private Player currentPlayer;
     private final GameMap gameMap;
 
+    /**
+     * Constructs a CombatManager for a specific map and starting player.
+     *
+     * @param gameMap       the active game map
+     * @param currentPlayer the player whose turn is initially active
+     */
     public CombatManager(GameMap gameMap, Player currentPlayer) {
         this.gameMap = gameMap;
         this.currentPlayer = currentPlayer;
     }
 
+    /**
+     * Refreshes the attack state for all troops belonging to the active player
+     * and applies healing to units stationed inside friendly cities.
+     *
+     * @param activePlayer the player whose turn has just started
+     */
     @Override
     public void onTurnStart(Player activePlayer) {
         currentPlayer = activePlayer;
@@ -51,7 +64,12 @@ public class CombatManager implements ITurnListener{
 
     }
 
-    // TroopUnit gets heal if it stands in city on every player's turn
+    /**
+     * Identifies all troops belonging to the current player that are eligible for healing.
+     * Troops must be located on a tile containing a city owned by the same player.
+     *
+     * @return a list of friendly troops stationed in friendly cities
+     */
     public List<TroopUnit> getTroopsToHeal() {
         List<TroopUnit> troopsToHeal = new ArrayList<>();
 
@@ -71,6 +89,10 @@ public class CombatManager implements ITurnListener{
 
     /**
      * Returns all enemy troop units that attacker can hit this turn.
+     * Scans the map to find targets within the attacker's attack range using Manhattan distance.
+     *
+     * @param attacker the troop looking for targets
+     * @return a set of attackable enemy units
      */
     public Set<TroopUnit> getAttackableTroops(TroopUnit attacker) {
         Set<TroopUnit> result = new HashSet<>();
@@ -109,6 +131,12 @@ public class CombatManager implements ITurnListener{
         return result;
     }
 
+    /**
+     * Retrieves the specific map tiles containing attackable enemies.
+     *
+     * @param attacker the troop looking for targets
+     * @return a set of tiles within range containing enemy units
+     */
     public Set<Tile> getAttackableTiles(TroopUnit attacker) {
         Set<Tile> tiles = new HashSet<>();
         for (TroopUnit troop : getAttackableTroops(attacker)) {
@@ -120,6 +148,12 @@ public class CombatManager implements ITurnListener{
 
     /**
      * Performs attack using TroopUnit logic.
+     * Applies damage to the target, removes it if its health reaches 0,
+     * and exhausts the attacker's combat and movement actions for the turn.
+     *
+     * @param attacker the unit dealing damage
+     * @param target   the unit receiving damage
+     * @return {@code true} if the attack was successfully executed
      */
     public boolean attackTroop(TroopUnit attacker, TroopUnit target) {
         if (attacker.hasAttackedThisTurn()){

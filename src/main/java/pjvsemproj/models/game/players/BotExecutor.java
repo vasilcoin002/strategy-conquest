@@ -9,15 +9,35 @@ import java.util.List;
 import java.util.Set;
 import java.util.Random;
 
+/**
+ * Handles the artificial intelligence logic for bot-controlled players.
+ * <p>
+ * This executor uses a stateless evaluation approach, reading the current game state
+ * via Data Transfer Objects (DTOs) and issuing commands back to the {@link LocalGameService}.
+ * It defines a strict priority of actions: Attack, Move, Buy, and Upgrade.
+ */
 public class BotExecutor {
 
     private final LocalGameService service;
     private final Random random = new Random();
 
+    /**
+     * Constructs a new BotExecutor linked to a specific game service.
+     *
+     * @param service the local game service used to read state and execute actions
+     */
     public BotExecutor(LocalGameService service) {
         this.service = service;
     }
 
+    /**
+     * Executes the complete sequence of AI actions for a single turn.
+     * The bot follows a strict procedural priority:
+     * 1. Attack enemies in range
+     * 2. Move units towards targets
+     * 3. Purchase new units (up to a cap)
+     * 4. Upgrade existing cities
+     */
     public void playTurnActionsOnly() {
         attackIfPossible();
         moveUnits();
@@ -25,6 +45,12 @@ public class BotExecutor {
         upgradeCityIfPossible();
     }
 
+    /**
+     * Scans all bot-owned troops and commands them to attack if an enemy is within range.
+     * <p>
+     * AI Heuristic: The bot targets the weakest available enemy (lowest HP) to maximize kills.
+     * Note: Uses Thread.sleep to create an artificial delay between attacks.
+     */
     private void attackIfPossible() {
         String botName = service.getCurrentPlayerDTO().name;
         GameDTO game = service.getGameDTO();
@@ -32,6 +58,7 @@ public class BotExecutor {
         for (EntityDTO entity : game.entities) {
             if (!(entity instanceof TroopUnitDTO troop)) continue;
             if (!botName.equals(troop.ownerName)) continue;
+
             Set<TileDTO> attackTiles = service.getBotAttackTiles(troop.id);
             TroopUnitDTO target = findWeakestEnemy(attackTiles, botName);
             System.out.println("Attack tiles count: " + attackTiles.size());
@@ -44,12 +71,16 @@ public class BotExecutor {
                     Thread.currentThread().interrupt();
                 }
             }
-
         }
-
     }
 
-    private void buyUnitIfPossible(){
+    /**
+     * Evaluates the bot's economy and attempts to purchase a random affordable unit.
+     * <p>
+     * AI Heuristic: The bot imposes a hard cap of 4 troops. If it has fewer than 4,
+     * it randomly selects a troop type it can afford and spawns it at the first available city.
+     */
+    private void buyUnitIfPossible() {
         String botName = service.getCurrentPlayerDTO().name;
         GameDTO game = service.getGameDTO();
 
@@ -86,7 +117,10 @@ public class BotExecutor {
         }
     }
 
-    private void upgradeCityIfPossible(){
+    /**
+     * Scans the bot's cities and attempts to upgrade the first eligible one.
+     */
+    private void upgradeCityIfPossible() {
         String botName = service.getCurrentPlayerDTO().name;
         GameDTO game = service.getGameDTO();
 
@@ -101,7 +135,15 @@ public class BotExecutor {
         }
     }
 
-    private EntityDTO findNearestEnemyOrCity(TroopUnitDTO troop, GameDTO game, String botName){
+    /**
+     * Locates the closest enemy entity (either a troop or a city) using Manhattan distance.
+     *
+     * @param troop   the bot troop looking for a target
+     * @param game    the current game state DTO
+     * @param botName the name of the current bot player
+     * @return the nearest enemy EntityDTO, or {@code null} if no enemies exist
+     */
+    private EntityDTO findNearestEnemyOrCity(TroopUnitDTO troop, GameDTO game, String botName) {
         EntityDTO nearest = null;
         int bestDist = Integer.MAX_VALUE;
 
@@ -122,9 +164,15 @@ public class BotExecutor {
             }
         }
         return nearest;
-
     }
 
+    /**
+     * Iterates through all bot-owned troops and moves them towards the nearest enemy.
+     * <p>
+     * AI Heuristic: Evaluates all legal move tiles and chooses the one that minimizes
+     * the Manhattan distance to the closest enemy target.
+     * Note: Uses Thread.sleep to create an artificial delay between movements.
+     */
     private void moveUnits() {
         String botName = service.getCurrentPlayerDTO().name;
         GameDTO game = service.getGameDTO();
@@ -143,7 +191,6 @@ public class BotExecutor {
             int bestDistance = Integer.MAX_VALUE;
 
             for (TileDTO tile : moves) {
-
                 int dist = distance(tile.x, tile.y, target.x, target.y);
 
                 if (dist < bestDistance) {
@@ -163,7 +210,14 @@ public class BotExecutor {
         }
     }
 
-    private TroopUnitDTO findWeakestEnemy(Set<TileDTO> attackTiles, String botName){
+    /**
+     * Scans a set of attackable tiles to find the enemy troop with the lowest health.
+     *
+     * @param attackTiles the set of tiles within the troop's attack range
+     * @param botName     the name of the current bot player
+     * @return the enemy troop with the lowest HP, or {@code null} if none found
+     */
+    private TroopUnitDTO findWeakestEnemy(Set<TileDTO> attackTiles, String botName) {
         TroopUnitDTO weakestEnemy = null;
         int lowestHp = Integer.MAX_VALUE;
 
@@ -182,8 +236,14 @@ public class BotExecutor {
         return weakestEnemy;
     }
 
-
-    private TroopUnitDTO getEnemyTroopFromTile(TileDTO tile, String botName){
+    /**
+     * Extracts an enemy troop from a specific tile, if one exists.
+     *
+     * @param tile    the tile to inspect
+     * @param botName the name of the current bot player
+     * @return the enemy troop, or {@code null} if the tile contains no enemies
+     */
+    private TroopUnitDTO getEnemyTroopFromTile(TileDTO tile, String botName) {
         for(EntityDTO entity: tile.entities){
             if (entity instanceof TroopUnitDTO troop && !botName.equals(troop.ownerName)) {
                 return troop;
@@ -192,6 +252,13 @@ public class BotExecutor {
         return null;
     }
 
+    /**
+     * Evaluates the bot's current balance and randomly selects a troop type it can afford.
+     *
+     * @param game    the current game state DTO
+     * @param botName the name of the current bot player
+     * @return a random affordable {@link TroopType}, or {@code null} if none can be afforded
+     */
     private TroopType chooseRandomAffordableTroop(GameDTO game, String botName) {
         int balance = getBotBalance(game, botName);
 
@@ -211,16 +278,29 @@ public class BotExecutor {
         return availableTroops.get(index);
     }
 
+    /**
+     * Extracts the bot's current gold balance from the game state.
+     *
+     * @param game    the current game state DTO
+     * @param botName the name of the current bot player
+     * @return the bot's gold balance
+     */
     private int getBotBalance(GameDTO game, String botName) {
         for (PlayerDTO player : game.players) {
             if (botName.equals(player.name)) {
                 return player.balance;
             }
         }
-
         return 0;
     }
 
+    /**
+     * Counts the total number of troops currently owned by the bot.
+     *
+     * @param game    the current game state DTO
+     * @param botName the name of the current bot player
+     * @return the total troop count
+     */
     private int countBotTroops(GameDTO game, String botName) {
         int count = 0;
 
@@ -234,6 +314,15 @@ public class BotExecutor {
         return count;
     }
 
+    /**
+     * Calculates the Manhattan distance (grid distance) between two coordinates.
+     *
+     * @param x1 the starting X coordinate
+     * @param y1 the starting Y coordinate
+     * @param x2 the target X coordinate
+     * @param y2 the target Y coordinate
+     * @return the distance in tiles
+     */
     private int distance(int x1, int y1, int x2, int y2) {
         return Math.abs(x1 - x2) + Math.abs(y1 - y2);
     }

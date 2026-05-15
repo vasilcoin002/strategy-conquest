@@ -5,7 +5,6 @@ import pjvsemproj.models.game.maps.Tile;
 import java.util.Objects;
 import java.util.UUID;
 
-
 /**
  * Base abstract implementation of an entity placed on the game map.
  * <p>
@@ -18,17 +17,29 @@ public abstract class Entity implements IGridEntity {
     protected Tile tile;
     protected final boolean isPassable;
 
-    protected Entity(Tile intialTile, boolean isPassable) {
-        this(UUID.randomUUID().toString(), intialTile, isPassable);
+    /**
+     * Constructs a new entity with an automatically generated unique identifier.
+     *
+     * @param initialTile the starting tile where the entity is placed
+     * @param isPassable  {@code true} if other entities can move through this entity's tile
+     */
+    protected Entity(Tile initialTile, boolean isPassable) {
+        this(UUID.randomUUID().toString(), initialTile, isPassable);
     }
 
-    protected Entity(String id, Tile intialTile, boolean isPassable) {
-        // if incoming id is empty => assign the random one and if it's not => assign it
+    /**
+     * Constructs a new entity with a specific identifier.
+     * If the provided identifier is null or blank, a random UUID is generated.
+     *
+     * @param id          the specific unique identifier for this entity
+     * @param initialTile the starting tile where the entity is placed
+     * @param isPassable  {@code true} if other entities can move through this entity's tile
+     */
+    protected Entity(String id, Tile initialTile, boolean isPassable) {
         this.id = (id == null || id.isBlank()) ? UUID.randomUUID().toString() : id;
-        this.tile = intialTile;
+        this.tile = initialTile;
         this.isPassable = isPassable;
     }
-
 
     /**
      * Returns the tile currently occupied by this entity.
@@ -45,19 +56,16 @@ public abstract class Entity implements IGridEntity {
      *
      * @param tile new tile to assign
      */
-
     @Override
     public void setTile(Tile tile) {
         this.tile = tile;
     }
-
 
     /**
      * Indicates whether this entity blocks movement.
      *
      * @return {@code true} if the entity is passable
      */
-
     @Override
     public boolean isPassable() {
         return isPassable;
@@ -68,12 +76,17 @@ public abstract class Entity implements IGridEntity {
      *
      * @return entity identifier
      */
-
     @Override
     public String getId() {
         return id;
     }
 
+    /**
+     * Compares this entity to another object for equality based on their identifiers.
+     *
+     * @param o the object to compare to
+     * @return {@code true} if the objects have the same ID, otherwise {@code false}
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

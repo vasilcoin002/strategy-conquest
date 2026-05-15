@@ -148,7 +148,7 @@ public class GameConfigValidator {
     }
 
     private void validateBaseEntity(EntityDTO entity) {
-        if (!Arrays.asList(ENTITY_TYPES).contains(entity.entityType)) {
+        if (!ENTITY_TYPES.contains(entity.entityType)) {
             throw new InvalidGameConfigException(String.format("Entity at (%d,%d) has an invalid entityType: %s",
                     entity.x, entity.y, entity.entityType));
         }

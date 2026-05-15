@@ -1,6 +1,5 @@
 package pjvsemproj.models.game.maps;
 
-
 import pjvsemproj.config.InvalidGameConfigException;
 
 import static pjvsemproj.models.game.GameConstants.MIN_MAP_HEIGHT;
@@ -8,32 +7,31 @@ import static pjvsemproj.models.game.GameConstants.MIN_MAP_WIDTH;
 
 /**
  * Represents the game world as a 2D grid of tiles.
- *
+ * <p>
  * Responsible for:
  * - storing map structure
  * - providing access to tiles
  * - validating coordinates
- *
+ * <p>
  * The map is immutable in size after creation.
  */
 public class GameMap {
     private final Tile[][] tiles;
 
-    // TODO Test initializing with negative values, 0 and 1
     /**
      * Creates a new game map with specified dimensions.
-     *
+     * <p>
      * Initializes all tiles in the grid.
      *
-     * @param width number of columns (X dimension)
+     * @param width  number of columns (X dimension)
      * @param height number of rows (Y dimension)
-     * @throws IllegalArgumentException if width or height < 2
+     * @throws InvalidGameConfigException if width or height are below the minimum required dimensions
      */
     public GameMap(int width, int height) {
         if (width < MIN_MAP_WIDTH || height < MIN_MAP_HEIGHT) {
             throw new InvalidGameConfigException(
                     "map width must be ≥ " + MIN_MAP_WIDTH + "; " +
-                    "map height must be ≥ " + MIN_MAP_HEIGHT
+                        "map height must be ≥ " + MIN_MAP_HEIGHT
             );
         }
 
@@ -45,6 +43,7 @@ public class GameMap {
             }
         }
     }
+
     /**
      * Returns the entire tile grid.
      *
@@ -53,6 +52,7 @@ public class GameMap {
     public Tile[][] getTiles() {
         return tiles;
     }
+
     /**
      * Returns tile at given coordinates.
      *
@@ -66,6 +66,7 @@ public class GameMap {
         }
         return null;
     }
+
     /**
      * Checks whether given coordinates are within map bounds.
      *
@@ -79,7 +80,7 @@ public class GameMap {
 
     /**
      * Checks whether the tile at given coordinates is blocked.
-     *
+     * <p>
      * A tile is considered blocked if it contains a non-passable entity.
      *
      * @param x X coordinate
@@ -90,10 +91,20 @@ public class GameMap {
         return tiles[x][y].isBlocked();
     }
 
+    /**
+     * Retrieves the total width of the map.
+     *
+     * @return the number of columns
+     */
     public int getWidth() {
         return tiles.length;
     }
 
+    /**
+     * Retrieves the total height of the map.
+     *
+     * @return the number of rows
+     */
     public int getHeight() {
         return tiles[0].length;
     }

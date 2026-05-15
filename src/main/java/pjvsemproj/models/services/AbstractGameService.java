@@ -12,6 +12,14 @@ import pjvsemproj.models.managers.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
+// TODO remove current player from the game, cause we have double sources of truth then: turn manager and game (leave only manager)
+/**
+ * Base implementation of the {@link CoreGameService} interface.
+ * <p>
+ * Acts as a Facade that initializes all domain managers and wires them together.
+ * Translates incoming requests involving string IDs into operations on domain entities,
+ * returning safe Data Transfer Objects (DTOs) to the calling layer.
+ */
 public class AbstractGameService implements CoreGameService {
 
     protected final Game game;
@@ -22,6 +30,12 @@ public class AbstractGameService implements CoreGameService {
     protected final TurnManager turnManager;
     protected final ConquestManager conquestManager;
 
+    /**
+     * Constructs the base game service, initializes the domain managers,
+     * and wires all internal listeners together.
+     *
+     * @param game the initial game state containing the map and players
+     */
     public AbstractGameService(Game game) {
         this.game = game;
 
@@ -57,14 +71,19 @@ public class AbstractGameService implements CoreGameService {
         TroopUnit troopUnit = findTroopById(unitId);
 
         Tile tile = game.getMap().getTile(x, y);
-        Set<Tile> availableTiles = movementManager.getAvailableTilesForMovement(troopUnit);
-
-        if (!availableTiles.contains(tile)) {
-            return false;
-        }
+//        Set<Tile> availableTiles = movementManager.getAvailableTilesForMovement(troopUnit);
+//
+//        if (!availableTiles.contains(tile)) {
+//            return false;
+//        }
         return movementManager.moveTroopUnit(troopUnit, tile);
     }
 
+    /**
+     * Registers a listener to be notified when the conquest manager declares a winner.
+     *
+     * @param listener the win event listener
+     */
     public void addWinListener(IWinListener listener) {
         conquestManager.addWinListener(listener);
     }
@@ -74,11 +93,11 @@ public class AbstractGameService implements CoreGameService {
         TroopUnit attacker = findTroopById(attackerId);
         TroopUnit target = findTroopById(targetId);
 
-        Set<TroopUnit> attackableTroops = combatManager.getAttackableTroops(attacker);
-
-        if (!attackableTroops.contains(target)) {
-            return false;
-        }
+//        Set<TroopUnit> attackableTroops = combatManager.getAttackableTroops(attacker);
+//
+//        if (!attackableTroops.contains(target)) {
+//            return false;
+//        }
         return combatManager.attackTroop(attacker, target);
     }
 
@@ -102,6 +121,13 @@ public class AbstractGameService implements CoreGameService {
         turnManager.endTurn();
     }
 
+    /**
+     * Helper method to locate a specific troop unit by its unique identifier.
+     *
+     * @param id the string ID of the unit
+     * @return the domain TroopUnit
+     * @throws EntityNotFoundException if the unit does not exist in any player's roster
+     */
     protected TroopUnit findTroopById(String id) {
         for (Player player : game.getPlayers()) {
             for (TroopUnit troopUnit : player.getTroops()) {
@@ -113,6 +139,13 @@ public class AbstractGameService implements CoreGameService {
         throw new EntityNotFoundException("TROOP_UNIT", id);
     }
 
+    /**
+     * Helper method to locate a specific city by its unique identifier.
+     *
+     * @param id the string ID of the city
+     * @return the domain City
+     * @throws EntityNotFoundException if the city does not exist in any player's roster
+     */
     protected City findCityById(String id) {
         for (Player player : game.getPlayers()) {
             for (City city : player.getCities()) {
