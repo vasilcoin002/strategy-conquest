@@ -54,14 +54,15 @@ public class GameServer implements Runnable {
 
     public synchronized boolean registerConnection(Connection connection, String name) {
         if (isNameTaken(name)) {
-            LOGGER.info("Adding connection for" + name);
-            connectionsByName.put(name, connection);
-            return true;
+            return false;
         }
+        LOGGER.info("Adding connection for " + name);
+
+        connectionsByName.put(name, connection);
 
         tryAssignToSession();
 
-        return false;
+        return true;
     }
 
     public synchronized boolean isNameTaken(String name) {
@@ -139,6 +140,7 @@ public class GameServer implements Runnable {
             c2.setSession(session);
 
             LOGGER.info("Match created between " + c1.getPlayerName() + " and " + c2.getPlayerName());
+            session.startGame();
         }
     }
 

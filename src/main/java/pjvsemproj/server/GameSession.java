@@ -1,8 +1,9 @@
 package pjvsemproj.server;
 
-import pjvsemproj.dto.CityDTO;
-import pjvsemproj.dto.PlayerDTO;
-import pjvsemproj.dto.TroopUnitDTO;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import pjvsemproj.config.EntityDTODeserializer;
+import pjvsemproj.dto.*;
 import pjvsemproj.models.entities.troopUnits.TroopType;
 import pjvsemproj.models.services.CoreGameService;
 
@@ -49,10 +50,17 @@ public class GameSession {
         connection1.sendToClient(Protocol.GAME_STARTED, p1Name, p2Name);
         connection2.sendToClient(Protocol.GAME_STARTED, p1Name, p2Name);
 
+        GameDTO gameDTO = gameService.getGameDTO();
+
+        Gson gson = new Gson();
+
+        String json = gson.toJson(gameDTO);
+
+        connection1.sendToClient(Protocol.GAME_STATE, json);
+        connection2.sendToClient(Protocol.GAME_STATE, json);
+
         PlayerDTO currentPlayer = gameService.getCurrentPlayerDTO();
 
-        connection1.sendToClient(Protocol.TURN_STARTED, currentPlayer.name);
-        connection2.sendToClient(Protocol.TURN_STARTED, currentPlayer.name);
 
         // not calling startFirstTurn to leave game like in configuration
     }

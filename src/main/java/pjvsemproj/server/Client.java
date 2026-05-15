@@ -21,6 +21,7 @@ public class Client implements Runnable {
 
     private static final Logger LOGGER = Logger.getLogger(Client.class.getName());
     private ServerEventListener listener;
+    private LobbyEventListener lobbyListener;
 
     private final String host;
     private final int port;
@@ -43,6 +44,8 @@ public class Client implements Runnable {
             socket = new Socket(host, port);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream(), true);
+            login(playerName);
+            LOGGER.info("LOGIN sent");
             boolean running = true;
             while(running){
                 String msg = in.readLine();
@@ -78,12 +81,24 @@ public class Client implements Runnable {
             case GAME_STARTED:
                 String player1 = tokens[1];
                 String player2 = tokens[2];
+
+                lobbyListener.onGameStarted(player1, player2);
                 LOGGER.info("Game started: " + player1 + " vs " + player2);
+                break;
+
+            case GAME_STATE:
+                if (lobbyListener != null) {
+                    lobbyListener.onGameState(tokens[1]);
+                }
                 break;
 
             case TURN_STARTED:
                 String currentPlayer = tokens[1];
-                listener.onTurnStarted(currentPlayer);
+                System.out.println("CLIENT TURN_STARTED listener = " + listener);
+
+                if (listener != null) {
+                    listener.onTurnStarted(currentPlayer);
+                }
                 LOGGER.info("Turn started: " + currentPlayer);
                 break;
 
@@ -91,7 +106,9 @@ public class Client implements Runnable {
                 String unitId = tokens[1];
                 int x = Integer.parseInt(tokens[2]);
                 int y = Integer.parseInt(tokens[3]);
-                listener.onUnitMoved(unitId, x, y);
+                if (listener != null) {
+                    listener.onUnitMoved(unitId, x, y);
+                }
                 LOGGER.info("Unit moved: " + unitId + " -> (" + x + "," + y + ")");
                 break;
 
@@ -99,20 +116,28 @@ public class Client implements Runnable {
                 String attackerId = tokens[1];
                 String targetId = tokens[2];
                 int newHp = Integer.parseInt(tokens[3]);
-                listener.onUnitAttacked(attackerId, targetId, newHp);
+                if (listener != null) {
+                    listener.onUnitAttacked(attackerId, targetId, newHp);
+                }
+
                 LOGGER.info("Attack: " + attackerId + " -> " + targetId + " HP=" + newHp);
                 break;
 
             case UNIT_DIED:
                 String deadUnit = tokens[1];
-                listener.onUnitDied(deadUnit);
+                if (listener != null) {
+                    listener.onUnitDied(deadUnit);
+                }
                 LOGGER.info("Unit died: " + deadUnit);
                 break;
 
             case CITY_UPGRADED:
                 String cityId = tokens[1];
                 String newLevel = tokens[2];
-                listener.onCityUpgraded(cityId, newLevel);
+                if (listener != null) {
+                    listener.onCityUpgraded(cityId, newLevel);
+                }
+
                 LOGGER.info("City upgraded: " + cityId + " -> " + newLevel);
                 break;
 
@@ -177,5 +202,11 @@ public class Client implements Runnable {
 
     public void setServerEventListener(ServerEventListener listener){
         this.listener = listener;
+    }
+
+    public void setLobbyListener(
+            LobbyEventListener listener
+    ) {
+        this.lobbyListener = listener;
     }
 }

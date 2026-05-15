@@ -104,16 +104,16 @@ public class Connection implements Runnable {
             sendToClient(Protocol.ERROR, "LOGIN_REQUIRES_NAME");
             return true;
         }
-
         String requestedName = tokens[1].trim();
+        this.playerName = requestedName;
         boolean accepted = server.registerConnection(this, requestedName);
 
         if (!accepted) {
+            this.playerName = null;
             sendToClient(Protocol.ERROR, "NAME_ALREADY_TAKEN");
             return true;
         }
 
-        this.playerName = requestedName;
         sendToClient(Protocol.OK, "LOGIN_ACCEPTED");
         return true;
     }

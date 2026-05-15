@@ -10,12 +10,16 @@ public class MultiplayerLobbyView {
     private final ListView<LobbyInfo> lobbyList;
     private final TextField playerNameField;
 
+    private final TextField hostField;
     private Runnable onCreateGameAction;
     private Runnable onJoinGameAction;
     private Runnable onBackAction;
 
     public MultiplayerLobbyView() {
         root = new VBox(15);
+        hostField = new TextField("localhost");
+        hostField.setPromptText("Host");
+        hostField.setMaxWidth(300);
         root.setAlignment(Pos.CENTER);
         root.setStyle("-fx-background-color: #2b2b2b; -fx-padding: 30px;");
 
@@ -53,7 +57,7 @@ public class MultiplayerLobbyView {
         root.getChildren().addAll(
                 title,
                 playerNameField,
-                lobbyList,
+                hostField,
                 createBtn,
                 joinBtn,
                 backBtn
@@ -91,5 +95,13 @@ public class MultiplayerLobbyView {
 
     public void setOnBackAction(Runnable action) {
         this.onBackAction = action;
+    }
+
+    public void clearLobbies() {
+        lobbyList.getItems().clear();
+    }
+
+    public String getHost() {
+        return hostField.getText().trim();
     }
 }

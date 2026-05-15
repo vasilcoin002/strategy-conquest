@@ -200,4 +200,8 @@ public class GameSetupManager {
         GridPositionHelper.placeEntity(troop, tile);
         OwnershipHelper.addTroopUnitToPlayer(troop, owner);
     }
+
+    public Game createNetworkGameFromDTO(GameDTO dto, String localClientName) {
+        return createGameFromDTO(dto, localClientName, false);
+    }
 }
