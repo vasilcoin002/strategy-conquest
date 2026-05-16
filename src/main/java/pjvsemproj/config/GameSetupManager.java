@@ -19,9 +19,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Responsible for initializing game state.
+ * Orchestrates the creation and initialization of active game sessions.
  * <p>
- * Can create test scenarios or load game from configuration files.
+ * This manager acts as the bridge between raw, validated Data Transfer Objects (DTOs)
+ * and the live domain models (e.g., {@link Game}, {@link GameMap}, {@link Player}).
+ * It coordinates the parsing, sanitization, and validation pipeline before securely
+ * hydrating the in-memory game state.
  */
 public class GameSetupManager {
 
@@ -29,6 +32,9 @@ public class GameSetupManager {
     private final GameConfigSanitizer sanitizer;
     private final GameConfigValidator validator;
 
+    /**
+     * Initializes the setup manager with its default configuration pipeline dependencies.
+     */
     public GameSetupManager() {
         this.parser = new GameConfigParser();
         this.sanitizer = new GameConfigSanitizer();
@@ -36,7 +42,13 @@ public class GameSetupManager {
     }
 
     /**
-     * Sets up a match with 1 city and 1 Militia unit for each player
+     * Generates a hardcoded, minimal test scenario for two players.
+     * Places one Level 1 City and one Militia unit for each player at opposite corners of the map.
+     *
+     * @param map The initialized game map to place entities on.
+     * @param p1  The first player.
+     * @param p2  The second player.
+     * @return A fully initialized {@link Game} instance ready for testing.
      */
     public Game setupTestMatch(GameMap map, Player p1, Player p2) {
         City p1City = new City(CityType.LEVEL_1);
@@ -70,8 +82,14 @@ public class GameSetupManager {
     }
 
     /**
-     * Loads a game for Single Player.
-     * The player matching 'localClientName' is human, everyone else is a Bot.
+     * Executes the loading pipeline for a Single Player scenario.
+     * The identity matching the {@code localClientName} is instantiated as a {@link HumanPlayer},
+     * while all other players in the save file are instantiated as {@link BotPlayer}s.
+     *
+     * @param levelFilePath   The file path to the JSON game configuration.
+     * @param localClientName The name of the local user loading the game.
+     * @return A validated and fully hydrated {@link Game} instance.
+     * @throws InvalidGameConfigException if the local client name is missing from the save file data.
      */
     public Game loadLocalGame(String levelFilePath, String localClientName) {
         GameDTO gameDTO = parser.parseLevelConfig(levelFilePath);
@@ -84,6 +102,12 @@ public class GameSetupManager {
         return createGameFromDTO(gameDTO, localClientName, true);
     }
 
+    /**
+     * Validates that the executing client is actually a participant in the loaded configuration.
+     * @param gameDTO    The parsed game configuration data.
+     * @param clientName The name of the local client to verify.
+     * @throws InvalidGameConfigException if the client name does not exist in the player list.
+     */
     private void validateClientNameExists(GameDTO gameDTO, String clientName) {
         boolean nameFound = gameDTO.players.stream()
                 .anyMatch(player -> player.name.equals(clientName));
@@ -96,8 +120,11 @@ public class GameSetupManager {
     }
 
     /**
-     * Loads a game for Multiplayer.
-     * All players are instantiated as HumanPlayers.
+     * Executes the loading pipeline for a Multiplayer scenario.
+     * All players defined in the configuration are instantiated as {@link HumanPlayer}s.
+     *
+     * @param levelFilePath The file path to the JSON game configuration.
+     * @return A validated and fully hydrated {@link Game} instance.
      */
     public Game loadNetworkGame(String levelFilePath) {
         GameDTO gameDTO = parser.parseLevelConfig(levelFilePath);
@@ -109,7 +136,12 @@ public class GameSetupManager {
     }
 
     /**
-     * Creates game from parsed game settings
+     * Core factory method that translates a sanitized and validated DTO into active domain models.
+     *
+     * @param dto             The guaranteed-safe game data transfer object.
+     * @param localClientName The name of the client (if applicable).
+     * @param isLocalVsBot    Flag indicating if non-client players should be mapped as Bots.
+     * @return The fully constructed {@link Game} state.
      */
     Game createGameFromDTO(GameDTO dto, String localClientName, boolean isLocalVsBot) {
         GameMap map = new GameMap(dto.mapWidth, dto.mapHeight);
@@ -124,7 +156,12 @@ public class GameSetupManager {
     }
 
     /**
-     * Loads parsed players to the game object
+     * Instantiates concrete Player objects based on network context and assigns them to the game.
+     * @param game            The active game instance being constructed.
+     * @param playerDTOs      The list of raw player data from the configuration.
+     * @param localClientName The name of the local human client.
+     * @param isLocalVsBot    Determines if opponents should be instantiated as AI bots.
+     * @return A map linking player names to their newly instantiated {@link Player} objects.
      */
     private Map<String, Player> loadPlayers(Game game, List<PlayerDTO> playerDTOs, String localClientName, boolean isLocalVsBot) {
         Map<String, Player> loadedPlayers = new HashMap<>();
@@ -145,7 +182,10 @@ public class GameSetupManager {
     }
 
     /**
-     * Loads current player to the game object by their name
+     * Resolves and sets the active turn player. Fallbacks to the first player if the mapped name is missing.
+     * @param game              The active game instance.
+     * @param loadedPlayers     The map of currently instantiated players.
+     * @param currentPlayerName The name of the player whose turn is currently active.
      */
     private void setCurrentPlayer(Game game, Map<String, Player> loadedPlayers, String currentPlayerName) {
         Player currentPlayer = loadedPlayers.get(currentPlayerName);
@@ -158,7 +198,10 @@ public class GameSetupManager {
     }
 
     /**
-     * Loads parsed entities to the game object
+     * Iterates through entity DTOs, determines their type, and delegates to specific spawn logic.
+     * @param map           The initialized game map.
+     * @param entityDTOs    The list of raw entity data from the configuration.
+     * @param loadedPlayers The map of active players used to resolve ownership.
      */
     private void loadEntities(GameMap map, List<EntityDTO> entityDTOs, Map<String, Player> loadedPlayers) {
         for (EntityDTO entityDTO : entityDTOs) {
@@ -174,7 +217,10 @@ public class GameSetupManager {
     }
 
     /**
-     * Loads parsed city to game
+     * Instantiates a live City domain object and attaches it to the game grid and its owner.
+     * @param cityDTO The validated data representing the city.
+     * @param tile    The grid tile where the city will be placed.
+     * @param owner   The player who controls the city.
      */
     private void spawnCity(CityDTO cityDTO, Tile tile, Player owner) {
         CityType type = CityType.valueOf(cityDTO.cityLevel);
@@ -185,7 +231,10 @@ public class GameSetupManager {
     }
 
     /**
-     * Loads parsed troop unit to game
+     * Instantiates a live TroopUnit domain object, restores its turn-state, and attaches it to the grid.
+     * @param troopDTO The validated data representing the military unit.
+     * @param tile     The grid tile where the unit will be placed.
+     * @param owner    The player who commands the unit.
      */
     private void spawnTroop(TroopUnitDTO troopDTO, Tile tile, Player owner) {
         TroopType type = TroopType.valueOf(troopDTO.entityType);

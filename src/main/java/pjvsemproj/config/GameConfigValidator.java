@@ -15,8 +15,25 @@ import java.util.stream.Collectors;
 
 import static pjvsemproj.models.game.GameConstants.*;
 
+/**
+ * Enforces the structural and logical invariants of a loaded game configuration.
+ * <p>
+ * This stateless utility acts as a strict gatekeeper before a raw {@link GameDTO}
+ * is transformed into active domain models. It guarantees that map boundaries, player
+ * ownership, entity constraints (such as valid HP ranges and non-overlapping tile logic),
+ * and overarching game states are mathematically sound.
+ * <p>
+ * By validating DTOs directly, it prevents malformed save files or corrupted network
+ * payloads from reaching the core game engine.
+ */
 public class GameConfigValidator {
 
+    /**
+     * Executes a full validation pass on the provided game configuration.
+     * @param gameDTO The data transfer object representing the entire game state.
+     * @throws InvalidGameConfigException if the configuration violates any core game rules,
+     * contains conflicting entity placements, or is null.
+     */
     public void validate(GameDTO gameDTO) {
         if (gameDTO == null) {
             throw new InvalidGameConfigException("Game configuration cannot be null.");
@@ -28,6 +45,10 @@ public class GameConfigValidator {
         validateWinnerStatus(gameDTO);
     }
 
+    /**
+     * Verifies that the map dimensions meet the absolute minimum requirements
+     * defined by the game's internal constants.
+     */
     private void validateMap(GameDTO gameDTO) {
         if (gameDTO.mapWidth < MIN_MAP_WIDTH || gameDTO.mapHeight < MIN_MAP_HEIGHT) {
             throw new InvalidGameConfigException(String.format("Map must be at least %dx%d. Provided: %dx%d",
@@ -35,6 +56,10 @@ public class GameConfigValidator {
         }
     }
 
+    /**
+     * Validates player constraints, ensuring the exact required number of players exist,
+     * their financial balances are valid, and the active turn player is correctly mapped.
+     */
     private void validatePlayers(GameDTO gameDTO) {
         if (gameDTO.players == null || gameDTO.players.size() != PLAYERS_COUNT) {
             throw new InvalidGameConfigException("Game must have exactly " + PLAYERS_COUNT + " players.");
@@ -64,6 +89,11 @@ public class GameConfigValidator {
         }
     }
 
+    /**
+     * Iterates through all map entities to ensure they possess valid coordinates,
+     * unique identifiers, and belong to recognized players. Also delegates specific
+     * overlapping logic checks based on entity type.
+     */
     private void validateEntities(GameDTO gameDTO) {
         if (gameDTO.entities == null || gameDTO.entities.isEmpty()) return;
 
@@ -114,6 +144,10 @@ public class GameConfigValidator {
         }
     }
 
+    /**
+     * Ensures city levels map to valid enum states and prevents multiple cities
+     * from overlapping on a single coordinate.
+     */
     private void validateCity(CityDTO cityDTO, String tileKey, Set<String> occupiedCityTiles) {
         try {
             CityType.valueOf(cityDTO.cityLevel);
@@ -127,6 +161,10 @@ public class GameConfigValidator {
         }
     }
 
+    /**
+     * Verifies troop states, ensuring their HP is strictly between 1 and their class maximum,
+     * and guarantees that only one troop occupies a given grid tile.
+     */
     private void validateTroop(TroopUnitDTO troopDTO, String tileKey, Set<String> occupiedTroopTiles) {
         TroopType type;
         try {
@@ -154,6 +192,10 @@ public class GameConfigValidator {
         }
     }
 
+    /**
+     * Prevents the loading of games that have already reached a terminal state.
+     * An active game requires that all participating players own at least one city.
+     */
     private void validateWinnerStatus(GameDTO gameDTO) {
         if (gameDTO.entities == null) return;
 

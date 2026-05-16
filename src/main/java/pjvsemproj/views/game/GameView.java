@@ -19,6 +19,7 @@ import java.util.function.Consumer;
 import static pjvsemproj.views.ViewConstants.GAME_SIDE_PANEL_WIDTH;
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
+// TODO Make this non scalable
 /**
  * Main game UI class.
  * Responsible for rendering the map, entities, and handling user interaction.

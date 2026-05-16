@@ -3,8 +3,22 @@ package pjvsemproj.config;
 import pjvsemproj.dto.*;
 import pjvsemproj.models.entities.troopUnits.TroopType;
 
+/**
+ * Normalizes a game configuration by injecting fallback values into missing or null fields.
+ * <p>
+ * This pre-processor prepares a raw {@link GameDTO} for strict validation. It does not enforce
+ * gameplay rules or assert enum correctness (which is strictly delegated to the validator).
+ * Instead, it repairs fragmented data structures commonly resulting from manual save file edits
+ * or network payload omissions, ensuring the resulting DTO is structurally complete enough
+ * to prevent null pointer exceptions during model hydration.
+ */
 public class GameConfigSanitizer {
 
+    /**
+     * Traverses the configuration object and applies predefined constants to any missing fields,
+     * including map dimensions, player economics, and specific entity states.
+     * @param game The configuration payload to be sanitized in-place.
+     */
     public void sanitize(GameDTO game) {
         if (game.mapWidth == null || game.mapWidth <= 0) game.mapWidth = ConfigDefaultValues.DEFAULT_MAP_WIDTH;
         if (game.mapHeight == null || game.mapHeight <= 0) game.mapHeight = ConfigDefaultValues.DEFAULT_MAP_HEIGHT;
@@ -35,7 +49,11 @@ public class GameConfigSanitizer {
                         try {
                             TroopType type = TroopType.valueOf(troop.entityType);
                             troop.hp = ConfigDefaultValues.getDefaultHp(type);
-                        } catch (IllegalArgumentException ignored) {}
+                        } catch (IllegalArgumentException ignored) {
+                            // Ignored intentionally: If the entityType is an invalid string,
+                            // we leave HP null and allow the downstream GameConfigValidator
+                            // to intercept this exception.
+                        }
                     }
 
                     if (troop.hasMovedThisTurn == null) {
