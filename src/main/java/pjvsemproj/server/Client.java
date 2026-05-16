@@ -82,7 +82,6 @@ public class Client implements Runnable {
                 String player1 = tokens[1];
                 String player2 = tokens[2];
 
-                lobbyListener.onGameStarted(player1, player2);
                 LOGGER.info("Game started: " + player1 + " vs " + player2);
                 break;
 
@@ -145,6 +144,19 @@ public class Client implements Runnable {
                 LOGGER.info("Opponent quit: " + tokens[1]);
                 return false;
 
+            case UNIT_BOUGHT:
+                if (listener != null) {
+                    listener.onUnitBought(
+                            tokens[1],
+                            tokens[2],
+                            tokens[3],
+                            Integer.parseInt(tokens[4]),
+                            Integer.parseInt(tokens[5]),
+                            tokens[6],
+                            Integer.parseInt(tokens[7])
+                    );
+                }
+                break;
             default:
                 LOGGER.warning("Unknown message: " + msg);
         }

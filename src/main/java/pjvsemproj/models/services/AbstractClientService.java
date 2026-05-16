@@ -122,8 +122,24 @@ public class AbstractClientService extends AbstractGameService implements Client
 
     @Override
     public Set<TileDTO> getAvailableTilesDTOForMovement(String unitId) {
-        if (!troopBelongsToClient(unitId)) return new HashSet<>();
-        return super.getAvailableTilesDTOForMovement(unitId);
+        TroopUnit troop = findTroopById(unitId);
+
+        System.out.println("=== MOVE DEBUG ===");
+        System.out.println("clientName = " + clientName);
+        System.out.println("troop owner = " + troop.getOwner().getName());
+        System.out.println("current player = " + turnManager.getCurrentPlayer().getName());
+        System.out.println("moved = " + troop.hasMovedThisTurn());
+
+        if (!troopBelongsToClient(unitId)) {
+            System.out.println("BLOCKED: troop does not belong to client");
+            return new HashSet<>();
+        }
+
+        Set<TileDTO> result = super.getAvailableTilesDTOForMovement(unitId);
+
+        System.out.println("move tiles count = " + result.size());
+
+        return result;
     }
 
     @Override

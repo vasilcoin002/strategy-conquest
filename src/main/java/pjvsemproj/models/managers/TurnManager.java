@@ -71,4 +71,8 @@ public class TurnManager {
     public int getTurnNumber() {
         return turnNumber;
     }
+
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
 }

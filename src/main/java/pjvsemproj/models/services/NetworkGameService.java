@@ -1,8 +1,10 @@
 package pjvsemproj.models.services;
 
 import pjvsemproj.models.entities.cities.City;
+import pjvsemproj.models.entities.troopUnits.TroopType;
 import pjvsemproj.models.entities.troopUnits.TroopUnit;
 import pjvsemproj.models.game.Game;
+import pjvsemproj.models.game.maps.Tile;
 import pjvsemproj.models.game.players.Player;
 import pjvsemproj.models.managers.utils.GridPositionHelper;
 import pjvsemproj.models.managers.utils.OwnershipHelper;
@@ -74,11 +76,15 @@ public class NetworkGameService extends AbstractClientService {
     }
 
     public void applyServerMove(String unitId, int x, int y) {
-        boolean success = super.moveUnit(unitId, x, y);
 
-        if (success) {
-            notifyBoardUpdated();
-        }
+        TroopUnit troop = findTroopById(unitId);
+        Tile targetTile = game.getMap().getTile(x, y);
+
+        GridPositionHelper.moveEntity(troop, targetTile);
+
+        troop.setHasMovedThisTurn(true);
+
+        notifyBoardUpdated();
     }
 
     public void applyServerAttack(String attackerId, String targetId, int newHp){
@@ -101,18 +107,22 @@ public class NetworkGameService extends AbstractClientService {
         notifyBoardUpdated();
     }
 
-    public void applyServerTurnStarted(String playerName){
-        System.out.println("APPLY TURN STARTED: " + playerName);
-
+    public void applyServerTurnStarted(String playerName) {
         for (Player player : game.getPlayers()) {
             if (player.getName().equals(playerName)) {
                 game.setCurrentPlayer(player);
+                turnManager.setCurrentPlayer(player);
+
+                movementManager.setCurrentPlayer(player);
+                combatManager.setCurrentPlayer(player);
+                resetTroopsForNewTurn(player);
+
                 notifyBoardUpdated();
                 return;
             }
         }
-        System.out.println("Player not found: " + playerName);
     }
+
 
     public void applyServerCityUpgrade(String cityId, String newLevel) {
         City city = findCityById(cityId);
@@ -126,5 +136,52 @@ public class NetworkGameService extends AbstractClientService {
 
     public void setLocalClientName(String playerName) {
         this.clientName = playerName;
+    }
+
+    private void resetTroopsForNewTurn(Player player) {
+        for (TroopUnit troop : player.getTroops()) {
+            troop.setHasMovedThisTurn(false);
+            troop.setHasAttackedThisTurn(false);
+        }
+    }
+
+    public void applyServerUnitBought(
+            String cityId,
+            String unitId,
+            String troopType,
+            int x,
+            int y,
+            String ownerName,
+            int newBalance
+    ) {
+        Player owner = null;
+
+        for (Player player : game.getPlayers()) {
+            if (player.getName().equals(ownerName)) {
+                owner = player;
+                break;
+            }
+        }
+
+        if (owner == null) return;
+
+        Tile tile = game.getMap().getTile(x, y);
+
+        TroopUnit troop = new TroopUnit(
+                unitId,
+                TroopType.valueOf(troopType),
+                tile,
+                true,
+                true
+        );
+
+        troop.setOwner(owner);
+
+        GridPositionHelper.placeEntity(troop, tile);
+        OwnershipHelper.addTroopUnitToPlayer(troop, owner);
+
+        owner.setBalance(newBalance);
+
+        notifyBoardUpdated();
     }
 }

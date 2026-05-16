@@ -15,4 +15,14 @@ public interface ServerEventListener {
     void onTurnStarted(String playerName);
 
     void onCityUpgraded(String cityId, String newLevel);
+
+    void onUnitBought(
+            String cityId,
+            String unitId,
+            String troopType,
+            int x,
+            int y,
+            String ownerName,
+            int newBalance
+    );
 }

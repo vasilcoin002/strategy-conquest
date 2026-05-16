@@ -144,4 +144,8 @@ public class CombatManager implements ITurnListener{
 
         return true;
     }
+
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
 }

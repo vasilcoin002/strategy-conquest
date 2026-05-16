@@ -34,4 +34,25 @@ public class NetworkGameListener implements ServerEventListener {
     public void onCityUpgraded(String cityId, String newLevel) {
         service.applyServerCityUpgrade(cityId, newLevel);
     }
+
+    @Override
+    public void onUnitBought(
+            String cityId,
+            String unitId,
+            String troopType,
+            int x,
+            int y,
+            String ownerName,
+            int newBalance
+    ) {
+        service.applyServerUnitBought(
+                cityId,
+                unitId,
+                troopType,
+                x,
+                y,
+                ownerName,
+                newBalance
+        );
+    }
 }

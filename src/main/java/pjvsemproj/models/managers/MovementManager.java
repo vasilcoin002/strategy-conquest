@@ -153,7 +153,10 @@ public class MovementManager implements ITurnListener {
     public boolean canPlayerControlTroop(TroopUnit troopUnit) {
         return troopUnit != null
                 && currentPlayer != null
-                && troopUnit.getOwner() == currentPlayer;
+                && Objects.equals(
+                troopUnit.getOwner().getName(),
+                currentPlayer.getName()
+        );
     }
 
 

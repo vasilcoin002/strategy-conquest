@@ -140,15 +140,14 @@ public class GameSession {
         }
 
         TroopUnitDTO target = (TroopUnitDTO) gameService.getEntityDTO(targetId);
-
+        if (target == null) {
+            connection1.sendToClient(Protocol.UNIT_DIED, targetId);
+            connection2.sendToClient(Protocol.UNIT_DIED, targetId);
+            return;
+        }
 
         connection1.sendToClient(Protocol.UNIT_ATTACKED, attackerId, targetId, String.valueOf(target.hp));
         connection2.sendToClient(Protocol.UNIT_ATTACKED, attackerId, targetId, String.valueOf(target.hp));
-
-        if (target.hp == 0) {
-            connection1.sendToClient(Protocol.UNIT_DIED, targetId);
-            connection2.sendToClient(Protocol.UNIT_DIED, targetId);
-        }
     }
 
     public synchronized void onUnitPurchase(Connection connection, String cityId, String troopType) {
@@ -158,12 +157,14 @@ public class GameSession {
         }
 
         PlayerDTO currentPlayer = gameService.getCurrentPlayerDTO();
+
         if (!Objects.equals(connection.getPlayerName(), currentPlayer.name)) {
             connection.sendToClient(Protocol.ERROR, "NOT_YOUR_TURN");
             return;
         }
 
         boolean success;
+
         try {
             success = gameService.buyUnit(cityId, troopType);
         } catch (Exception e) {
@@ -175,9 +176,49 @@ public class GameSession {
             connection.sendToClient(Protocol.ERROR, "ERROR_BUYING_TROOP");
             return;
         }
-        // TODO change it so both connections receive the same messages
-        connection1.sendToClient(Protocol.BUY_UNIT, String.valueOf(TroopType.valueOf(troopType)));
-        connection2.sendToClient(Protocol.UNIT_BOUGHT, String.valueOf(TroopType.valueOf(troopType)));
+
+        CityDTO city = (CityDTO) gameService.getEntityDTO(cityId);
+        TileDTO tile = gameService.getTileDTO(city.x, city.y);
+
+        TroopUnitDTO boughtUnit = null;
+
+        for (EntityDTO entity : tile.entities) {
+            if (entity instanceof TroopUnitDTO troop) {
+                if (currentPlayer.name.equals(troop.ownerName)
+                        && troopType.equals(troop.entityType)
+                        && troop.hasMovedThisTurn
+                        && troop.hasAttackedThisTurn) {
+                    boughtUnit = troop;
+                }
+            }
+        }
+
+        if (boughtUnit == null) {
+            connection.sendToClient(Protocol.ERROR, "BOUGHT_UNIT_NOT_FOUND");
+            return;
+        }
+
+        connection1.sendToClient(
+                Protocol.UNIT_BOUGHT,
+                cityId,
+                boughtUnit.id,
+                boughtUnit.entityType,
+                String.valueOf(boughtUnit.x),
+                String.valueOf(boughtUnit.y),
+                boughtUnit.ownerName,
+                String.valueOf(currentPlayer.balance)
+        );
+
+        connection2.sendToClient(
+                Protocol.UNIT_BOUGHT,
+                cityId,
+                boughtUnit.id,
+                boughtUnit.entityType,
+                String.valueOf(boughtUnit.x),
+                String.valueOf(boughtUnit.y),
+                boughtUnit.ownerName,
+                String.valueOf(currentPlayer.balance)
+        );
     }
 
     public synchronized void onCityUpgrade(Connection connection, String cityId) {
