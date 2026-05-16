@@ -80,10 +80,14 @@ public class EconomyManager implements ITurnListener {
      */
 
     public boolean buyTroopUnit(TroopType troopType, City city) {
+        return this.buyTroopUnitWithId(java.util.UUID.randomUUID().toString(), troopType, city);
+    }
+
+    public boolean buyTroopUnitWithId(String id, TroopType troopType, City city) {
         if (!canPlayerBuyTroopUnit(troopType, city, currentPlayer)) return false;
 
         currentPlayer.spendGold(troopType.getPrice());
-        TroopUnit troopUnit = new TroopUnit(troopType, city);
+        TroopUnit troopUnit = new TroopUnit(id, troopType, city);
         OwnershipHelper.addTroopUnitToPlayer(troopUnit, currentPlayer);
         GridPositionHelper.placeEntity(troopUnit, city.getTile());
         return true;

@@ -44,25 +44,25 @@ public class NetworkGameService extends AbstractClientService {
     @Override
     public boolean moveUnit(String unitId, int x, int y) {
         client.moveUnit(unitId, x, y);
-        return false;
+        return true;
     }
 
     @Override
     public boolean attack(String attackerId, String targetId) {
         client.attack(attackerId, targetId);
-        return false;
+        return true;
     }
 
     @Override
     public boolean buyUnit(String cityId, String troopType) {
         client.buyUnit(cityId, troopType);
-        return false;
+        return true;
     }
 
     @Override
     public boolean upgradeCity(String cityId) {
         client.upgradeCity(cityId);
-        return false;
+        return true;
     }
 
     @Override
@@ -148,40 +148,8 @@ public class NetworkGameService extends AbstractClientService {
     public void applyServerUnitBought(
             String cityId,
             String unitId,
-            String troopType,
-            int x,
-            int y,
-            String ownerName,
-            int newBalance
+            String troopType
     ) {
-        Player owner = null;
-
-        for (Player player : game.getPlayers()) {
-            if (player.getName().equals(ownerName)) {
-                owner = player;
-                break;
-            }
-        }
-
-        if (owner == null) return;
-
-        Tile tile = game.getMap().getTile(x, y);
-
-        TroopUnit troop = new TroopUnit(
-                unitId,
-                TroopType.valueOf(troopType),
-                tile,
-                true,
-                true
-        );
-
-        troop.setOwner(owner);
-
-        GridPositionHelper.placeEntity(troop, tile);
-        OwnershipHelper.addTroopUnitToPlayer(troop, owner);
-
-        owner.setBalance(newBalance);
-
-        notifyBoardUpdated();
+        super.buyUnitWithId(unitId, cityId, troopType);
     }
 }

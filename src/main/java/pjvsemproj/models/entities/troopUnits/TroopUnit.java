@@ -26,11 +26,15 @@ public class TroopUnit extends DamageableEntity implements Movable, IDamager, Ow
     private boolean hasAttackedThisTurn;
 
     public TroopUnit(TroopType troopType, City city) {
+        this(java.util.UUID.randomUUID().toString(), troopType, city);
+    }
+
+    public TroopUnit(String id, TroopType troopType, City city) {
         // hasMovedThisTurn = false => player can spawn many units
         // in one city per round
         // hasAttackedThisTurn = false => player can spawn and unexpectedly
         // attack enemies
-        this(troopType, city.getTile(), true, true);
+        this(id, troopType, city.getTile(), true, true);
     }
 
     public TroopUnit(TroopType troopType, Tile tile,

@@ -90,6 +90,27 @@ public class AbstractGameService implements CoreGameService {
         return economyManager.buyTroopUnit(type, city);
     }
 
+    public boolean buyUnitWithId(String unitId, String cityId, String troopType) {
+
+        boolean idIsUnique = false;
+        try {
+            findTroopById(unitId);
+        } catch (Exception e) {
+            try {
+                findCityById(unitId);
+            } catch (Exception ex) {
+                idIsUnique = true;
+            }
+        }
+        if (!idIsUnique) {
+            return false;
+        }
+
+        City city = findCityById(cityId);
+        TroopType type = TroopType.valueOf(troopType);
+        return economyManager.buyTroopUnitWithId(unitId, type, city);
+    }
+
     @Override
     public boolean upgradeCity(String cityId) {
         City city = findCityById(cityId);

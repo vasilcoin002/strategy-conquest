@@ -149,11 +149,7 @@ public class Client implements Runnable {
                     listener.onUnitBought(
                             tokens[1],
                             tokens[2],
-                            tokens[3],
-                            Integer.parseInt(tokens[4]),
-                            Integer.parseInt(tokens[5]),
-                            tokens[6],
-                            Integer.parseInt(tokens[7])
+                            tokens[3]
                     );
                 }
                 break;

@@ -19,10 +19,6 @@ public interface ServerEventListener {
     void onUnitBought(
             String cityId,
             String unitId,
-            String troopType,
-            int x,
-            int y,
-            String ownerName,
-            int newBalance
+            String troopType
     );
 }

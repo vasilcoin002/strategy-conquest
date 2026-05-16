@@ -46,6 +46,7 @@ public class GameSetupManager {
 
         TroopUnit p1StartUnit = new TroopUnit(TroopType.Militia, p1City);
         p1StartUnit.setHasMovedThisTurn(false);
+        p1StartUnit.setHasAttackedThisTurn(false);
         OwnershipHelper.addTroopUnitToPlayer(p1StartUnit, p1);
         GridPositionHelper.placeEntity(p1StartUnit, p1CityTile);
 
@@ -57,6 +58,7 @@ public class GameSetupManager {
 
         TroopUnit p2StartUnit = new TroopUnit(TroopType.Militia, p2City);
         p2StartUnit.setHasMovedThisTurn(false);
+        p2StartUnit.setHasAttackedThisTurn(false);
         OwnershipHelper.addTroopUnitToPlayer(p2StartUnit, p2);
         GridPositionHelper.placeEntity(p2StartUnit, p2CityTile);
 

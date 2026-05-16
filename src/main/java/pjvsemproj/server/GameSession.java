@@ -202,22 +202,14 @@ public class GameSession {
                 Protocol.UNIT_BOUGHT,
                 cityId,
                 boughtUnit.id,
-                boughtUnit.entityType,
-                String.valueOf(boughtUnit.x),
-                String.valueOf(boughtUnit.y),
-                boughtUnit.ownerName,
-                String.valueOf(currentPlayer.balance)
+                boughtUnit.entityType
         );
 
         connection2.sendToClient(
                 Protocol.UNIT_BOUGHT,
                 cityId,
                 boughtUnit.id,
-                boughtUnit.entityType,
-                String.valueOf(boughtUnit.x),
-                String.valueOf(boughtUnit.y),
-                boughtUnit.ownerName,
-                String.valueOf(currentPlayer.balance)
+                boughtUnit.entityType
         );
     }
 

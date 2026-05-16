@@ -7,7 +7,7 @@ public class MultiplayerLobbyController {
     private final MultiplayerLobbyView view;
     private final SceneDirector director;
 
-    private static final int DEFAULT_PORT = 5000;
+    private static final int DEFAULT_PORT = 4444;
 
     public MultiplayerLobbyController(MultiplayerLobbyView view, SceneDirector director) {
         this.view = view;

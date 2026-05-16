@@ -39,20 +39,12 @@ public class NetworkGameListener implements ServerEventListener {
     public void onUnitBought(
             String cityId,
             String unitId,
-            String troopType,
-            int x,
-            int y,
-            String ownerName,
-            int newBalance
+            String troopType
     ) {
         service.applyServerUnitBought(
                 cityId,
                 unitId,
-                troopType,
-                x,
-                y,
-                ownerName,
-                newBalance
+                troopType
         );
     }
 }

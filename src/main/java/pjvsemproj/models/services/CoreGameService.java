@@ -20,6 +20,8 @@ public interface CoreGameService {
     boolean attack(String attackerId, String targetId);
 
     boolean buyUnit(String cityId, String troopType);
+    boolean buyUnitWithId(String unitId, String cityId, String troopType);
+
     boolean upgradeCity(String cityId);
 
     void endTurn();

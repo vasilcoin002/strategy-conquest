@@ -104,7 +104,14 @@ public class AbstractClientService extends AbstractGameService implements Client
     public boolean buyUnit(String cityId, String troopType) {
         super.buyUnit(cityId, troopType);
         notifyBoardUpdated();
-        return false;
+        return true;
+    }
+
+    @Override
+    public boolean buyUnitWithId(String unitId, String cityId, String troopType) {
+        super.buyUnitWithId(unitId, cityId, troopType);
+        notifyBoardUpdated();
+        return true;
     }
 
     @Override

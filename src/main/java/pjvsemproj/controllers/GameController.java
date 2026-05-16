@@ -44,18 +44,12 @@ public class GameController {
     }
 
     public void initialize() {
-        gameService.setOnBoardUpdated(() -> {
-            // We MUST use Platform.runLater because the Service might
-            // trigger this from a background thread
-            Platform.runLater(() -> {
-                view.setNextTurnButtonDisabled(!gameService.isMyTurn());
-                view.redrawMap(gameService.getGameDTO());
-                view.updatePlayersBalance(gameService.getPlayersDTO());
-                view.updateCurrentPlayer(gameService.getCurrentPlayerDTO().name);
+        // We must use Platform.runLater because the Service might
+        // trigger this from a background thread
+        Platform.runLater(this::syncGameStateToUI);
 
-                // Lock or unlock the button depending on if it's our turn now
-                setSelectedEntityId(selectedEntityId);
-            });
+        gameService.setOnBoardUpdated(() -> {
+            Platform.runLater(this::syncGameStateToUI);
         });
 
         gameService.setOnGameOver(winnerName -> {
@@ -66,6 +60,19 @@ public class GameController {
         });
 
         view.setOnNextTurnAction(gameService::endTurn);
+    }
+
+    /**
+     * Centralizes UI updates to ensure the view perfectly reflects the current GameState.
+     */
+    private void syncGameStateToUI() {
+        view.setNextTurnButtonDisabled(!gameService.isMyTurn());
+        view.redrawMap(gameService.getGameDTO());
+        view.updatePlayersBalance(gameService.getPlayersDTO());
+        view.updateCurrentPlayer(gameService.getCurrentPlayerDTO().name);
+
+        // Lock or unlock the selected entity depending on whose turn it is
+        setSelectedEntityId(selectedEntityId);
     }
 
     private void handleGameAreaClick(int viewX, int viewY) {

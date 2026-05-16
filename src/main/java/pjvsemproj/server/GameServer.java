@@ -125,7 +125,7 @@ public class GameServer implements Runnable {
 
             // 4. Build the Game State
             GameSetupManager setupManager = new GameSetupManager();
-            GameMap map = new GameMap(15, 10);
+            GameMap map = new GameMap(5, 5);
             Game game = setupManager.setupTestMatch(map, p1, p2);
 
             // 5. Create the Referee (Service)

@@ -174,7 +174,7 @@ public class SceneDirector {
         Player p2 = new HumanPlayer(player2Name, 100);
 
         GameSetupManager setupManager = new GameSetupManager();
-        GameMap map = new GameMap(15, 10);
+        GameMap map = new GameMap(5, 5);
         Game game = setupManager.setupTestMatch(map, p1, p2);
 
         NetworkGameService gameService =
