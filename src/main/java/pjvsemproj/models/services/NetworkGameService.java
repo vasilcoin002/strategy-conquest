@@ -1,20 +1,17 @@
 package pjvsemproj.models.services;
 
 import pjvsemproj.models.entities.cities.City;
-import pjvsemproj.models.entities.troopUnits.TroopType;
 import pjvsemproj.models.entities.troopUnits.TroopUnit;
 import pjvsemproj.models.game.Game;
-import pjvsemproj.models.game.maps.Tile;
 import pjvsemproj.models.game.players.Player;
 import pjvsemproj.models.managers.utils.GridPositionHelper;
 import pjvsemproj.models.managers.utils.OwnershipHelper;
 import pjvsemproj.server.Client;
 import pjvsemproj.server.NetworkGameListener;
 import pjvsemproj.server.Protocol;
-import pjvsemproj.server.ServerEventListener;
 
-// TODO change methods which send data to server to also check server response to change local state
-//  for example moveUnit(x, y) should check if there is a positive response from server before moving it locally
+// TODO add enemy wins when I close window
+// TODO implement upgrade city
 /**
  * Network-based implementation of GameService.
  * Sends commands to the server instead of executing them locally.
@@ -34,57 +31,62 @@ public class NetworkGameService extends AbstractClientService {
     @Override
     public void login(String playerName) {
         client.sendToServer(Protocol.LOGIN, playerName);
+        super.login(playerName);
     }
 
     @Override
     public void ready() {
         client.ready();
+        super.ready();
     }
 
     @Override
     public boolean moveUnit(String unitId, int x, int y) {
         client.moveUnit(unitId, x, y);
-        return true;
+        super.moveUnit(unitId, x, y);
+        return false;
     }
 
     @Override
     public boolean attack(String attackerId, String targetId) {
         client.attack(attackerId, targetId);
-        return true;
+        super.attack(attackerId, targetId);
+        return false;
     }
 
     @Override
     public boolean buyUnit(String cityId, String troopType) {
         client.buyUnit(cityId, troopType);
-        return true;
+        super.buyUnit(cityId, troopType);
+        return false;
     }
 
     @Override
     public boolean upgradeCity(String cityId) {
         client.upgradeCity(cityId);
-        return true;
+        super.upgradeCity(cityId);
+        return false;
     }
 
     @Override
     public void endTurn() {
+        // Send the request to the server.
+        // DO NOT call super.endTurn() here! Let the server confirm the turn change first.
         client.endTurn();
     }
 
     @Override
     public void quit() {
         client.quit();
+        super.quit();
     }
 
     public void applyServerMove(String unitId, int x, int y) {
+        boolean success = super.moveUnit(unitId, x, y);
 
-        TroopUnit troop = findTroopById(unitId);
-        Tile targetTile = game.getMap().getTile(x, y);
-
-        GridPositionHelper.moveEntity(troop, targetTile);
-
-        troop.setHasMovedThisTurn(true);
-
-        notifyBoardUpdated();
+        if (success) {
+            notifyBoardUpdated();
+        }
     }
 
     public void applyServerAttack(String attackerId, String targetId, int newHp){
@@ -107,22 +109,21 @@ public class NetworkGameService extends AbstractClientService {
         notifyBoardUpdated();
     }
 
-    public void applyServerTurnStarted(String playerName) {
+    public void applyServerTurnStarted(String playerName){
         for (Player player : game.getPlayers()) {
             if (player.getName().equals(playerName)) {
-                game.setCurrentPlayer(player);
-                turnManager.setCurrentPlayer(player);
 
-                movementManager.setCurrentPlayer(player);
-                combatManager.setCurrentPlayer(player);
-                resetTroopsForNewTurn(player);
+                // Synchronize the local TurnManager with the Server's state
+                if (!game.getCurrentPlayer().getName().equals(playerName)) {
+                    super.endTurn(); // This properly resets troop movement flags locally!
+                }
 
+                turnManager.startTurn(player);
                 notifyBoardUpdated();
                 return;
             }
         }
     }
-
 
     public void applyServerCityUpgrade(String cityId, String newLevel) {
         City city = findCityById(cityId);
@@ -134,22 +135,16 @@ public class NetworkGameService extends AbstractClientService {
         notifyBoardUpdated();
     }
 
-    public void setLocalClientName(String playerName) {
-        this.clientName = playerName;
-    }
-
-    private void resetTroopsForNewTurn(Player player) {
-        for (TroopUnit troop : player.getTroops()) {
-            troop.setHasMovedThisTurn(false);
-            troop.setHasAttackedThisTurn(false);
-        }
-    }
-
     public void applyServerUnitBought(
             String cityId,
             String unitId,
             String troopType
     ) {
         super.buyUnitWithId(unitId, cityId, troopType);
+    }
+
+
+    public void setLocalClientName(String playerName) {
+        this.clientName = playerName;
     }
 }

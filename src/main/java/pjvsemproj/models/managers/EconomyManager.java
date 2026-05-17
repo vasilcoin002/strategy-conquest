@@ -83,6 +83,9 @@ public class EconomyManager implements ITurnListener {
         return this.buyTroopUnitWithId(java.util.UUID.randomUUID().toString(), troopType, city);
     }
 
+    /**
+     * Attempts to buy a troop unit with provided id in a city.
+     */
     public boolean buyTroopUnitWithId(String id, TroopType troopType, City city) {
         if (!canPlayerBuyTroopUnit(troopType, city, currentPlayer)) return false;
 

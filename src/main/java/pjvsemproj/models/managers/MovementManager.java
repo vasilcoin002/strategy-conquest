@@ -217,10 +217,6 @@ public class MovementManager implements ITurnListener {
         return currentPlayer;
     }
 
-    public void setCurrentPlayer(Player currentPlayer) {
-        this.currentPlayer = currentPlayer;
-    }
-
     public GameMap getGameMap() {
         return gameMap;
     }
