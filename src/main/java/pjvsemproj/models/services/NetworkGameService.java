@@ -43,29 +43,25 @@ public class NetworkGameService extends AbstractClientService {
     @Override
     public boolean moveUnit(String unitId, int x, int y) {
         client.moveUnit(unitId, x, y);
-        super.moveUnit(unitId, x, y);
-        return false;
+        return true;
     }
 
     @Override
     public boolean attack(String attackerId, String targetId) {
         client.attack(attackerId, targetId);
-        super.attack(attackerId, targetId);
-        return false;
+        return true;
     }
 
     @Override
     public boolean buyUnit(String cityId, String troopType) {
         client.buyUnit(cityId, troopType);
-        super.buyUnit(cityId, troopType);
-        return false;
+        return true;
     }
 
     @Override
     public boolean upgradeCity(String cityId) {
         client.upgradeCity(cityId);
-        super.upgradeCity(cityId);
-        return false;
+        return true;
     }
 
     @Override
@@ -78,26 +74,15 @@ public class NetworkGameService extends AbstractClientService {
     @Override
     public void quit() {
         client.quit();
-        super.quit();
+//        super.quit();
     }
 
     public void applyServerMove(String unitId, int x, int y) {
-        boolean success = super.moveUnit(unitId, x, y);
-
-        if (success) {
-            notifyBoardUpdated();
-        }
+        super.moveUnit(unitId, x, y);
     }
 
     public void applyServerAttack(String attackerId, String targetId, int newHp){
-        TroopUnit target = findTroopById(targetId);
-        target.setHealth(newHp);
-
-        TroopUnit attacker = findTroopById(attackerId);
-        attacker.setHasAttackedThisTurn(true);
-        attacker.setHasMovedThisTurn(true);
-
-        notifyBoardUpdated();
+        super.attack(attackerId, targetId, newHp);
     }
 
     public void applyServerUnitDeath(String unitId) {
@@ -110,29 +95,11 @@ public class NetworkGameService extends AbstractClientService {
     }
 
     public void applyServerTurnStarted(String playerName){
-        for (Player player : game.getPlayers()) {
-            if (player.getName().equals(playerName)) {
-
-                // Synchronize the local TurnManager with the Server's state
-                if (!game.getCurrentPlayer().getName().equals(playerName)) {
-                    super.endTurn(); // This properly resets troop movement flags locally!
-                }
-
-                turnManager.startTurn(player);
-                notifyBoardUpdated();
-                return;
-            }
-        }
+        super.endTurn();
     }
 
-    public void applyServerCityUpgrade(String cityId, String newLevel) {
-        City city = findCityById(cityId);
-
-        while (!city.getCityType().name().equals(newLevel) && city.canBeUpgraded()) {
-            city.upgrade();
-        }
-
-        notifyBoardUpdated();
+    public void applyServerCityUpgrade(String cityId) {
+        super.upgradeCity(cityId);
     }
 
     public void applyServerUnitBought(
@@ -143,8 +110,24 @@ public class NetworkGameService extends AbstractClientService {
         super.buyUnitWithId(unitId, cityId, troopType);
     }
 
+    public void applyServerGameOver(String winnerName) {
+        System.out.println("Service triggering UI for " + winnerName);
 
-    public void setLocalClientName(String playerName) {
-        this.clientName = playerName;
+        // Use the exact variable name that AbstractGameService/CoreGameService uses.
+        // It might be 'onGameOver', 'onGameOverListener', or a protected method.
+        if (this.onGameOver != null) {
+            this.onGameOver.accept(winnerName);
+        } else {
+            // IF YOU SEE THIS PRINT, GO BACK TO STEP 1.
+            System.err.println("CRITICAL UI ERROR: The onGameOver listener is NULL. GameController did not connect it!");
+        }
+    }
+
+    /**
+     * Explicitly tells the server that the game was naturally won,
+     * prompting the server to shut down.
+     */
+    public void notifyServerOfWin(String winnerName) {
+        client.sendToServer(Protocol.GAME_OVER, winnerName);
     }
 }

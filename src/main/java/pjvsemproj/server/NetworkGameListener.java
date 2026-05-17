@@ -31,8 +31,8 @@ public class NetworkGameListener implements ServerEventListener {
     }
 
     @Override
-    public void onCityUpgraded(String cityId, String newLevel) {
-        service.applyServerCityUpgrade(cityId, newLevel);
+    public void onCityUpgraded(String cityId) {
+        service.applyServerCityUpgrade(cityId);
     }
 
     @Override
@@ -46,5 +46,10 @@ public class NetworkGameListener implements ServerEventListener {
                 unitId,
                 troopType
         );
+    }
+
+    @Override
+    public void onGameOver(String winnerName) {
+        service.applyServerGameOver(winnerName);
     }
 }

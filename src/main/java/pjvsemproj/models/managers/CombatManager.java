@@ -119,29 +119,56 @@ public class CombatManager implements ITurnListener{
     }
 
     /**
-     * Performs attack using TroopUnit logic.
+     * Performs a local attack calculation.
      */
     public boolean attackTroop(TroopUnit attacker, TroopUnit target) {
-        if (attacker.hasAttackedThisTurn()){
+        if (!canAttack(attacker, target)) {
             return false;
         }
-        if (attacker == target){
-            return false;
-        }
-        if (!getAttackableTroops(attacker).contains(target)) {
-            return false;
-        }
-        int damage = attacker.calculateDamage();
-        target.takeDamage(damage);
 
+        target.takeDamage(attacker.calculateDamage());
+        finalizeAttack(attacker, target);
+
+        return true;
+    }
+
+    /**
+     * Synchronizes an attack state using an explicit HP value (typically from a server).
+     */
+    public boolean attackTroop(TroopUnit attacker, TroopUnit target, int newHp) {
+        if (!canAttack(attacker, target)) {
+            return false;
+        }
+
+        target.setHealth(newHp);
+        finalizeAttack(attacker, target);
+
+        return true;
+    }
+
+    /**
+     * Validates if the attack is legally allowed by game rules.
+     */
+    private boolean canAttack(TroopUnit attacker, TroopUnit target) {
+        if (attacker.hasAttackedThisTurn()) {
+            return false;
+        }
+        if (attacker == target) {
+            return false;
+        }
+        return getAttackableTroops(attacker).contains(target);
+    }
+
+    /**
+     * Handles the cascading consequences of an attack (death, state flags).
+     */
+    private void finalizeAttack(TroopUnit attacker, TroopUnit target) {
         if (target.isDead()) {
             OwnershipHelper.removeTroopUnitFromPlayer(target);
             GridPositionHelper.removeFromBoard(target);
         }
-        attacker.setHasAttackedThisTurn(true);
-        // added to forbid moving after attack
-        attacker.setHasMovedThisTurn(true);
 
-        return true;
+        attacker.setHasAttackedThisTurn(true);
+        attacker.setHasMovedThisTurn(true); // Forbids moving after attack
     }
 }

@@ -11,4 +11,5 @@ public interface ClientGameEngine extends CoreGameService {
 
     void setOnGameOver(Consumer<String> callback);
     void setOnBoardUpdated(Runnable callback);
+    void setLocalClientName(String playerName);
 }

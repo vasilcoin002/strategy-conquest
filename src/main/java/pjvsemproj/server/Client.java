@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 /**
  * Client-side networking class.
- *
+ * <p>
  * Sends commands to the server and processes responses.
  */
 public class Client implements Runnable {
@@ -30,12 +30,13 @@ public class Client implements Runnable {
     private Socket socket;
     private BufferedReader in;
     private PrintWriter out;
-
+    private boolean running;
 
     public Client(String host, int port, String playerName) {
         this.host = host;
         this.port = port;
         this.playerName = playerName;
+        this.running = false;
     }
 
     @Override
@@ -46,13 +47,19 @@ public class Client implements Runnable {
             out = new PrintWriter(socket.getOutputStream(), true);
             login(playerName);
             LOGGER.info("LOGIN sent");
-            boolean running = true;
+            running = true;
             while(running){
-                String msg = in.readLine();
-                LOGGER.log(Level.INFO, "Client received: >>>{0}<<<", msg);
-                if (msg != null){
-                    processIncomingMessage(msg);
-                } else {
+                try {
+                    String msg = in.readLine();
+                    if (msg != null){
+                        System.out.println("CLIENT DEBUG: Heard -> " + msg);
+                        processIncomingMessage(msg);
+                    } else {
+                        running = false;
+                    }
+                } catch (Exception e) {
+                    System.err.println("CLIENT LISTENER CRASHED!");
+                    e.printStackTrace();
                     running = false;
                 }
             }
@@ -83,6 +90,15 @@ public class Client implements Runnable {
                 String player2 = tokens[2];
 
                 LOGGER.info("Game started: " + player1 + " vs " + player2);
+                break;
+
+            case GAME_OVER:
+                System.out.println("Client received GAME_OVER for " + tokens[1]);
+                String winnerName = tokens[1];
+                if (listener != null) {
+                    listener.onGameOver(winnerName);
+                }
+                running = false; // Stop the client loop since the game is over
                 break;
 
             case GAME_STATE:
@@ -132,12 +148,11 @@ public class Client implements Runnable {
 
             case CITY_UPGRADED:
                 String cityId = tokens[1];
-                String newLevel = tokens[2];
                 if (listener != null) {
-                    listener.onCityUpgraded(cityId, newLevel);
+                    listener.onCityUpgraded(cityId);
                 }
 
-                LOGGER.info("City upgraded: " + cityId + " -> " + newLevel);
+                LOGGER.info("City upgraded: " + cityId);
                 break;
 
             case QUIT:

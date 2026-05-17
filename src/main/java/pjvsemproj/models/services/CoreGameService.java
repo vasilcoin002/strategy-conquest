@@ -18,6 +18,7 @@ public interface CoreGameService {
     boolean moveUnit(String unitId, int x, int y);
 
     boolean attack(String attackerId, String targetId);
+    boolean attack(String attackerId, String targetId, int newHp);
 
     boolean buyUnit(String cityId, String troopType);
     boolean buyUnitWithId(String unitId, String cityId, String troopType);

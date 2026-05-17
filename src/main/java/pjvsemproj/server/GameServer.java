@@ -32,6 +32,7 @@ public class GameServer implements Runnable {
     private final Map<String, Connection> connectionsByName = new HashMap<>();
     private final List<GameSession> sessions = new ArrayList<>();
     private static final Logger LOGGER = Logger.getLogger(GameServer.class.getName());
+    private boolean running;
 
     public GameServer(int port) {
         this.PORT_NUMBER = port;
@@ -41,7 +42,8 @@ public class GameServer implements Runnable {
     public void run() {
         try {
             serverSocket = new ServerSocket(PORT_NUMBER);
-            while (true) {
+            running = true;
+            while (running) {
                 socket = serverSocket.accept();
                 Connection connection = new Connection(this, socket);
 
@@ -82,27 +84,23 @@ public class GameServer implements Runnable {
         }
     }
 
+    // Make sure you have a boolean flag for your loop, e.g., private volatile boolean running = true;
+
     public synchronized void stopServer() {
-        LOGGER.info("Stopping server...");
-
-        for (GameSession session : new ArrayList<>(sessions)) {
-            removeSession(session);
-        }
-
-        for (Connection connection : new ArrayList<>(connectionsByName.values())) {
-            connection.quit();
-        }
-        connectionsByName.clear();
-
+        running = false;
         try {
             if (serverSocket != null && !serverSocket.isClosed()) {
-                serverSocket.close();
+                serverSocket.close(); // This immediately interrupts serverSocket.accept()
+                System.out.println("Server socket closed gracefully.");
             }
         } catch (IOException e) {
-            LOGGER.severe("Error closing server socket: " + e.getMessage());
+            System.err.println("Error closing server socket: " + e.getMessage());
         }
 
-        LOGGER.info("Server stopped.");
+        for (GameSession session : sessions) {
+            session.terminate();
+        }
+        sessions.clear();
     }
 
     public synchronized void tryAssignToSession() {

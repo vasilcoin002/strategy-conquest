@@ -41,8 +41,12 @@ public class ConquestManager implements ITurnListener {
         if (troopUnit.getOwner() == currentPlayer) {
             OwnershipHelper.transferCity(city, troopUnit.getOwner());
         }
+
         if (winnerExists()) {
-            announceWinner(currentPlayer);
+            Player actualWinner = getWinner();
+            if (actualWinner != null) {
+                announceWinner(actualWinner);
+            }
         }
     }
 
@@ -56,6 +60,22 @@ public class ConquestManager implements ITurnListener {
 
     public void addWinListener(IWinListener listener) {
         listeners.add(listener);
+    }
+
+    /**
+     * Determines the winner of the game.
+     * @return The winning Player, or null if the game is still ongoing or ends in a total draw.
+     */
+    public Player getWinner() {
+        if (!winnerExists()) {
+            return null;
+        }
+
+        // Return the first player found that still owns at least one city
+        return players.stream()
+                .filter(player -> !player.getCities().isEmpty())
+                .findFirst()
+                .orElse(null);
     }
 
     public void announceWinner(Player winner) {

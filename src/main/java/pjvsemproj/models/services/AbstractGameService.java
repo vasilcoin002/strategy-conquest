@@ -10,6 +10,7 @@ import pjvsemproj.models.game.players.Player;
 import pjvsemproj.models.managers.*;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class AbstractGameService implements CoreGameService {
@@ -21,6 +22,7 @@ public class AbstractGameService implements CoreGameService {
     protected final EconomyManager economyManager;
     protected final TurnManager turnManager;
     protected final ConquestManager conquestManager;
+    protected Consumer<String> onGameOver;
 
     public AbstractGameService(Game game) {
         this.game = game;
@@ -74,12 +76,15 @@ public class AbstractGameService implements CoreGameService {
         TroopUnit attacker = findTroopById(attackerId);
         TroopUnit target = findTroopById(targetId);
 
-        Set<TroopUnit> attackableTroops = combatManager.getAttackableTroops(attacker);
-
-        if (!attackableTroops.contains(target)) {
-            return false;
-        }
         return combatManager.attackTroop(attacker, target);
+    }
+
+    @Override
+    public boolean attack(String attackerId, String targetId, int newHp) {
+        TroopUnit attacker = findTroopById(attackerId);
+        TroopUnit target = findTroopById(targetId);
+
+        return combatManager.attackTroop(attacker, target, newHp);
     }
 
     @Override
@@ -211,5 +216,11 @@ public class AbstractGameService implements CoreGameService {
         return availableTiles.stream()
                 .map(TileDTO::new)
                 .collect(Collectors.toSet());
+    }
+
+    protected void notifyGameOver(String winnerName) {
+        if (onGameOver != null) {
+            onGameOver.accept(winnerName);
+        }
     }
 }

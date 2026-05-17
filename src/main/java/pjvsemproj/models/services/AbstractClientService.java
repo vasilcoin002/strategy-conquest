@@ -90,14 +90,21 @@ public class AbstractClientService extends AbstractGameService implements Client
     public boolean moveUnit(String unitId, int x, int y) {
         super.moveUnit(unitId, x, y);
         notifyBoardUpdated();
-        return false;
+        return true;
     }
 
     @Override
     public boolean attack(String attackerId, String targetId) {
         super.attack(attackerId, targetId);
         notifyBoardUpdated();
-        return false;
+        return true;
+    }
+
+    @Override
+    public boolean attack(String attackerId, String targetId, int newHp) {
+        super.attack(attackerId, targetId, newHp);
+        notifyBoardUpdated();
+        return true;
     }
 
     @Override
@@ -118,7 +125,7 @@ public class AbstractClientService extends AbstractGameService implements Client
     public boolean upgradeCity(String cityId) {
         super.upgradeCity(cityId);
         notifyBoardUpdated();
-        return false;
+        return true;
     }
 
     @Override
@@ -161,5 +168,9 @@ public class AbstractClientService extends AbstractGameService implements Client
 
     protected Set<TileDTO> getUnrestrictedMovementTiles(String unitId) {
         return super.getAvailableTilesDTOForMovement(unitId);
+    }
+
+    public void setLocalClientName(String playerName) {
+        this.clientName = playerName;
     }
 }

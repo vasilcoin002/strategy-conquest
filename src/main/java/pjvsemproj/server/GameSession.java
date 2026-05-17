@@ -238,11 +238,8 @@ public class GameSession {
             return;
         }
 
-        CityDTO city = (CityDTO) gameService.getEntityDTO(cityId);
-
-        // TODO change it so both connections receive the same messages
-        connection1.sendToClient(Protocol.UPGRADE_CITY, cityId, city.cityLevel, String.valueOf(currentPlayer.balance));
-        connection2.sendToClient(Protocol.CITY_UPGRADED, cityId, city.cityLevel);
+        connection1.sendToClient(Protocol.CITY_UPGRADED, cityId);
+        connection2.sendToClient(Protocol.CITY_UPGRADED, cityId);
     }
 
     public synchronized void onEndTurn(Connection connection) {
@@ -265,37 +262,29 @@ public class GameSession {
     }
 
     public synchronized void onPlayerQuit(Connection connection) {
-        Connection otherConnection;
-        if (connection == connection1) {
-            otherConnection = connection2;
-        } else {
-            otherConnection = connection1;
-        }
-
-        if (otherConnection != null) {
-            otherConnection.sendToClient(Protocol.QUIT);
-        }
-
-        gameServer.removeSession(this);
+        System.out.println("Server sending GAME_OVER to remaining player");
+        endGameForRemainingPlayer(connection);
     }
 
     public synchronized void onPlayerDisconnect(Connection connection) {
-        String disconnectedPlayerName = connection.getPlayerName();
-        Connection otherConnection;
+        endGameForRemainingPlayer(connection);
+    }
 
-        if (connection == connection1) {
-            otherConnection = connection2;
-        } else {
-            otherConnection = connection1;
-        }
-        if (otherConnection != null) {
-            otherConnection.sendToClient(
-                    Protocol.QUIT,
-                    disconnectedPlayerName != null ? disconnectedPlayerName : "UNKNOWN"
-            );
+    public synchronized void terminate() {
+        if (connection1 != null) connection1.closeConnection();
+        if (connection2 != null) connection2.closeConnection();
+    }
+
+    private void endGameForRemainingPlayer(Connection connectionThatLeft) {
+        Connection remainingConnection = (connectionThatLeft == connection1) ? connection2 : connection1;
+
+        if (remainingConnection != null) {
+            String winnerName = remainingConnection.getPlayerName();
+            remainingConnection.sendToClient(Protocol.GAME_OVER, winnerName);
         }
 
         gameServer.removeSession(this);
+        gameServer.stopServer();
     }
 
     public Connection getConnection1() {
