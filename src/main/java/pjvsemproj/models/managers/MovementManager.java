@@ -25,23 +25,12 @@ public class MovementManager implements ITurnListener {
     private final GameMap gameMap;
     private final ConquestManager conquestManager;
 
-    /**
-     * Constructs a MovementManager.
-     *
-     * @param gameMap         the active game map
-     * @param currentPlayer   the player whose turn is initially active
-     * @param conquestManager reference to handle city takeovers triggered by movement
-     */
     public MovementManager(GameMap gameMap, Player currentPlayer, ConquestManager conquestManager) {
         this.currentPlayer = currentPlayer;
         this.gameMap = gameMap;
         this.conquestManager = conquestManager;
     }
 
-    /**
-     * Restores movement points for all troops belonging to the active player.
-     * @param activePlayer the player whose turn has just started
-     */
     @Override
     public void onTurnStart(Player activePlayer) {
         currentPlayer = activePlayer;
@@ -51,22 +40,21 @@ public class MovementManager implements ITurnListener {
     }
 
     @Override
-    public void onTurnEnd(Player endingPlayer) {
+    public void onTurnEnd(Player endingPlayer) {}
 
-    }
 
     /**
      * Finds all tiles that the given troop unit can reach in the current turn
      * using the Breadth-First Search (BFS) algorithm.
-     * <p>
+     *
      * BFS explores the map level by level, starting from the unit's current position.
      * Each step represents moving to a neighboring tile, increasing the distance by 1.
-     * <p>
+     *
      * The algorithm ensures:
      * - Only tiles within the unit's movement range are considered
      * - Each tile is visited at most once with the shortest distance
      * - Movement rules are respected (e.g., cannot move onto a tile occupied by another unit)
-     * <p>
+     *
      * A queue is used to process tiles in order of increasing distance (FIFO),
      * which guarantees correct distance-based expansion.
      *
@@ -122,14 +110,9 @@ public class MovementManager implements ITurnListener {
         return reachableTiles;
     }
 
+
     /**
      * Moves a troop unit to the target tile if movement is valid.
-     * Automatically exhausts the unit's movement for the turn and triggers
-     * a conquest check if the target tile contains an enemy city.
-     *
-     * @param troopUnit  the unit attempting to move
-     * @param targetTile the destination tile
-     * @return {@code true} if the movement was successfully executed
      */
     public boolean moveTroopUnit(TroopUnit troopUnit, Tile targetTile) {
         if (troopUnit == null || targetTile == null) {
@@ -163,23 +146,22 @@ public class MovementManager implements ITurnListener {
         return moved;
     }
 
+
     /**
      * Checks whether the current player can control the given troop unit.
-     *
-     * @param troopUnit the unit to verify
-     * @return {@code true} if the unit is owned by the active player
      */
     public boolean canPlayerControlTroop(TroopUnit troopUnit) {
         return troopUnit != null
                 && currentPlayer != null
-                && troopUnit.getOwner() == currentPlayer;
+                && Objects.equals(
+                troopUnit.getOwner().getName(),
+                currentPlayer.getName()
+        );
     }
+
 
     /**
      * Returns all valid neighboring tiles (4-directional).
-     *
-     * @param tile the origin tile
-     * @return a list of adjacent tiles
      */
     private List<Tile> getNeighbors(Tile tile) {
         List<Tile> neighbors = new ArrayList<>();
@@ -195,13 +177,9 @@ public class MovementManager implements ITurnListener {
         return neighbors;
     }
 
+
     /**
      * Checks whether a unit can move through or enter a tile.
-     *
-     * @param troopUnit the moving unit
-     * @param tile      the target tile
-     * @param startTile the tile where the unit started
-     * @return {@code true} if the tile is passable
      */
     private boolean canMoveThroughOrToTile(TroopUnit troopUnit, Tile tile, Tile startTile) {
         if (tile == null) {
@@ -215,12 +193,9 @@ public class MovementManager implements ITurnListener {
         return !containsAnotherTroopUnit(tile, troopUnit);
     }
 
+
     /**
      * Adds tile to the list if coordinates are valid.
-     *
-     * @param neighbors list of valid neighbor tiles
-     * @param x X coordinate to check
-     * @param y Y coordinate to check
      */
     private void addTileIfValid(List<Tile> neighbors, int x, int y) {
         Tile tile = gameMap.getTile(x, y);
@@ -229,38 +204,19 @@ public class MovementManager implements ITurnListener {
         }
     }
 
+
     /**
      * Checks if the tile contains another troop unit (blocking movement).
-     *
-     * @param tile        the tile to verify
-     * @param movingTroop the unit attempting to enter the tile
-     * @return {@code true} if an obstructing military unit is present
      */
     private boolean containsAnotherTroopUnit(Tile tile, TroopUnit movingTroop) {
         return tile.getEntities().stream()
                 .anyMatch(entity -> entity instanceof TroopUnit && entity != movingTroop);
     }
 
-    /**
-     * Retrieves the player currently recognized by the movement manager.
-     * @return the active player
-     */
     public Player getCurrentPlayer() {
         return currentPlayer;
     }
 
-    /**
-     * Manually updates the active player context.
-     * @param currentPlayer the new active player
-     */
-    public void setCurrentPlayer(Player currentPlayer) {
-        this.currentPlayer = currentPlayer;
-    }
-
-    /**
-     * Retrieves the game map used for pathfinding.
-     * @return the current game map
-     */
     public GameMap getGameMap() {
         return gameMap;
     }

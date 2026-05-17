@@ -59,23 +59,7 @@ public class MainMenuController {
      * Handles multiplayer game start.
      */
     private void handleLoadMultiplayerGame() {
-        String playerName = view.getPlayerName();
-
-        if (playerName.isEmpty()) {
-            view.showError("You must enter a player name before starting!");
-            return;
-        }
-        view.clearError();
-
-        boolean enableLogs = view.isLoggerEnabled();
-        System.out.println("Triggered Multiplayer Game Load. Logging Enabled: " + enableLogs);
-
-        try {
-            director.showMultiplayerGame(playerName);
-        } catch (Exception e) {
-            view.showError("Error connecting to server: " + e.getMessage());
-            System.err.println("Connection failed: " + e.getMessage());
-        }
+        director.showMultiplayerLobby();
     }
 
     private void handleExit() {

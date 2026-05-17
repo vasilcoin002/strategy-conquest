@@ -14,5 +14,13 @@ public interface ServerEventListener {
 
     void onTurnStarted(String playerName);
 
-    void onCityUpgraded(String cityId, String newLevel);
+    void onCityUpgraded(String cityId);
+
+    void onUnitBought(
+            String cityId,
+            String unitId,
+            String troopType
+    );
+
+    void onGameOver(String winnerName);
 }

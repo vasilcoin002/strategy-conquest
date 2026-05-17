@@ -1,7 +1,5 @@
 package pjvsemproj.server;
 
-import pjvsemproj.models.game.players.Player;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,20 +10,19 @@ import java.util.logging.Logger;
 
 public class Connection implements Runnable {
 
-    // TODO handleMove, handleAttack, handleBuyUnit, handleUpgradeCity, handleEndTurn
-
     private static final Logger LOGGER = Logger.getLogger(Connection.class.getName());
     private final GameServer server;
     private final Socket socket;
-    //    private Player player;
     private String playerName;
     private BufferedReader in;
     private PrintWriter out;
     private GameSession session;
+    private boolean running;
 
     public Connection(GameServer server, Socket socket) {
         this.server = server;
         this.socket = socket;
+        this.running = false;
     }
 
     @Override
@@ -34,7 +31,7 @@ public class Connection implements Runnable {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream(), true);
 
-            boolean running = true;
+            running = true;
             while (running) {
                 String msg = in.readLine();
                 LOGGER.log(Level.INFO, "Server received from {0}: >>>{1}<<<",
@@ -80,8 +77,15 @@ public class Connection implements Runnable {
                 return handleEndTurn();
 
             case QUIT:
-                handleQuit();
-                return false;
+                session.onPlayerQuit(this);
+                running = false;
+                return true;
+
+            case GAME_OVER:
+                System.out.println("Server notified of natural win by client. Shutting down...");
+                server.stopServer();
+                running = false;
+                return true;
 
             default:
                 sendToClient(Protocol.ERROR, "UNKNOWN_COMMAND");
@@ -97,6 +101,7 @@ public class Connection implements Runnable {
         }
 
         out.println(msg);
+        out.flush();
     }
 
     private boolean handleLogin(String[] tokens) {
@@ -104,16 +109,16 @@ public class Connection implements Runnable {
             sendToClient(Protocol.ERROR, "LOGIN_REQUIRES_NAME");
             return true;
         }
-
         String requestedName = tokens[1].trim();
+        this.playerName = requestedName;
         boolean accepted = server.registerConnection(this, requestedName);
 
         if (!accepted) {
+            this.playerName = null;
             sendToClient(Protocol.ERROR, "NAME_ALREADY_TAKEN");
             return true;
         }
 
-        this.playerName = requestedName;
         sendToClient(Protocol.OK, "LOGIN_ACCEPTED");
         return true;
     }
@@ -239,9 +244,27 @@ public class Connection implements Runnable {
         return true;
     }
 
-    private void handleQuit() {
-        if (session != null) {
-            session.onPlayerQuit(this);
+    /**
+     * Safely terminates the network connection, closes streams,
+     * and stops the listening thread.
+     */
+    public synchronized void closeConnection() {
+        running = false;
+
+        try {
+            if (socket != null && !socket.isClosed()) {
+                socket.close();
+                System.out.println("Connection closed for player: " + playerName);
+            }
+
+            if (in != null) {
+                in.close();
+            }
+            if (out != null) {
+                out.close();
+            }
+        } catch (IOException e) {
+            System.err.println("Error while closing connection for " + playerName + ": " + e.getMessage());
         }
     }
 

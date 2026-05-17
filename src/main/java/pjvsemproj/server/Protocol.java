@@ -20,6 +20,7 @@ public enum Protocol {
     OK,
     ERROR,
 
+    GAME_STATE,
     GAME_STARTED,
     TURN_STARTED,
     UNIT_MOVED,

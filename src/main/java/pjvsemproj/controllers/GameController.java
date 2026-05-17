@@ -5,6 +5,7 @@ import pjvsemproj.config.GameConfigParser;
 import pjvsemproj.dto.*;
 import pjvsemproj.models.services.CoreGameService;
 import pjvsemproj.models.services.ClientGameEngine;
+import pjvsemproj.models.services.NetworkGameService;
 import pjvsemproj.views.game.GameView;
 
 import java.util.Objects;
@@ -44,28 +45,41 @@ public class GameController {
     }
 
     public void initialize() {
-        gameService.setOnBoardUpdated(() -> {
-            // We MUST use Platform.runLater because the Service might
-            // trigger this from a background thread
-            Platform.runLater(() -> {
-                view.setNextTurnButtonDisabled(!gameService.isMyTurn());
-                view.redrawMap(gameService.getGameDTO());
-                view.updatePlayersBalance(gameService.getPlayersDTO());
-                view.updateCurrentPlayer(gameService.getCurrentPlayerDTO().name);
+        // We must use Platform.runLater because the Service might
+        // trigger this from a background thread
+        Platform.runLater(this::syncGameStateToUI);
 
-                // Lock or unlock the button depending on if it's our turn now
-                setSelectedEntityId(selectedEntityId);
-            });
+        gameService.setOnBoardUpdated(() -> {
+            Platform.runLater(this::syncGameStateToUI);
         });
 
         gameService.setOnGameOver(winnerName -> {
+
+            // 1. If this is a network game, tell the server to shut down safely
+            if (gameService instanceof NetworkGameService networkService) {
+                networkService.notifyServerOfWin(winnerName);
+            }
+
+            // 2. Trigger the UI change on the JavaFX thread
             Platform.runLater(() -> {
                 sceneDirector.showGameOverPopup(winnerName);
-                System.out.println("GAME OVER! The winner is: " + winnerName);
             });
         });
 
         view.setOnNextTurnAction(gameService::endTurn);
+    }
+
+    /**
+     * Centralizes UI updates to ensure the view perfectly reflects the current GameState.
+     */
+    private void syncGameStateToUI() {
+        view.setNextTurnButtonDisabled(!gameService.isMyTurn());
+        view.redrawMap(gameService.getGameDTO());
+        view.updatePlayersBalance(gameService.getPlayersDTO());
+        view.updateCurrentPlayer(gameService.getCurrentPlayerDTO().name);
+
+        // Lock or unlock the selected entity depending on whose turn it is
+        setSelectedEntityId(selectedEntityId);
     }
 
     private void handleGameAreaClick(int viewX, int viewY) {
@@ -164,6 +178,7 @@ public class GameController {
     }
 
     public void handleQuitGameRequest() {
+        gameService.quit();
         sceneDirector.showMainMenu();
     }
 

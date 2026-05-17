@@ -9,10 +9,9 @@ import pjvsemproj.models.managers.utils.OwnershipHelper;
 import pjvsemproj.server.Client;
 import pjvsemproj.server.NetworkGameListener;
 import pjvsemproj.server.Protocol;
-import pjvsemproj.server.ServerEventListener;
 
-// TODO change methods which send data to server to also check server response to change local state
-//  for example moveUnit(x, y) should check if there is a positive response from server before moving it locally
+// TODO add enemy wins when I close window
+// TODO implement upgrade city
 /**
  * Network-based implementation of GameService.
  * Sends commands to the server instead of executing them locally.
@@ -44,60 +43,46 @@ public class NetworkGameService extends AbstractClientService {
     @Override
     public boolean moveUnit(String unitId, int x, int y) {
         client.moveUnit(unitId, x, y);
-        super.moveUnit(unitId, x, y);
-        return false;
+        return true;
     }
 
     @Override
     public boolean attack(String attackerId, String targetId) {
         client.attack(attackerId, targetId);
-        super.attack(attackerId, targetId);
-        return false;
+        return true;
     }
 
     @Override
     public boolean buyUnit(String cityId, String troopType) {
         client.buyUnit(cityId, troopType);
-        super.buyUnit(cityId, troopType);
-        return false;
+        return true;
     }
 
     @Override
     public boolean upgradeCity(String cityId) {
         client.upgradeCity(cityId);
-        super.upgradeCity(cityId);
-        return false;
+        return true;
     }
 
     @Override
     public void endTurn() {
+        // Send the request to the server.
+        // DO NOT call super.endTurn() here! Let the server confirm the turn change first.
         client.endTurn();
-        super.endTurn();
     }
 
     @Override
     public void quit() {
         client.quit();
-        super.quit();
+//        super.quit();
     }
 
     public void applyServerMove(String unitId, int x, int y) {
-        boolean success = super.moveUnit(unitId, x, y);
-
-        if (success) {
-            notifyBoardUpdated();
-        }
+        super.moveUnit(unitId, x, y);
     }
 
     public void applyServerAttack(String attackerId, String targetId, int newHp){
-        TroopUnit target = findTroopById(targetId);
-        target.setHealth(newHp);
-
-        TroopUnit attacker = findTroopById(attackerId);
-        attacker.setHasAttackedThisTurn(true);
-        attacker.setHasMovedThisTurn(true);
-
-        notifyBoardUpdated();
+        super.attack(attackerId, targetId, newHp);
     }
 
     public void applyServerUnitDeath(String unitId) {
@@ -110,22 +95,39 @@ public class NetworkGameService extends AbstractClientService {
     }
 
     public void applyServerTurnStarted(String playerName){
-        for (Player player : game.getPlayers()) {
-            if (player.getName().equals(playerName)) {
-                game.setCurrentPlayer(player);
-                notifyBoardUpdated();
-                return;
-            }
+        super.endTurn();
+    }
+
+    public void applyServerCityUpgrade(String cityId) {
+        super.upgradeCity(cityId);
+    }
+
+    public void applyServerUnitBought(
+            String cityId,
+            String unitId,
+            String troopType
+    ) {
+        super.buyUnitWithId(unitId, cityId, troopType);
+    }
+
+    public void applyServerGameOver(String winnerName) {
+        System.out.println("Service triggering UI for " + winnerName);
+
+        // Use the exact variable name that AbstractGameService/CoreGameService uses.
+        // It might be 'onGameOver', 'onGameOverListener', or a protected method.
+        if (this.onGameOver != null) {
+            this.onGameOver.accept(winnerName);
+        } else {
+            // IF YOU SEE THIS PRINT, GO BACK TO STEP 1.
+            System.err.println("CRITICAL UI ERROR: The onGameOver listener is NULL. GameController did not connect it!");
         }
     }
 
-    public void applyServerCityUpgrade(String cityId, String newLevel) {
-        City city = findCityById(cityId);
-
-        while (!city.getCityType().name().equals(newLevel) && city.canBeUpgraded()) {
-            city.upgrade();
-        }
-
-        notifyBoardUpdated();
+    /**
+     * Explicitly tells the server that the game was naturally won,
+     * prompting the server to shut down.
+     */
+    public void notifyServerOfWin(String winnerName) {
+        client.sendToServer(Protocol.GAME_OVER, winnerName);
     }
 }

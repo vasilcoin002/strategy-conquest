@@ -1,8 +1,9 @@
 package pjvsemproj.server;
 
-import pjvsemproj.dto.CityDTO;
-import pjvsemproj.dto.PlayerDTO;
-import pjvsemproj.dto.TroopUnitDTO;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import pjvsemproj.config.EntityDTODeserializer;
+import pjvsemproj.dto.*;
 import pjvsemproj.models.entities.troopUnits.TroopType;
 import pjvsemproj.models.services.CoreGameService;
 
@@ -49,10 +50,17 @@ public class GameSession {
         connection1.sendToClient(Protocol.GAME_STARTED, p1Name, p2Name);
         connection2.sendToClient(Protocol.GAME_STARTED, p1Name, p2Name);
 
+        GameDTO gameDTO = gameService.getGameDTO();
+
+        Gson gson = new Gson();
+
+        String json = gson.toJson(gameDTO);
+
+        connection1.sendToClient(Protocol.GAME_STATE, json);
+        connection2.sendToClient(Protocol.GAME_STATE, json);
+
         PlayerDTO currentPlayer = gameService.getCurrentPlayerDTO();
 
-        connection1.sendToClient(Protocol.TURN_STARTED, currentPlayer.name);
-        connection2.sendToClient(Protocol.TURN_STARTED, currentPlayer.name);
 
         // not calling startFirstTurn to leave game like in configuration
     }
@@ -132,15 +140,14 @@ public class GameSession {
         }
 
         TroopUnitDTO target = (TroopUnitDTO) gameService.getEntityDTO(targetId);
-
+        if (target == null) {
+            connection1.sendToClient(Protocol.UNIT_DIED, targetId);
+            connection2.sendToClient(Protocol.UNIT_DIED, targetId);
+            return;
+        }
 
         connection1.sendToClient(Protocol.UNIT_ATTACKED, attackerId, targetId, String.valueOf(target.hp));
         connection2.sendToClient(Protocol.UNIT_ATTACKED, attackerId, targetId, String.valueOf(target.hp));
-
-        if (target.hp == 0) {
-            connection1.sendToClient(Protocol.UNIT_DIED, targetId);
-            connection2.sendToClient(Protocol.UNIT_DIED, targetId);
-        }
     }
 
     public synchronized void onUnitPurchase(Connection connection, String cityId, String troopType) {
@@ -150,12 +157,14 @@ public class GameSession {
         }
 
         PlayerDTO currentPlayer = gameService.getCurrentPlayerDTO();
+
         if (!Objects.equals(connection.getPlayerName(), currentPlayer.name)) {
             connection.sendToClient(Protocol.ERROR, "NOT_YOUR_TURN");
             return;
         }
 
         boolean success;
+
         try {
             success = gameService.buyUnit(cityId, troopType);
         } catch (Exception e) {
@@ -167,9 +176,41 @@ public class GameSession {
             connection.sendToClient(Protocol.ERROR, "ERROR_BUYING_TROOP");
             return;
         }
-        // TODO change it so both connections receive the same messages
-        connection1.sendToClient(Protocol.BUY_UNIT, String.valueOf(TroopType.valueOf(troopType)));
-        connection2.sendToClient(Protocol.UNIT_BOUGHT, String.valueOf(TroopType.valueOf(troopType)));
+
+        CityDTO city = (CityDTO) gameService.getEntityDTO(cityId);
+        TileDTO tile = gameService.getTileDTO(city.x, city.y);
+
+        TroopUnitDTO boughtUnit = null;
+
+        for (EntityDTO entity : tile.entities) {
+            if (entity instanceof TroopUnitDTO troop) {
+                if (currentPlayer.name.equals(troop.ownerName)
+                        && troopType.equals(troop.entityType)
+                        && troop.hasMovedThisTurn
+                        && troop.hasAttackedThisTurn) {
+                    boughtUnit = troop;
+                }
+            }
+        }
+
+        if (boughtUnit == null) {
+            connection.sendToClient(Protocol.ERROR, "BOUGHT_UNIT_NOT_FOUND");
+            return;
+        }
+
+        connection1.sendToClient(
+                Protocol.UNIT_BOUGHT,
+                cityId,
+                boughtUnit.id,
+                boughtUnit.entityType
+        );
+
+        connection2.sendToClient(
+                Protocol.UNIT_BOUGHT,
+                cityId,
+                boughtUnit.id,
+                boughtUnit.entityType
+        );
     }
 
     public synchronized void onCityUpgrade(Connection connection, String cityId) {
@@ -197,11 +238,8 @@ public class GameSession {
             return;
         }
 
-        CityDTO city = (CityDTO) gameService.getEntityDTO(cityId);
-
-        // TODO change it so both connections receive the same messages
-        connection1.sendToClient(Protocol.UPGRADE_CITY, cityId, city.cityLevel, String.valueOf(currentPlayer.balance));
-        connection2.sendToClient(Protocol.CITY_UPGRADED, cityId, city.cityLevel);
+        connection1.sendToClient(Protocol.CITY_UPGRADED, cityId);
+        connection2.sendToClient(Protocol.CITY_UPGRADED, cityId);
     }
 
     public synchronized void onEndTurn(Connection connection) {
@@ -224,37 +262,29 @@ public class GameSession {
     }
 
     public synchronized void onPlayerQuit(Connection connection) {
-        Connection otherConnection;
-        if (connection == connection1) {
-            otherConnection = connection2;
-        } else {
-            otherConnection = connection1;
-        }
-
-        if (otherConnection != null) {
-            otherConnection.sendToClient(Protocol.QUIT);
-        }
-
-        gameServer.removeSession(this);
+        System.out.println("Server sending GAME_OVER to remaining player");
+        endGameForRemainingPlayer(connection);
     }
 
     public synchronized void onPlayerDisconnect(Connection connection) {
-        String disconnectedPlayerName = connection.getPlayerName();
-        Connection otherConnection;
+        endGameForRemainingPlayer(connection);
+    }
 
-        if (connection == connection1) {
-            otherConnection = connection2;
-        } else {
-            otherConnection = connection1;
-        }
-        if (otherConnection != null) {
-            otherConnection.sendToClient(
-                    Protocol.QUIT,
-                    disconnectedPlayerName != null ? disconnectedPlayerName : "UNKNOWN"
-            );
+    public synchronized void terminate() {
+        if (connection1 != null) connection1.closeConnection();
+        if (connection2 != null) connection2.closeConnection();
+    }
+
+    private void endGameForRemainingPlayer(Connection connectionThatLeft) {
+        Connection remainingConnection = (connectionThatLeft == connection1) ? connection2 : connection1;
+
+        if (remainingConnection != null) {
+            String winnerName = remainingConnection.getPlayerName();
+            remainingConnection.sendToClient(Protocol.GAME_OVER, winnerName);
         }
 
         gameServer.removeSession(this);
+        gameServer.stopServer();
     }
 
     public Connection getConnection1() {
