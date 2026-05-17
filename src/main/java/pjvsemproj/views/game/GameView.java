@@ -26,20 +26,16 @@ import static pjvsemproj.views.ViewConstants.TILE_SIZE;
  */
 public class GameView {
 
-    private final int gameAreaWidth;
-    private final int gameAreaHeight;
     private final Scene scene;
     private final BorderPane root;
 
-    private Map<String, Color> ownersColors;
+    private final Map<String, Color> ownersColors;
 
     private final GraphicsContext entitiesGc;
     private final GraphicsContext overlaysGc;
     private final MapRenderer mapRenderer;
 
     private final SidePanelView sidePanel;
-
-    private EntityDTO selectedEntity;
 
     private Runnable onEscapeAction;
     private BiConsumer<Integer, Integer> onGameAreaClickedAction;
@@ -48,8 +44,8 @@ public class GameView {
             GameDTO game,
             Map<String, Color> ownersColors
     ) {
-        gameAreaWidth = game.mapWidth * TILE_SIZE;
-        gameAreaHeight = game.mapHeight * TILE_SIZE;
+        int gameAreaWidth = game.mapWidth * TILE_SIZE;
+        int gameAreaHeight = game.mapHeight * TILE_SIZE;
         this.ownersColors = ownersColors;
 
         Canvas entitiesCanvas = new Canvas(gameAreaWidth, gameAreaHeight);
@@ -160,12 +156,7 @@ public class GameView {
         pane.setBackground(getBackground());
     }
 
-    public EntityDTO getSelectedEntity() {
-        return selectedEntity;
-    }
-
     public void setSelectedEntity(EntityDTO selectedEntity, boolean isOwner) {
-        this.selectedEntity = selectedEntity;
 
         mapRenderer.clear(overlaysGc);
         sidePanel.clearEntityInfo();
@@ -227,9 +218,5 @@ public class GameView {
 
     public void setNextTurnButtonDisabled(boolean disabled) {
         sidePanel.setNextTurnButtonDisabled(disabled);
-    }
-
-    public BorderPane getRoot() {
-        return root;
     }
 }

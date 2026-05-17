@@ -6,10 +6,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ConnectException;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 
 
 /**
@@ -27,8 +25,6 @@ public class Client implements Runnable {
     private final int port;
     private final String playerName;
 
-    private Socket socket;
-    private BufferedReader in;
     private PrintWriter out;
     private boolean running;
 
@@ -41,17 +37,18 @@ public class Client implements Runnable {
 
     @Override
     public void run() {
-        try{
-            socket = new Socket(host, port);
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        try (
+                Socket socket = new Socket(host, port);
+                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))
+        ) {
             out = new PrintWriter(socket.getOutputStream(), true);
             login(playerName);
             LOGGER.info("LOGIN sent");
             running = true;
-            while(running){
+            while (running) {
                 try {
                     String msg = in.readLine();
-                    if (msg != null){
+                    if (msg != null) {
                         System.out.println("CLIENT DEBUG: Heard -> " + msg);
                         processIncomingMessage(msg);
                     } else {
@@ -59,24 +56,22 @@ public class Client implements Runnable {
                     }
                 } catch (Exception e) {
                     System.err.println("CLIENT LISTENER CRASHED!");
-                    e.printStackTrace();
+                    // TODO log
                     running = false;
                 }
             }
-        } catch (ConnectException ex){
+        } catch (ConnectException ex) {
             LOGGER.log(Level.SEVERE, "Server is not running. {0}", ex.getMessage());
-        } catch (UnknownHostException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private boolean processIncomingMessage(String msg){
+    private void processIncomingMessage(String msg) {
         String[] tokens = msg.split("\\|", -1);
         Protocol actionCode = Protocol.valueOf(tokens[0]);
 
-        switch(actionCode){
+        switch (actionCode) {
             case OK:
                 LOGGER.info("Server OK: " + (tokens.length > 1 ? tokens[1] : ""));
                 break;
@@ -166,7 +161,7 @@ public class Client implements Runnable {
 
             case QUIT:
                 LOGGER.info("Opponent quit: " + tokens[1]);
-                return false;
+                break;
 
             case UNIT_BOUGHT:
                 if (listener != null) {
@@ -179,21 +174,15 @@ public class Client implements Runnable {
                 break;
             default:
                 LOGGER.warning("Unknown message: " + msg);
+                break;
         }
-
-        return true;
-    }
-
-
-    public void close(){
-        LOGGER.info("Closing client");
     }
 
     public void login(String playerName) {
         sendToServer(Protocol.LOGIN, playerName);
     }
 
-    public void sendToServer(Protocol code, String... args){
+    public void sendToServer(Protocol code, String... args) {
         StringBuilder msg = new StringBuilder(code.toString());
 
         for (String arg : args) {
@@ -204,35 +193,35 @@ public class Client implements Runnable {
         out.println(msg);
     }
 
-    public void moveUnit(String unitId, int x, int y){
+    public void moveUnit(String unitId, int x, int y) {
         sendToServer(Protocol.MOVE, unitId, String.valueOf(x), String.valueOf(y));
     }
 
-    public void attack(String attackerId, String targetId){
+    public void attack(String attackerId, String targetId) {
         sendToServer(Protocol.ATTACK, attackerId, targetId);
     }
 
-    public void buyUnit(String cityId, String troopType){
+    public void buyUnit(String cityId, String troopType) {
         sendToServer(Protocol.BUY_UNIT, cityId, troopType);
     }
 
-    public void upgradeCity(String cityId){
+    public void upgradeCity(String cityId) {
         sendToServer(Protocol.UPGRADE_CITY, cityId);
     }
 
-    public void endTurn(){
+    public void endTurn() {
         sendToServer(Protocol.END_TURN);
     }
 
-    public void ready(){
+    public void ready() {
         sendToServer(Protocol.READY);
     }
 
-    public void quit(){
+    public void quit() {
         sendToServer(Protocol.QUIT);
     }
 
-    public void setServerEventListener(ServerEventListener listener){
+    public void setServerEventListener(ServerEventListener listener) {
         this.listener = listener;
     }
 

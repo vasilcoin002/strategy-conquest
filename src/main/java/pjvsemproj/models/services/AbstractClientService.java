@@ -56,6 +56,7 @@ public class AbstractClientService extends AbstractGameService implements Client
                 break;
             }
         }
+        conquestManager.announceWinner(winner);
 
         System.out.println("Game quit");
     }

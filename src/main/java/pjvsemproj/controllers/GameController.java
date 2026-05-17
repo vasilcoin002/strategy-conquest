@@ -2,8 +2,10 @@ package pjvsemproj.controllers;
 
 import javafx.application.Platform;
 import pjvsemproj.config.GameConfigParser;
-import pjvsemproj.dto.*;
-import pjvsemproj.models.services.CoreGameService;
+import pjvsemproj.dto.EntityDTO;
+import pjvsemproj.dto.GameDTO;
+import pjvsemproj.dto.TileDTO;
+import pjvsemproj.dto.TroopUnitDTO;
 import pjvsemproj.models.services.ClientGameEngine;
 import pjvsemproj.models.services.NetworkGameService;
 import pjvsemproj.views.game.GameView;
@@ -49,9 +51,7 @@ public class GameController {
         // trigger this from a background thread
         Platform.runLater(this::syncGameStateToUI);
 
-        gameService.setOnBoardUpdated(() -> {
-            Platform.runLater(this::syncGameStateToUI);
-        });
+        gameService.setOnBoardUpdated(() -> Platform.runLater(this::syncGameStateToUI));
 
         gameService.setOnGameOver(winnerName -> {
 
@@ -61,9 +61,7 @@ public class GameController {
             }
 
             // 2. Trigger the UI change on the JavaFX thread
-            Platform.runLater(() -> {
-                sceneDirector.showGameOverPopup(winnerName);
-            });
+            Platform.runLater(() -> sceneDirector.showGameOverPopup(winnerName));
         });
 
         view.setOnNextTurnAction(gameService::endTurn);
@@ -227,17 +225,5 @@ public class GameController {
     public void updateTile(int x, int y) {
         TileDTO tile = gameService.getTileDTO(x, y);
         view.updateTile(tile);
-    }
-
-    public GameView getView() {
-        return view;
-    }
-
-    public CoreGameService getGameService() {
-        return gameService;
-    }
-
-    public String getSelectedEntityId() {
-        return selectedEntityId;
     }
 }

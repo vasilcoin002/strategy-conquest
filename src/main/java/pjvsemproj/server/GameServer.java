@@ -2,9 +2,6 @@ package pjvsemproj.server;
 
 import pjvsemproj.config.GameSetupManager;
 import pjvsemproj.models.game.Game;
-import pjvsemproj.models.game.maps.GameMap;
-import pjvsemproj.models.game.players.HumanPlayer;
-import pjvsemproj.models.game.players.Player;
 import pjvsemproj.models.services.CoreGameService;
 import pjvsemproj.models.services.ServerGameService;
 
@@ -24,11 +21,9 @@ import java.util.logging.Logger;
  * Manages active connections and game sessions.
  */
 public class GameServer implements Runnable {
-    // TODO tryAssignToSession
 
     private final int PORT_NUMBER;
     private ServerSocket serverSocket;
-    private Socket socket;
     private final Map<String, Connection> connectionsByName = new HashMap<>();
     private final List<GameSession> sessions = new ArrayList<>();
     private static final Logger LOGGER = Logger.getLogger(GameServer.class.getName());
@@ -44,7 +39,7 @@ public class GameServer implements Runnable {
             serverSocket = new ServerSocket(PORT_NUMBER);
             running = true;
             while (running) {
-                socket = serverSocket.accept();
+                Socket socket = serverSocket.accept();
                 Connection connection = new Connection(this, socket);
 
                 new Thread(connection).start();
@@ -68,23 +63,8 @@ public class GameServer implements Runnable {
     }
 
     public synchronized boolean isNameTaken(String name) {
-        if (connectionsByName.containsKey(name)) {
-            return true;
-        }
-        return false;
+        return connectionsByName.containsKey(name);
     }
-
-    public synchronized void unregisterConnection(String connectionName, Connection connection) {
-        boolean removed = connectionsByName.remove(connectionName, connection);
-
-        if (removed) {
-            LOGGER.info("Connection removed: " + connectionName);
-        } else {
-            LOGGER.warning("Failed to remove connection: " + connectionName);
-        }
-    }
-
-    // Make sure you have a boolean flag for your loop, e.g., private volatile boolean running = true;
 
     public synchronized void stopServer() {
         running = false;

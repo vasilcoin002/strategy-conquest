@@ -1,9 +1,7 @@
 package pjvsemproj.models.services;
 
-import pjvsemproj.models.entities.cities.City;
 import pjvsemproj.models.entities.troopUnits.TroopUnit;
 import pjvsemproj.models.game.Game;
-import pjvsemproj.models.game.players.Player;
 import pjvsemproj.models.managers.utils.GridPositionHelper;
 import pjvsemproj.models.managers.utils.OwnershipHelper;
 import pjvsemproj.server.Client;
@@ -94,7 +92,7 @@ public class NetworkGameService extends AbstractClientService {
         notifyBoardUpdated();
     }
 
-    public void applyServerTurnStarted(String playerName){
+    public void applyServerTurnStarted() {
         super.endTurn();
     }
 

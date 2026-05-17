@@ -56,25 +56,32 @@ public class Connection implements Runnable {
 
         switch (actionCode) {
             case LOGIN:
-                return handleLogin(tokens);
+                handleLogin(tokens);
+                break;
 
             case READY:
-                return handleReady();
+                handleReady();
+                break;
 
             case MOVE:
-                return handleMove(tokens);
+                handleMove(tokens);
+                break;
 
             case ATTACK:
-                return handleAttack(tokens);
+                handleAttack(tokens);
+                break;
 
             case BUY_UNIT:
-                return handleBuyUnit(tokens);
+                handleBuyUnit(tokens);
+                break;
 
             case UPGRADE_CITY:
-                return handleUpgradeCity(tokens);
+                handleUpgradeCity(tokens);
+                break;
 
             case END_TURN:
-                return handleEndTurn();
+                handleEndTurn();
+                break;
 
             case QUIT:
                 session.onPlayerQuit(this);
@@ -91,6 +98,7 @@ public class Connection implements Runnable {
                 sendToClient(Protocol.ERROR, "UNKNOWN_COMMAND");
                 return true;
         }
+        return true;
     }
 
     public void sendToClient(Protocol code, String... args) {
@@ -104,10 +112,10 @@ public class Connection implements Runnable {
         out.flush();
     }
 
-    private boolean handleLogin(String[] tokens) {
+    private void handleLogin(String[] tokens) {
         if (tokens.length < 2) {
             sendToClient(Protocol.ERROR, "LOGIN_REQUIRES_NAME");
-            return true;
+            return;
         }
         String requestedName = tokens[1].trim();
         this.playerName = requestedName;
@@ -116,29 +124,27 @@ public class Connection implements Runnable {
         if (!accepted) {
             this.playerName = null;
             sendToClient(Protocol.ERROR, "NAME_ALREADY_TAKEN");
-            return true;
+            return;
         }
 
         sendToClient(Protocol.OK, "LOGIN_ACCEPTED");
-        return true;
     }
 
-    private boolean handleReady() {
+    private void handleReady() {
         if (!isLoggedIn()) {
             sendToClient(Protocol.ERROR, "NOT_LOGGED_IN");
-            return true;
+            return;
         }
 
         if (session == null) {
             sendToClient(Protocol.ERROR, "NOT_IN_SESSION");
-            return true;
+            return;
         }
 
         session.handleReady(this);
-        return true;
     }
 
-    private boolean handleMove(String[] tokens) {
+    private void handleMove(String[] tokens) {
 
         if (!isLoggedIn()) {
             sendToClient(Protocol.ERROR, "NOT_LOGGED_IN");
@@ -146,7 +152,7 @@ public class Connection implements Runnable {
 
         if (tokens.length < 4) {
             sendToClient(Protocol.ERROR, "MOVE_REQUIRES_UNITID_X_Y");
-            return true;
+            return;
         }
         String unitId = tokens[1];
 
@@ -157,91 +163,85 @@ public class Connection implements Runnable {
         } catch (NumberFormatException ex) {
             sendToClient(Protocol.ERROR, "INVALID_COORDINATES");
         }
-
-        return true;
     }
 
-    private boolean handleAttack(String[] tokens) {
+    private void handleAttack(String[] tokens) {
         if (!isLoggedIn()) {
             sendToClient(Protocol.ERROR, "NOT_LOGGED_IN");
-            return true;
+            return;
         }
 
         if (session == null) {
             sendToClient(Protocol.ERROR, "NOT_IN_SESSION");
-            return true;
+            return;
         }
 
         if (tokens.length < 3) {
             sendToClient(Protocol.ERROR, "ATTACK_REQUIRES_ATTACKERID_TARGETID");
-            return true;
+            return;
         }
 
         String attackerId = tokens[1];
         String targetId = tokens[2];
 
         session.onAttack(this, attackerId, targetId);
-        return true;
     }
 
-    private boolean handleBuyUnit(String[] tokens) {
+    private void handleBuyUnit(String[] tokens) {
         if (!isLoggedIn()) {
             sendToClient(Protocol.ERROR, "NOT_LOGGED_IN");
-            return true;
+            return;
         }
 
         if (session == null) {
             sendToClient(Protocol.ERROR, "NOT_IN_SESSION");
-            return true;
+            return;
         }
 
         if (tokens.length < 3) {
             sendToClient(Protocol.ERROR, "BUY_UNIT_REQUIRES_CITYID_TROOPTYPE");
-            return true;
+            return;
         }
 
         String cityId = tokens[1];
         String troopType = tokens[2];
 
         session.onUnitPurchase(this, cityId, troopType);
-        return true;
     }
 
-    private boolean handleUpgradeCity(String[] tokens) {
+    private void handleUpgradeCity(String[] tokens) {
         if (!isLoggedIn()) {
             sendToClient(Protocol.ERROR, "NOT_LOGGED_IN");
-            return true;
+            return;
         }
 
         if (session == null) {
             sendToClient(Protocol.ERROR, "NOT_IN_SESSION");
-            return true;
+            return;
         }
 
         if (tokens.length < 2) {
             sendToClient(Protocol.ERROR, "UPGRADE_CITY_REQUIRES_CITYID");
-            return true;
+            return;
         }
 
         String cityId = tokens[1];
 
         session.onCityUpgrade(this, cityId);
-        return true;
     }
 
-    private boolean handleEndTurn() {
+    private void handleEndTurn() {
         if (!isLoggedIn()) {
             sendToClient(Protocol.ERROR, "NOT_LOGGED_IN");
-            return true;
+            return;
         }
 
         if (session == null) {
             sendToClient(Protocol.ERROR, "NOT_IN_SESSION");
-            return true;
+            return;
         }
 
         session.onEndTurn(this);
-        return true;
     }
 
     /**

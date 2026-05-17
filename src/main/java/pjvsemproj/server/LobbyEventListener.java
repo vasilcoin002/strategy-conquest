@@ -27,16 +27,12 @@ public class LobbyEventListener {
     }
 
     public void onGameState(String json) {
-        Platform.runLater(() -> {
-            director.openNetworkGameFromJson(client, playerName, json);
-        });
+        Platform.runLater(() -> director.openNetworkGameFromJson(client, playerName, json));
     }
 
     public void onError(String errorMessage) {
         if (onErrorCallback != null) {
-            Platform.runLater(() -> {
-                onErrorCallback.accept(errorMessage);
-            });
+            Platform.runLater(() -> onErrorCallback.accept(errorMessage));
         }
     }
 }

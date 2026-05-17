@@ -1,14 +1,9 @@
 package pjvsemproj.config;
 
-import pjvsemproj.dto.CityDTO;
-import pjvsemproj.dto.EntityDTO;
-import pjvsemproj.dto.GameDTO;
-import pjvsemproj.dto.PlayerDTO;
-import pjvsemproj.dto.TroopUnitDTO;
+import pjvsemproj.dto.*;
 import pjvsemproj.models.entities.cities.CityType;
 import pjvsemproj.models.entities.troopUnits.TroopType;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;

@@ -24,10 +24,7 @@ import static pjvsemproj.views.ViewConstants.GAME_SIDE_PANEL_WIDTH;
 public class SidePanelView {
 
     private final ScrollPane root;   // The new scrolling container
-    private final VBox contentBox;
 
-    private final Button quitBtn;
-    private final Button saveBtn;
     private final Label currentPlayerLabel;
     private final Label ballanceLabel;
     private final HBox switcherBox;
@@ -43,17 +40,17 @@ public class SidePanelView {
     private Consumer<String> onUpgradeCityAction;
 
     public SidePanelView() {
-        contentBox = new VBox(15);
+        VBox contentBox = new VBox(15);
         contentBox.setPadding(new Insets(20));
         contentBox.setStyle("-fx-background-color: #f4f4f4;");
 
         HBox topButtonsBox = new HBox(10);
 
-        saveBtn = new Button("Save Game");
+        Button saveBtn = new Button("Save Game");
         saveBtn.setOnAction(e -> {
             if (onSaveGameAction != null) onSaveGameAction.run();
         });
-        quitBtn = new Button("Quit game");
+        Button quitBtn = new Button("Quit game");
         quitBtn.setOnAction(e -> {
             if (onQuitGameAction != null) onQuitGameAction.run();
         });

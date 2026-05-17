@@ -22,7 +22,6 @@ public final class ConfigDefaultValues {
 
     // players
     public static final int DEFAULT_INIT_BALANCE = 0;
-    public static final int DEFAULT_CURRENT_PLAYER_NUM = 1;
 
     // troops
     public static final boolean DEFAULT_HAS_MOVED_THIS_TURN = false;

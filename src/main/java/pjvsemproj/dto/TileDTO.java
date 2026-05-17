@@ -7,7 +7,6 @@ import pjvsemproj.models.game.maps.Tile;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * Container representing a single tile on the map.

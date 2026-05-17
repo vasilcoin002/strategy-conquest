@@ -3,8 +3,6 @@ package pjvsemproj.views.game.renderers;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import pjvsemproj.dto.EntityDTO;
-import pjvsemproj.models.entities.IGridEntity;
-import pjvsemproj.models.game.maps.Tile;
 
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
@@ -12,10 +10,6 @@ import static pjvsemproj.views.ViewConstants.TILE_SIZE;
  * Base renderer class providing helper methods for drawing entities.
  */
 public abstract class Renderer {
-
-//    public Tile getTile(IGridEntity entity) {
-//        return entity.getTile();
-//    }
 
     public int getEntityGameX(EntityDTO entity) {
         return entity.x;

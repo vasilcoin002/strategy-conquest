@@ -1,5 +1,6 @@
 package pjvsemproj.dto;
 
+
 import pjvsemproj.models.entities.cities.City;
 
 public class CityDTO extends EntityDTO {

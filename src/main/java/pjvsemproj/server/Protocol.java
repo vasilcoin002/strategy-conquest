@@ -3,7 +3,7 @@ package pjvsemproj.server;
 
 /**
  * Defines all communication commands between client and server.
- *
+ * <p>
  * Used for encoding and decoding messages.
  */
 public enum Protocol {

@@ -27,7 +27,7 @@ public class NetworkGameListener implements ServerEventListener {
 
     @Override
     public void onTurnStarted(String playerName) {
-        service.applyServerTurnStarted(playerName);
+        service.applyServerTurnStarted();
     }
 
     @Override

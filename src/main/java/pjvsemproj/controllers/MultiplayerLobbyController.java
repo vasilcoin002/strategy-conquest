@@ -73,8 +73,6 @@ public class MultiplayerLobbyController {
     }
 
     public void handleServerConfigError(String errorMessage) {
-        Platform.runLater(() -> {
-            view.showError("Server Error: " + errorMessage);
-        });
+        Platform.runLater(() -> view.showError("Server Error: " + errorMessage));
     }
 }

@@ -10,7 +10,7 @@ import java.util.Set;
 
 /**
  * Defines the interface for interacting with the game.
- *
+ * <p>
  * Acts as an abstraction layer between UI/network and game logic.
  */
 public interface CoreGameService {

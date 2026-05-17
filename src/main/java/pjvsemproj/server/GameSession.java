@@ -1,10 +1,7 @@
 package pjvsemproj.server;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import pjvsemproj.config.EntityDTODeserializer;
 import pjvsemproj.dto.*;
-import pjvsemproj.models.entities.troopUnits.TroopType;
 import pjvsemproj.models.services.CoreGameService;
 
 import java.util.List;
@@ -80,98 +77,54 @@ public class GameSession {
     }
 
     public synchronized void onMove(Connection connection, String unitId, int x, int y) {
-        if (!gameStarted) {
-            connection.sendToClient(Protocol.ERROR, "GAME_NOT_STARTED");
-            return;
-        }
+        if (!validateActionAllowed(connection)) return;
 
-        PlayerDTO currentPlayer = gameService.getCurrentPlayerDTO();
-
-        if (!Objects.equals(connection.getPlayerName(), currentPlayer.name)) {
-            connection.sendToClient(Protocol.ERROR, "NOT_YOUR_TURN");
-            return;
-        }
-
-        boolean success;
         try {
-            success = gameService.moveUnit(unitId, x, y);
+            if (!gameService.moveUnit(unitId, x, y)) {
+                connection.sendToClient(Protocol.ERROR, "MOVE_FAILED");
+                return;
+            }
         } catch (Exception e) {
             connection.sendToClient(Protocol.ERROR, e.getMessage());
             return;
         }
 
-        if (!success) {
-            connection.sendToClient(Protocol.ERROR, "MOVE_FAILED");
-            return;
-        }
-
-        connection1.sendToClient(Protocol.UNIT_MOVED, unitId, String.valueOf(x), String.valueOf(y));
-        connection2.sendToClient(Protocol.UNIT_MOVED, unitId, String.valueOf(x), String.valueOf(y));
+        broadcast(Protocol.UNIT_MOVED, unitId, String.valueOf(x), String.valueOf(y));
     }
 
     public synchronized void onAttack(Connection connection, String attackerId, String targetId) {
-        if (!gameStarted) {
-            connection.sendToClient(Protocol.ERROR, "GAME_NOT_STARTED");
-            return;
-        }
+        if (!validateActionAllowed(connection)) return;
 
-        PlayerDTO currentPlayer = gameService.getCurrentPlayerDTO();
-        if (!Objects.equals(connection.getPlayerName(), currentPlayer.name)) {
-            connection.sendToClient(Protocol.ERROR, "NOT_YOUR_TURN");
-            return;
-        }
-
-        boolean success;
         try {
-            success = gameService.attack(attackerId, targetId);
+            if (!gameService.attack(attackerId, targetId)) {
+                connection.sendToClient(Protocol.ERROR, "ATTACK_FAILED");
+                return;
+            }
         } catch (Exception e) {
             connection.sendToClient(Protocol.ERROR, e.getMessage());
-            return;
-        }
-
-        if (!success) {
-            connection.sendToClient(Protocol.ERROR, "ATTACK_FAILED");
             return;
         }
 
         TroopUnitDTO target = (TroopUnitDTO) gameService.getEntityDTO(targetId);
-        if (target == null) {
-            connection1.sendToClient(Protocol.UNIT_ATTACKED, attackerId, targetId, "0");
-            connection2.sendToClient(Protocol.UNIT_ATTACKED, attackerId, targetId, "0");
-            return;
-        }
+        String hp = (target == null) ? "0" : String.valueOf(target.hp);
 
-        connection1.sendToClient(Protocol.UNIT_ATTACKED, attackerId, targetId, String.valueOf(target.hp));
-        connection2.sendToClient(Protocol.UNIT_ATTACKED, attackerId, targetId, String.valueOf(target.hp));
+        broadcast(Protocol.UNIT_ATTACKED, attackerId, targetId, hp);
     }
 
     public synchronized void onUnitPurchase(Connection connection, String cityId, String troopType) {
-        if (!gameStarted) {
-            connection.sendToClient(Protocol.ERROR, "GAME_NOT_STARTED");
-            return;
-        }
-
-        PlayerDTO currentPlayer = gameService.getCurrentPlayerDTO();
-
-        if (!Objects.equals(connection.getPlayerName(), currentPlayer.name)) {
-            connection.sendToClient(Protocol.ERROR, "NOT_YOUR_TURN");
-            return;
-        }
-
-        boolean success;
+        if (!validateActionAllowed(connection)) return;
 
         try {
-            success = gameService.buyUnit(cityId, troopType);
+            if (!gameService.buyUnit(cityId, troopType)) {
+                connection.sendToClient(Protocol.ERROR, "ERROR_BUYING_TROOP");
+                return;
+            }
         } catch (Exception e) {
             connection.sendToClient(Protocol.ERROR, e.getMessage());
             return;
         }
 
-        if (!success) {
-            connection.sendToClient(Protocol.ERROR, "ERROR_BUYING_TROOP");
-            return;
-        }
-
+        PlayerDTO currentPlayer = gameService.getCurrentPlayerDTO();
         CityDTO city = (CityDTO) gameService.getEntityDTO(cityId);
         TileDTO tile = gameService.getTileDTO(city.x, city.y);
 
@@ -193,75 +146,62 @@ public class GameSession {
             return;
         }
 
-        connection1.sendToClient(
-                Protocol.UNIT_BOUGHT,
-                cityId,
-                boughtUnit.id,
-                boughtUnit.entityType
-        );
-
-        connection2.sendToClient(
-                Protocol.UNIT_BOUGHT,
-                cityId,
-                boughtUnit.id,
-                boughtUnit.entityType
-        );
+        broadcast(Protocol.UNIT_BOUGHT, cityId, boughtUnit.id, boughtUnit.entityType);
     }
 
     public synchronized void onCityUpgrade(Connection connection, String cityId) {
-        if (!gameStarted) {
-            connection.sendToClient(Protocol.ERROR, "GAME_NOT_STARTED");
-            return;
-        }
+        if (!validateActionAllowed(connection)) return;
 
-        PlayerDTO currentPlayer = gameService.getCurrentPlayerDTO();
-        if (!Objects.equals(connection.getPlayerName(), currentPlayer.name)) {
-            connection.sendToClient(Protocol.ERROR, "NOT_YOUR_TURN");
-            return;
-        }
-
-        boolean success;
         try {
-            success = gameService.upgradeCity(cityId);
+            if (!gameService.upgradeCity(cityId)) {
+                connection.sendToClient(Protocol.ERROR, "UPGRADE_CITY_FAILURE");
+                return;
+            }
         } catch (Exception e) {
             connection.sendToClient(Protocol.ERROR, e.getMessage());
             return;
         }
 
-        if (!success) {
-            connection.sendToClient(Protocol.ERROR, "UPGRADE_CITY_FAILURE");
-            return;
-        }
-
-        connection1.sendToClient(Protocol.CITY_UPGRADED, cityId);
-        connection2.sendToClient(Protocol.CITY_UPGRADED, cityId);
+        broadcast(Protocol.CITY_UPGRADED, cityId);
     }
 
     public synchronized void onEndTurn(Connection connection) {
+        if (!validateActionAllowed(connection)) return;
+
+        gameService.endTurn();
+        PlayerDTO newCurrentPlayer = gameService.getCurrentPlayerDTO();
+
+        broadcast(Protocol.TURN_STARTED, newCurrentPlayer.name);
+    }
+
+    /**
+     * Helper to verify if the game is running and if it is the requesting player's turn.
+     */
+    private boolean validateActionAllowed(Connection connection) {
         if (!gameStarted) {
             connection.sendToClient(Protocol.ERROR, "GAME_NOT_STARTED");
-            return;
+            return false;
         }
 
         PlayerDTO currentPlayer = gameService.getCurrentPlayerDTO();
         if (!Objects.equals(connection.getPlayerName(), currentPlayer.name)) {
             connection.sendToClient(Protocol.ERROR, "NOT_YOUR_TURN");
-            return;
+            return false;
         }
 
-        gameService.endTurn();
-        PlayerDTO newCurrentPlayer = gameService.getCurrentPlayerDTO();
+        return true;
+    }
 
-        connection1.sendToClient(Protocol.TURN_STARTED, newCurrentPlayer.name);
-        connection2.sendToClient(Protocol.TURN_STARTED, newCurrentPlayer.name);
+    /**
+     * Helper to broadcast a protocol message to all connected clients.
+     */
+    private void broadcast(Protocol protocol, String... data) {
+        connection1.sendToClient(protocol, data);
+        connection2.sendToClient(protocol, data);
     }
 
     public synchronized void onPlayerQuit(Connection connection) {
         System.out.println("Server sending GAME_OVER to remaining player");
-        endGameForRemainingPlayer(connection);
-    }
-
-    public synchronized void onPlayerDisconnect(Connection connection) {
         endGameForRemainingPlayer(connection);
     }
 

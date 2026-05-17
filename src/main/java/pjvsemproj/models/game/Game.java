@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * Represents a complete game state.
- *
+ * <p>
  * Contains the list of players and the map on which the match is played.
  */
 public class Game {

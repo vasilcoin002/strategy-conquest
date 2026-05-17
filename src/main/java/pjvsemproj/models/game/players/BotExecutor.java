@@ -49,7 +49,7 @@ public class BotExecutor {
      * Scans all bot-owned troops and commands them to attack if an enemy is within range.
      * <p>
      * AI Heuristic: The bot targets the weakest available enemy (lowest HP) to maximize kills.
-     * Note: Uses Thread.sleep to create an artificial delay between attacks.
+     * Note: Uses Thread.sleep() to create an artificial delay between attacks.
      */
     private void attackIfPossible() {
         String botName = service.getCurrentPlayerDTO().name;
@@ -171,7 +171,7 @@ public class BotExecutor {
      * <p>
      * AI Heuristic: Evaluates all legal move tiles and chooses the one that minimizes
      * the Manhattan distance to the closest enemy target.
-     * Note: Uses Thread.sleep to create an artificial delay between movements.
+     * Note: Uses Thread.sleep() to create an artificial delay between movements.
      */
     private void moveUnits() {
         String botName = service.getCurrentPlayerDTO().name;

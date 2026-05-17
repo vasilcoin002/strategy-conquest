@@ -33,7 +33,7 @@ public class GameConfigSanitizer {
 
         if (game.currentPlayerName == null || game.currentPlayerName.isBlank()) {
             if (game.players != null && !game.players.isEmpty()) {
-                game.currentPlayerName = game.players.get(0).name;
+                game.currentPlayerName = game.players.getFirst().name;
             }
         }
 

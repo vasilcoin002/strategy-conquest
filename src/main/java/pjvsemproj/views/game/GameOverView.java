@@ -9,13 +9,12 @@ import javafx.scene.layout.VBox;
 
 public class GameOverView {
 
-    private final VBox root;
     private final Scene scene;
 
     private Runnable onMainMenuAction;
 
     public GameOverView(String winnerName) {
-        root = new VBox(20);
+        VBox root = new VBox(20);
         root.setAlignment(Pos.CENTER);
         root.setPadding(new Insets(40));
         root.setStyle("-fx-background-color: #2b2b2b; -fx-border-color: #ff7e67; -fx-border-width: 5px;");

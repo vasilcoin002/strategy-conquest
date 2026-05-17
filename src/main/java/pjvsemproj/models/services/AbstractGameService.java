@@ -9,8 +9,10 @@ import pjvsemproj.models.game.maps.Tile;
 import pjvsemproj.models.game.players.Player;
 import pjvsemproj.models.managers.*;
 
-import java.util.*;
-import java.util.function.Consumer;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class AbstractGameService implements CoreGameService {
@@ -22,7 +24,6 @@ public class AbstractGameService implements CoreGameService {
     protected final EconomyManager economyManager;
     protected final TurnManager turnManager;
     protected final ConquestManager conquestManager;
-    protected Consumer<String> onGameOver;
 
     public AbstractGameService(Game game) {
         this.game = game;
@@ -216,11 +217,5 @@ public class AbstractGameService implements CoreGameService {
         return availableTiles.stream()
                 .map(TileDTO::new)
                 .collect(Collectors.toSet());
-    }
-
-    protected void notifyGameOver(String winnerName) {
-        if (onGameOver != null) {
-            onGameOver.accept(winnerName);
-        }
     }
 }

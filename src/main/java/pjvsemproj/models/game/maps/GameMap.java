@@ -79,19 +79,6 @@ public class GameMap {
     }
 
     /**
-     * Checks whether the tile at given coordinates is blocked.
-     * <p>
-     * A tile is considered blocked if it contains a non-passable entity.
-     *
-     * @param x X coordinate
-     * @param y Y coordinate
-     * @return true if tile is blocked
-     */
-    public boolean isTileBlocked(int x, int y) {
-        return tiles[x][y].isBlocked();
-    }
-
-    /**
      * Retrieves the total width of the map.
      *
      * @return the number of columns

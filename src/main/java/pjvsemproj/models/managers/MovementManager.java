@@ -1,14 +1,13 @@
 package pjvsemproj.models.managers;
 
-import pjvsemproj.models.entities.Entity;
 import pjvsemproj.models.entities.IGridEntity;
 import pjvsemproj.models.entities.cities.City;
 import pjvsemproj.models.entities.troopUnits.TroopUnit;
 import pjvsemproj.models.game.maps.GameMap;
-import pjvsemproj.models.managers.utils.MovementNode;
-import pjvsemproj.models.game.players.Player;
 import pjvsemproj.models.game.maps.Tile;
+import pjvsemproj.models.game.players.Player;
 import pjvsemproj.models.managers.utils.GridPositionHelper;
+import pjvsemproj.models.managers.utils.MovementNode;
 
 import java.util.*;
 
@@ -46,15 +45,15 @@ public class MovementManager implements ITurnListener {
     /**
      * Finds all tiles that the given troop unit can reach in the current turn
      * using the Breadth-First Search (BFS) algorithm.
-     *
+     * <p>
      * BFS explores the map level by level, starting from the unit's current position.
      * Each step represents moving to a neighboring tile, increasing the distance by 1.
-     *
+     * <p>
      * The algorithm ensures:
      * - Only tiles within the unit's movement range are considered
      * - Each tile is visited at most once with the shortest distance
      * - Movement rules are respected (e.g., cannot move onto a tile occupied by another unit)
-     *
+     * <p>
      * A queue is used to process tiles in order of increasing distance (FIFO),
      * which guarantees correct distance-based expansion.
      *
@@ -110,7 +109,6 @@ public class MovementManager implements ITurnListener {
         return reachableTiles;
     }
 
-
     /**
      * Moves a troop unit to the target tile if movement is valid.
      */
@@ -146,7 +144,6 @@ public class MovementManager implements ITurnListener {
         return moved;
     }
 
-
     /**
      * Checks whether the current player can control the given troop unit.
      */
@@ -158,7 +155,6 @@ public class MovementManager implements ITurnListener {
                 currentPlayer.getName()
         );
     }
-
 
     /**
      * Returns all valid neighboring tiles (4-directional).
@@ -177,7 +173,6 @@ public class MovementManager implements ITurnListener {
         return neighbors;
     }
 
-
     /**
      * Checks whether a unit can move through or enter a tile.
      */
@@ -193,7 +188,6 @@ public class MovementManager implements ITurnListener {
         return !containsAnotherTroopUnit(tile, troopUnit);
     }
 
-
     /**
      * Adds tile to the list if coordinates are valid.
      */
@@ -204,20 +198,11 @@ public class MovementManager implements ITurnListener {
         }
     }
 
-
     /**
      * Checks if the tile contains another troop unit (blocking movement).
      */
     private boolean containsAnotherTroopUnit(Tile tile, TroopUnit movingTroop) {
         return tile.getEntities().stream()
                 .anyMatch(entity -> entity instanceof TroopUnit && entity != movingTroop);
-    }
-
-    public Player getCurrentPlayer() {
-        return currentPlayer;
-    }
-
-    public GameMap getGameMap() {
-        return gameMap;
     }
 }

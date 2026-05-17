@@ -14,9 +14,6 @@ import pjvsemproj.dto.EntityDTO;
 import pjvsemproj.dto.GameDTO;
 import pjvsemproj.dto.PlayerDTO;
 import pjvsemproj.models.game.Game;
-import pjvsemproj.models.game.maps.GameMap;
-import pjvsemproj.models.game.players.HumanPlayer;
-import pjvsemproj.models.game.players.Player;
 import pjvsemproj.models.services.ClientGameEngine;
 import pjvsemproj.models.services.LocalGameService;
 import pjvsemproj.models.services.NetworkGameService;
@@ -39,7 +36,6 @@ import java.util.function.Consumer;
  */
 public class SceneDirector {
     private final Stage stage;
-    private GameServer server;
     private Thread serverThread;
 
     public SceneDirector(Stage stage) {
@@ -48,7 +44,7 @@ public class SceneDirector {
 
     public void showMainMenu() {
         MainMenuView menuView = new MainMenuView();
-        MainMenuController menuController = new MainMenuController(menuView, this, menuView.getPlayerName());
+        new MainMenuController(menuView, this, menuView.getPlayerName());
 
         Scene scene = new Scene(menuView.getRoot(), 800, 600);
         stage.setScene(scene);
@@ -57,8 +53,20 @@ public class SceneDirector {
         stage.centerOnScreen();
     }
 
+    public void showNetworkGame(ClientGameEngine gameService, String clientName) {
+        initializeAndShowGameView(gameService, clientName);
+    }
+
     public void showGame(ClientGameEngine gameService, String clientName) {
         gameService.login(clientName);
+        initializeAndShowGameView(gameService, clientName);
+    }
+
+    /**
+     * Shared helper method to avoid duplication. Handles DTO mapping,
+     * color assignments, controller binding, and JavaFX stage rendering.
+     */
+    private void initializeAndShowGameView(ClientGameEngine gameService, String clientName) {
         List<PlayerDTO> players = gameService.getPlayersDTO();
 
         Map<String, Color> colors = new HashMap<>();
@@ -69,7 +77,6 @@ public class SceneDirector {
                 gameService.getGameDTO(),
                 colors
         );
-
         gameView.show(stage, clientName);
 
         GameController controller = new GameController(gameService, gameView, this);
@@ -85,13 +92,6 @@ public class SceneDirector {
 
         ClientGameEngine gameService = new LocalGameService(game);
         showGame(gameService, clientName);
-    }
-
-    public void showMultiplayerGame(String clientName) {
-        // TODO: In the future, this is where you will instantiate your
-        // Client object, connect to the Server, and then create the NetworkGameService!
-
-        System.out.println("Connecting to network game as: " + clientName);
     }
 
     public void showSaveFileDialog(Consumer<String> onFileSelected) {
@@ -131,7 +131,7 @@ public class SceneDirector {
 
     public void showMultiplayerLobby(String playerName) {
         MultiplayerLobbyView lobbyView = new MultiplayerLobbyView();
-        MultiplayerLobbyController lobbyController = new MultiplayerLobbyController(lobbyView, this, playerName);
+        new MultiplayerLobbyController(lobbyView, this, playerName);
 
         Scene scene = new Scene(lobbyView.getRoot(), 800, 600);
         stage.setScene(scene);
@@ -146,7 +146,7 @@ public class SceneDirector {
             return;
         }
 
-        server = new GameServer(port);
+        GameServer server = new GameServer(port);
         serverThread = new Thread(server);
         serverThread.setDaemon(true);
         serverThread.start();
@@ -169,27 +169,6 @@ public class SceneDirector {
     public void hostLobby(String playerName, int port, Consumer<String> onError) {
         startServer(port);
         joinLobby(playerName, "localhost", port, onError);
-    }
-
-    public void showNetworkGame(ClientGameEngine gameService, String clientName) {
-        List<PlayerDTO> players = gameService.getPlayersDTO();
-
-        Map<String, Color> colors = new HashMap<>();
-        colors.put(players.getFirst().name, Color.BLUE);
-        colors.put(players.getLast().name, Color.ORANGE);
-
-        GameView gameView = new GameView(
-                gameService.getGameDTO(),
-                colors
-        );
-
-        gameView.show(stage, clientName);
-
-        GameController controller = new GameController(gameService, gameView, this);
-        controller.initialize();
-
-        stage.centerOnScreen();
-        stage.show();
     }
 
     public void openNetworkGameFromJson(Client client, String playerName, String json) {

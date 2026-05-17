@@ -14,7 +14,6 @@ public class TurnManager {
     private final Player player1;
     private final Player player2;
     private Player currentPlayer;
-    private int turnNumber;
 
     private final List<ITurnListener> listeners = new ArrayList<>();
 
@@ -28,7 +27,6 @@ public class TurnManager {
     public TurnManager(Player p1, Player p2, Player currentPlayer) {
         this.player1 = p1;
         this.player2 = p2;
-        this.turnNumber = 1;
         if (currentPlayer == null) {
             this.currentPlayer = p1;
         } else {
@@ -58,7 +56,6 @@ public class TurnManager {
             currentPlayer = player2;
         } else {
             currentPlayer = player1;
-            turnNumber++;
         }
 
         startTurn(currentPlayer);
@@ -77,38 +74,11 @@ public class TurnManager {
     }
 
     /**
-     * Retrieves the first player.
-     *
-     * @return player 1
-     */
-    public Player getPlayer1() {
-        return player1;
-    }
-
-    /**
-     * Retrieves the second player.
-     *
-     * @return player 2
-     */
-    public Player getPlayer2() {
-        return player2;
-    }
-
-    /**
      * Retrieves the player whose turn is currently active.
      *
      * @return the current active player
      */
     public Player getCurrentPlayer() {
         return currentPlayer;
-    }
-
-    /**
-     * Retrieves the current global turn cycle number.
-     *
-     * @return the current turn number
-     */
-    public int getTurnNumber() {
-        return turnNumber;
     }
 }

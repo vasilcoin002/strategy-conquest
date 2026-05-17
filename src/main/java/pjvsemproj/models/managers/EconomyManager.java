@@ -56,22 +56,6 @@ public class EconomyManager implements ITurnListener {
     }
 
     /**
-     * Retrieves the player currently recognized by the economy manager.
-     * @return the active player
-     */
-    public Player getCurrentPlayer() {
-        return currentPlayer;
-    }
-
-    /**
-     * Manually updates the active player context.
-     * @param player the new active player
-     */
-    public void setCurrentPlayer(Player player) {
-        currentPlayer = player;
-    }
-
-    /**
      * Attempts to upgrade a city.
      * Deducts the required gold from the player and advances the city level.
      *

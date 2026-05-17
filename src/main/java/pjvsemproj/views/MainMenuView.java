@@ -11,7 +11,7 @@ import javafx.scene.layout.VBox;
 
 /**
  * Main menu UI of the game.
- *
+ * <p>
  * Provides options to start local or multiplayer games.
  */
 public class MainMenuView {
@@ -77,7 +77,7 @@ public class MainMenuView {
         root.setFocusTraversable(true);
         // steal the focus immediately after the scene finishes rendering
         Platform.runLater(root::requestFocus);
-        root.setOnMouseClicked(event -> root.requestFocus());
+        root.setOnMouseClicked(e -> root.requestFocus());
     }
 
     public VBox getRoot() {

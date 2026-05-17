@@ -64,7 +64,7 @@ public class LocalGameService extends AbstractClientService {
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            // TODO log
         }
 
         BotExecutor bot = new BotExecutor(this);

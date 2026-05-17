@@ -6,7 +6,7 @@ import pjvsemproj.views.MainMenuView;
 
 /**
  * Controller for main menu UI.
- *
+ * <p>
  * Handles menu actions such as:
  * - starting game
  * - enabling logging

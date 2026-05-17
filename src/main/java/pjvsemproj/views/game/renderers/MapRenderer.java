@@ -7,19 +7,19 @@ import pjvsemproj.dto.CityDTO;
 import pjvsemproj.dto.EntityDTO;
 import pjvsemproj.dto.TileDTO;
 import pjvsemproj.dto.TroopUnitDTO;
-import pjvsemproj.models.entities.IGridEntity;
-import pjvsemproj.models.entities.Ownable;
 import pjvsemproj.models.entities.troopUnits.TroopType;
-import pjvsemproj.models.entities.troopUnits.TroopUnit;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
 
 /**
  * Responsible for rendering map entities (cities, troops, overlays).
- *
+ * <p>
  * Uses JavaFX GraphicsContext for drawing.
  */
 public class MapRenderer extends Renderer {
@@ -45,17 +45,10 @@ public class MapRenderer extends Renderer {
 
         gc.drawImage(
                 cityImage,
-                middleOfTileX - xSize / 2,
-                middleOfTileY - ySize / 2,
+                middleOfTileX - (double) xSize / 2,
+                middleOfTileY - (double) ySize / 2,
                 xSize, ySize
         );
-    }
-
-    private void clearEntity(GraphicsContext gc, EntityDTO entity) {
-        int viewX = getEntityViewX(entity);
-        int viewY = getEntityViewY(entity);
-
-        clear(gc, viewX, viewY, TILE_SIZE, TILE_SIZE);
     }
 
     public void renderCity(GraphicsContext gc, CityDTO city, Color ownerColor) {
@@ -88,10 +81,6 @@ public class MapRenderer extends Renderer {
         }
     }
 
-    public void clearTroopUnit(GraphicsContext gc, TroopUnitDTO troopUnit) {
-        clearEntity(gc, troopUnit);
-    }
-
     public void renderEntityOwner(GraphicsContext gc, EntityDTO entity, Color color) {
         int boxXSize = 32;
         int boxYSize = 4;
@@ -104,13 +93,6 @@ public class MapRenderer extends Renderer {
 
         gc.setFill(color);
         gc.fillRect(boxXPos, boxYPos, boxXSize, boxYSize);
-    }
-
-    private void clearEntityOwner(GraphicsContext gc, EntityDTO entity) {
-        int viewX = getEntityViewX(entity);
-        int viewY = getEntityViewY(entity);
-
-        gc.clearRect(viewX, viewY, TILE_SIZE, TILE_SIZE);
     }
 
     public void renderTroopUnitHp(GraphicsContext gc, TroopUnitDTO troopUnit) {
@@ -132,17 +114,7 @@ public class MapRenderer extends Renderer {
         gc.fillRect(boxXPos, boxYPos, boxXSize, (1 - percentHpLeft) * boxYSize);
     }
 
-    private void clearTroopUnitHp(GraphicsContext gc, TroopUnitDTO troopUnit) {
-        int viewX = getEntityViewX(troopUnit);
-        int viewY = getEntityViewY(troopUnit);
-
-        gc.clearRect(viewX, viewY, TILE_SIZE, TILE_SIZE);
-    }
-
     public void renderTile(GraphicsContext gc, TileDTO tile, Map<String, Color> ownersColor) {
-        int viewX = tile.x * TILE_SIZE;
-        int viewY = tile.y * TILE_SIZE;
-
         for (EntityDTO entity: tile.entities) {
             if (entity instanceof CityDTO city) {
                 renderCity(gc, city, ownersColor.get(city.ownerName));
@@ -150,8 +122,6 @@ public class MapRenderer extends Renderer {
                 renderTroop(gc, troopUnit, ownersColor.get(troopUnit.ownerName));
             }
         }
-
-//        gc.clearRect(viewX, viewY, TILE_SIZE, TILE_SIZE);
     }
 
     public void clearTile(GraphicsContext gc, TileDTO tile) {
@@ -169,9 +139,9 @@ public class MapRenderer extends Renderer {
         gc.drawImage(image, viewX, viewY, TILE_SIZE, TILE_SIZE);
     }
 
-    public void clearSelection(GraphicsContext gc) {
-        clear(gc);
-    }
+//    public void clearSelection(GraphicsContext gc) {
+//        clear(gc);
+//    }
 
     public void renderAvailableMoves(GraphicsContext gc, Set<TileDTO> tiles) {
         for (TileDTO tile: tiles) {

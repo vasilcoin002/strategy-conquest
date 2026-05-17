@@ -122,68 +122,6 @@ public class GameSetupManager {
     }
 
     /**
-     * Executes the loading pipeline for a Multiplayer scenario.
-     * All players defined in the configuration are instantiated as {@link HumanPlayer}s.
-     *
-     * @param levelFilePath The file path to the JSON game configuration.
-     * @return A validated and fully hydrated {@link Game} instance.
-     */
-    public Game loadNetworkGame(String levelFilePath) {
-        GameDTO gameDTO = parser.parseLevelConfig(levelFilePath);
-
-        sanitizer.sanitize(gameDTO);
-        validator.validate(gameDTO);
-
-        return createGameFromDTO(gameDTO, null, false);
-    }
-
-    /**
-     * Executes the loading pipeline for a Multiplayer Server.
-     * Dynamically overrides the configuration's hardcoded player names with the connected clients.
-     *
-     * @param levelFilePath The file path to the JSON game configuration.
-     * @param player1Name   The name of the first connected client.
-     * @param player2Name   The name of the second connected client.
-     * @return A validated and fully hydrated {@link Game} instance.
-     */
-    public Game loadNetworkGame(String levelFilePath, String player1Name, String player2Name) {
-        GameDTO gameDTO = parser.parseLevelConfig(levelFilePath);
-
-        sanitizer.sanitize(gameDTO);
-
-        // Dynamically override the configuration names with the connected clients
-        if (gameDTO.players != null && gameDTO.players.size() >= 2) {
-            String configP1 = gameDTO.players.get(0).name;
-            String configP2 = gameDTO.players.get(1).name;
-
-            gameDTO.players.get(0).name = player1Name;
-            gameDTO.players.get(1).name = player2Name;
-
-            // Sync the active turn
-            if (configP1.equals(gameDTO.currentPlayerName)) {
-                gameDTO.currentPlayerName = player1Name;
-            } else if (configP2.equals(gameDTO.currentPlayerName)) {
-                gameDTO.currentPlayerName = player2Name;
-            }
-
-            // Sync ownership of all map entities
-            if (gameDTO.entities != null) {
-                for (EntityDTO entity : gameDTO.entities) {
-                    if (configP1.equals(entity.ownerName)) {
-                        entity.ownerName = player1Name;
-                    } else if (configP2.equals(entity.ownerName)) {
-                        entity.ownerName = player2Name;
-                    }
-                }
-            }
-        }
-
-        validator.validate(gameDTO);
-
-        return createGameFromDTO(gameDTO, null, false);
-    }
-
-    /**
      * Core factory method that translates a sanitized and validated DTO into active domain models.
      *
      * @param dto             The guaranteed-safe game data transfer object.

@@ -8,7 +8,7 @@ public class MultiplayerLobbyView {
 
     private final VBox root;
 
-    private Label errorLabel;
+    private final Label errorLabel;
     private final TextField hostField;
     private final TextField portField;
 
