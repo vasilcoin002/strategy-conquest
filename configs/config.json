@@ -1,0 +1,50 @@
+{
+  "mapWidth": 10,
+  "mapHeight": 10,
+  "currentPlayerName": "Vasya",
+  "players": [
+    {
+      "name": "Vasya",
+      "balance": 25
+    },
+    {
+      "name": "Ivan",
+      "balance": 25
+    }
+  ],
+  "entities": [
+    {
+      "id": "vasya's city",
+      "entityType": "City",
+      "x": 1,
+      "y": 1,
+      "ownerName": "Vasya",
+      "cityLevel": "LEVEL_1"
+    },
+    {
+      "entityType": "Militia",
+      "x": 1,
+      "y": 1,
+      "ownerName": "Vasya",
+      "hp": 20,
+      "hasMovedThisTurn": false,
+      "hasAttackedThisTurn": false
+    },
+    {
+      "entityType": "City",
+      "x": 8,
+      "y": 8,
+      "ownerName": "Ivan",
+      "cityLevel": "LEVEL_1"
+    },
+    {
+      "entityType": "Militia",
+      "x": 8,
+      "y": 8,
+      "ownerName": "Ivan",
+      "hp": 20,
+      "hasMovedThisTurn": false,
+      "hasAttackedThisTurn": false
+    }
+  ]
+}
