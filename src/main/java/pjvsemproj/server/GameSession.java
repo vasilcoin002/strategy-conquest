@@ -58,11 +58,6 @@ public class GameSession {
 
         connection1.sendToClient(Protocol.GAME_STATE, json);
         connection2.sendToClient(Protocol.GAME_STATE, json);
-
-        PlayerDTO currentPlayer = gameService.getCurrentPlayerDTO();
-
-
-        // not calling startFirstTurn to leave game like in configuration
     }
 
     public synchronized void handleReady(Connection connection) {
@@ -141,8 +136,8 @@ public class GameSession {
 
         TroopUnitDTO target = (TroopUnitDTO) gameService.getEntityDTO(targetId);
         if (target == null) {
-            connection1.sendToClient(Protocol.UNIT_DIED, targetId);
-            connection2.sendToClient(Protocol.UNIT_DIED, targetId);
+            connection1.sendToClient(Protocol.UNIT_ATTACKED, attackerId, targetId, "0");
+            connection2.sendToClient(Protocol.UNIT_ATTACKED, attackerId, targetId, "0");
             return;
         }
 
