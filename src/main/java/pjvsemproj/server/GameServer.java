@@ -104,36 +104,22 @@ public class GameServer implements Runnable {
     }
 
     public synchronized void tryAssignToSession() {
-        // If we have at least 2 people waiting in the lobby
         if (connectionsByName.size() >= 2) {
 
-            // 1. Grab the first two connections
             List<Connection> waitingList = new ArrayList<>(connectionsByName.values());
             Connection c1 = waitingList.get(0);
             Connection c2 = waitingList.get(1);
 
-            // 2. Remove them from the lobby so they don't get matched again
             connectionsByName.remove(c1.getPlayerName());
             connectionsByName.remove(c2.getPlayerName());
 
-            // TODO remove creation of predefined test match and load configured match from config file
-            // 3. Create the Player domain objects
-            Player p1 = new HumanPlayer(c1.getPlayerName(), 100);
-            Player p2 = new HumanPlayer(c2.getPlayerName(), 100);
-
-            // 4. Build the Game State
             GameSetupManager setupManager = new GameSetupManager();
-            GameMap map = new GameMap(5, 5);
-            Game game = setupManager.setupTestMatch(map, p1, p2);
-
-            // 5. Create the Referee (Service)
+            Game game = setupManager.loadNetworkGame("config.json", c1.getPlayerName(), c2.getPlayerName());
             CoreGameService service = new ServerGameService(game);
 
-            // 6. Create the Session and inject the Referee
             GameSession session = new GameSession(this, c1, c2, service);
             sessions.add(session);
 
-            // 7. Link the connections to their new session
             c1.setSession(session);
             c2.setSession(session);
 
