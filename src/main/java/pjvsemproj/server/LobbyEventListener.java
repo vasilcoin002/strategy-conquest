@@ -20,14 +20,9 @@ public class LobbyEventListener {
         this.playerName = playerName;
     }
 
-    public void onGameStarted(String player1Name, String player2Name) {
-        Platform.runLater(() -> {
-            director.openNetworkGame(client, playerName, player1Name, player2Name);
-        });
-    }
-
     public void onGameState(String json) {
         Platform.runLater(() -> {
             director.openNetworkGameFromJson(client, playerName, json);
         });
-}}
+    }
+}

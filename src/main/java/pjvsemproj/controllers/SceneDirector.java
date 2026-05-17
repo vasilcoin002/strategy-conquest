@@ -164,28 +164,6 @@ public class SceneDirector {
         clientThread.start();
     }
 
-    public void openNetworkGame(
-            Client client,
-            String myName,
-            String player1Name,
-            String player2Name
-    ) {
-        Player p1 = new HumanPlayer(player1Name, 100);
-        Player p2 = new HumanPlayer(player2Name, 100);
-
-        GameSetupManager setupManager = new GameSetupManager();
-        GameMap map = new GameMap(5, 5);
-        Game game = setupManager.setupTestMatch(map, p1, p2);
-
-        NetworkGameService gameService =
-                new NetworkGameService(client, game);
-
-        gameService.setLocalClientName(myName);
-
-        showNetworkGame(gameService, myName);
-
-        gameService.ready();
-    }
 
     public void hostLobby(String playerName, int port) {
         startServer(port);

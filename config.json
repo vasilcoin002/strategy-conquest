@@ -1,7 +1,7 @@
 {
-  "mapWidth": 5,
-  "mapHeight": 5,
-  "currentPlayerName": "Ivan",
+  "mapWidth": 3,
+  "mapHeight": 3,
+  "currentPlayerName": "Vasya",
   "players": [
     {
       "name": "Vasya",

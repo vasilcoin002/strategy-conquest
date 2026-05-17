@@ -114,7 +114,38 @@ public class GameServer implements Runnable {
             connectionsByName.remove(c2.getPlayerName());
 
             GameSetupManager setupManager = new GameSetupManager();
-            Game game = setupManager.loadNetworkGame("config.json", c1.getPlayerName(), c2.getPlayerName());
+            Game game;
+
+            try {
+                game = setupManager.loadNetworkGame("config.json");
+            } catch (Exception e) {
+                c1.sendToClient(Protocol.ERROR, "Config failed: " + e.getMessage());
+                c2.sendToClient(Protocol.ERROR, "Config failed: " + e.getMessage());
+                return;
+            }
+
+            String expected1 = game.getPlayers().get(0).getName();
+            String expected2 = game.getPlayers().get(1).getName();
+
+            String name1 = c1.getPlayerName();
+            String name2 = c2.getPlayerName();
+
+            boolean isMatch = (name1.equals(expected1) && name2.equals(expected2)) ||
+                    (name1.equals(expected2) && name2.equals(expected1));
+
+            if (!isMatch) {
+                String errorMsg = "Name mismatch! Config requires: " + expected1 + " & " + expected2;
+
+                c1.sendToClient(Protocol.ERROR, errorMsg);
+                c2.sendToClient(Protocol.ERROR, errorMsg);
+
+                connectionsByName.remove(name1);
+                connectionsByName.remove(name2);
+                c1.closeConnection();
+                c2.closeConnection();
+                return;
+            }
+
             CoreGameService service = new ServerGameService(game);
 
             GameSession session = new GameSession(this, c1, c2, service);
@@ -122,6 +153,9 @@ public class GameServer implements Runnable {
 
             c1.setSession(session);
             c2.setSession(session);
+
+            LOGGER.info("Match created between " + name1 + " and " + name2);
+            session.startGame();
 
             LOGGER.info("Match created between " + c1.getPlayerName() + " and " + c2.getPlayerName());
             session.startGame();

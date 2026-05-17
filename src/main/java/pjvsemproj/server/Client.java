@@ -102,8 +102,11 @@ public class Client implements Runnable {
                 break;
 
             case GAME_STATE:
+                int delimiterIndex = msg.indexOf('|');
+                String jsonPayload = msg.substring(delimiterIndex + 1);
+
                 if (lobbyListener != null) {
-                    lobbyListener.onGameState(tokens[1]);
+                    lobbyListener.onGameState(jsonPayload);
                 }
                 break;
 

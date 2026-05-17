@@ -72,7 +72,6 @@ public class MainMenuController {
 
         this.clientName = playerName;
 
-        // FIX: Pass the name variable into the director here!
         director.showMultiplayerLobby(playerName);
     }
 
