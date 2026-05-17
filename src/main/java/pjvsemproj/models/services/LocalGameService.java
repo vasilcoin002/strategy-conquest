@@ -18,17 +18,18 @@ import java.util.concurrent.CompletableFuture;
 public class LocalGameService extends AbstractClientService {
 
     /**
-     * Constructs a local single-player game service.
+     * Constructs a local single-player game service engine.
      *
-     * @param game the initial game state
+     * @param game The initial domain {@link Game} simulation state model to manage.
      */
     public LocalGameService(Game game) {
         super(game);
     }
 
     /**
-     * Signals that the client is ready. Currently unimplemented for local games
-     * as no network synchronization is required.
+     * Signals that the client is ready.
+     * <p>
+     * Currently unimplemented for local games as no network synchronization is required.
      */
     @Override
     public void ready() {
@@ -36,8 +37,11 @@ public class LocalGameService extends AbstractClientService {
     }
 
     /**
-     * Ends the current turn and checks if the next player is controlled by the AI.
-     * If so, it asynchronously triggers the bot's turn to prevent freezing the UI.
+     * Ends the current turn and checks if the subsequent player is controlled by an AI script.
+     * <p>
+     * If the upcoming participant is verified as a {@link BotPlayer}, it asynchronously
+     * triggers the automated thinking routines via {@link CompletableFuture#runAsync(Runnable)}
+     * to prevent blocking or freezing the main UI application thread.
      */
     @Override
     public void endTurn() {
@@ -55,7 +59,10 @@ public class LocalGameService extends AbstractClientService {
     }
 
     /**
-     * Simulates the bot "thinking" and executes its calculated turn actions.
+     * Simulates the AI bot "thinking" parameters and dispatches its calculated turn actions.
+     * <p>
+     * Induces a structural thread sleep interval to mimic cognitive delays, then delegates choice patterns
+     * over to a newly instantiated {@link BotExecutor} module.
      */
     private void playBotTurn() {
         System.out.println("Bot is making its moves...");
@@ -72,29 +79,30 @@ public class LocalGameService extends AbstractClientService {
     }
 
     /**
-     * Bypasses standard fog-of-war restrictions so the local bot can evaluate its attack options.
+     * Bypasses standard visibility or fog-of-war constraints so the local bot can evaluate its complete combat attack options.
      *
-     * @param unitId the bot's unit
-     * @return a set of attackable tiles
+     * @param unitId Unique lookup token identifier string matching the bot's tracking military unit.
+     * @return A {@link Set} containing unconstrained target cell {@link TileDTO} objects that the bot unit can legally hit.
      */
     public Set<TileDTO> getBotAttackTiles(String unitId) {
         return getUnrestrictedAttackTiles(unitId);
     }
 
     /**
-     * Bypasses standard fog-of-war restrictions so the local bot can evaluate its movement options.
+     * Bypasses standard visibility or fog-of-war constraints so the local bot can evaluate its complete spatial movement options.
      *
-     * @param unitId the bot's unit
-     * @return a set of reachable tiles
+     * @param unitId Unique lookup token identifier string matching the bot's tracking military unit.
+     * @return A {@link Set} containing unconstrained reachable path cell {@link TileDTO} objects that the bot unit can legally traverse.
      */
     public Set<TileDTO> getBotMoveTiles(String unitId) {
         return getUnrestrictedMovementTiles(unitId);
     }
 
     /**
-     * Determines if the UI should allow input based on whether the active player is human.
+     * Determines if the graphical user interface should unlock component inputs based on active player types.
      *
-     * @return {@code true} if a human player is currently active
+     * @return {@code true} if a human player is currently active and holding interaction clearances;
+     * {@code false} if an AI bot is processing moves.
      */
     @Override
     public boolean isMyTurn() {

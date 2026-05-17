@@ -16,7 +16,11 @@ import java.util.Set;
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
 /**
- * Main controller connecting UI with game logic.
+ * Main application coordinator implementing the Controller role in MVC patterns.
+ * <p>
+ * Mediates communication and sync between the presentation view graph layer ({@link GameView})
+ * and the client simulation engine logic ({@link ClientGameEngine}). Handles inputs including selection,
+ * movement calculations, troop production actions, and state transitions on JavaFX UI threads.
  */
 public class GameController {
 
@@ -26,6 +30,12 @@ public class GameController {
 
     private String selectedEntityId;
 
+    /**
+     * Constructs a controller instance and binds input actions from the user interface.
+     * @param gameService   The client-side game engine service handling operational rules and simulation state.
+     * @param view          The JavaFX graphical user interface wrapper displaying game assets and grid elements.
+     * @param sceneDirector The central manager orchestrating scene transformations and application display states.
+     */
     public GameController(ClientGameEngine gameService, GameView view, SceneDirector sceneDirector) {
         this.gameService = gameService;
         this.view = view;
@@ -46,6 +56,12 @@ public class GameController {
         view.setOnUpgradeCityAction(this::handleUpgradeCity);
     }
 
+    /**
+     * Initializes the controller lifecycle hooks and connects asynchronous backend engine state listeners.
+     * <p>
+     * Leverages {@link Platform#runLater(Runnable)} to guarantee thread-safe rendering on the JavaFX main thread
+     * whenever game updates arrive from background network listeners.
+     */
     public void initialize() {
         // We must use Platform.runLater because the Service might
         // trigger this from a background thread
@@ -69,6 +85,9 @@ public class GameController {
 
     /**
      * Centralizes UI updates to ensure the view perfectly reflects the current GameState.
+     * <p>
+     * Re-draws the map grids, syncs participant bank accounts, re-evaluates turn label values,
+     * and dynamically adjusts selection action panels based on ownership permissions.
      */
     private void syncGameStateToUI() {
         view.setNextTurnButtonDisabled(!gameService.isMyTurn());
@@ -80,6 +99,15 @@ public class GameController {
         setSelectedEntityId(selectedEntityId);
     }
 
+    /**
+     * Translates screen-space pixel click inputs into operational grid tile indexes.
+     * <p>
+     * Evaluates if a click hit an empty square or an occupied coordinate block to delegate
+     * contextual actions appropriately.
+     *
+     * @param viewX Click position along the horizontal component axis in pixels.
+     * @param viewY Click position along the vertical component axis in pixels.
+     */
     private void handleGameAreaClick(int viewX, int viewY) {
         int x = viewX / TILE_SIZE;
         int y = viewY / TILE_SIZE;
@@ -94,6 +122,14 @@ public class GameController {
         handleOccupiedTileClick(tile);
     }
 
+    /**
+     * Processes execution scopes when an unallocated tile destination is selected.
+     * <p>
+     * If an applicable unit is currently locked onto selection, it dispatches a relocation move sequence.
+     *
+     * @param x Target tile horizontal column grid index.
+     * @param y Target tile vertical row grid index.
+     */
     private void handleEmptyTileClick(int x, int y) {
         if (selectedEntityId == null) return;
 
@@ -104,6 +140,14 @@ public class GameController {
         setSelectedEntityId(null);
     }
 
+    /**
+     * Evaluates selection changes or interaction behaviors when an occupied grid node is targeted.
+     * <p>
+     * Resolves complex contextual logic branching such as dropping selection if the unit is re-clicked,
+     * recalculating target layers, executing unit re-selections, or parsing attack action triggers.
+     *
+     * @param targetTile The structural grid cell containing data representation properties to interact with.
+     */
     private void handleOccupiedTileClick(TileDTO targetTile) {
         // if entity is not selected yet => select the very top entity on tile
         if (selectedEntityId == null) {
@@ -146,6 +190,12 @@ public class GameController {
         setSelectedEntityId(targetEntity.id);
     }
 
+    /**
+     * Dispatches unit production requests to the logic engine and triggers local grid refreshes.
+     *
+     * @param cityId    Unique string token identifier of the factory settlement creating the asset.
+     * @param troopType Structural metadata enum descriptor representing the chosen military class configuration.
+     */
     private void handleBuyUnit(String cityId, String troopType) {
         gameService.buyUnit(cityId, troopType);
         EntityDTO city = gameService.getEntityDTO(cityId);
@@ -154,12 +204,22 @@ public class GameController {
         setSelectedEntityId(cityId);
     }
 
+    /**
+     * Dispatches tier transformation commands to upgrade a target city structure.
+     *
+     * @param cityId Unique metadata token string identifying the settlement to upgrade.
+     */
     private void handleUpgradeCity(String cityId) {
         gameService.upgradeCity(cityId);
 
         setSelectedEntityId(cityId);
     }
 
+    /**
+     * Intercepts file export triggers to serialize the operational game data down onto disk storage.
+     * <p>
+     * Utilizes a file picker popup to extract a destination path before converting DTO structures into JSON format.
+     */
     public void handleSaveGameRequest() {
         sceneDirector.showSaveFileDialog(filePath -> {
             if (filePath != null) {
@@ -175,11 +235,23 @@ public class GameController {
         });
     }
 
+    /**
+     * Processes quit triggers by closing network sockets or teardown local dependencies,
+     * before redirecting the interface back to the main menu screen.
+     */
     public void handleQuitGameRequest() {
         gameService.quit();
         sceneDirector.showMainMenu();
     }
 
+    /**
+     * Updates the internal active targeting tracker and refreshes selection overlay highlights.
+     * <p>
+     * Evaluates ownership criteria to decide if user control panels should be displayed,
+     * and handles highlighting overlay grids for unit actions.
+     *
+     * @param entityId The target unique identification token to isolate, or {@code null} to drop active targeting tracking.
+     */
     public void setSelectedEntityId(String entityId) {
         this.selectedEntityId = entityId;
         EntityDTO entity = gameService.getEntityDTO(entityId);
@@ -205,6 +277,15 @@ public class GameController {
         }
     }
 
+    /**
+     * Executes coordinates translation pipelines to adjust position states across components.
+     * <p>
+     * Clears original cell coordinates and forces redraws over both origin and target boundaries.
+     *
+     * @param troopUnitId Unique lookup key identifying the moving entity.
+     * @param x           Target horizontal destination column index.
+     * @param y           Target vertical destination row index.
+     */
     private void moveTroop(String troopUnitId, int x, int y) {
         TroopUnitDTO troopUnit = (TroopUnitDTO) gameService.getEntityDTO(troopUnitId);
         int oldX = troopUnit.x;
@@ -215,6 +296,14 @@ public class GameController {
         setSelectedEntityId(null);
     }
 
+    /**
+     * Executes interaction loops between attacking assets and matching targeted unit positions.
+     * <p>
+     * Triggers the combat calculations and re-renders modified grid boundaries.
+     *
+     * @param attackerId Unique verification token matching the attacking unit.
+     * @param targetId   Unique verification token matching the defending unit destination.
+     */
     private void attackTroop(String attackerId, String targetId) {
         TroopUnitDTO target = (TroopUnitDTO) gameService.getEntityDTO(targetId);
         gameService.attack(attackerId, targetId);
@@ -222,6 +311,12 @@ public class GameController {
         setSelectedEntityId(null);
     }
 
+    /**
+     * Forces visual synchronization of specific layout grids within viewport boundaries.
+     *
+     * @param x Target tile horizontal cell coordinate.
+     * @param y Target tile vertical cell coordinate.
+     */
     public void updateTile(int x, int y) {
         TileDTO tile = gameService.getTileDTO(x, y);
         view.updateTile(tile);

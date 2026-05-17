@@ -236,6 +236,21 @@ public class GameSetupManager {
         OwnershipHelper.addTroopUnitToPlayer(troop, owner);
     }
 
+    /**
+     * Executes the loading pipeline for a Multiplayer Network scenario.
+     * <p>
+     * This method serves as the main factory entry point on the client side when
+     * a game state JSON is received from the server. It delegates to the core game
+     * builder, ensuring that all participants are instantiated as {@link HumanPlayer}s
+     * rather than AI bots.
+     *
+     * @param dto             The guaranteed-safe, parsed, and validated game data transfer object
+     * containing the multiplayer map layout and participants.
+     * @param localClientName The name of the local client running this instance of the application.
+     * @return A fully hydrated and active {@link Game} state, complete with networks-synchronized
+     * map tiles, player balances, cities, and troops.
+     * @see #createGameFromDTO(GameDTO, String, boolean)
+     */
     public Game createNetworkGameFromDTO(GameDTO dto, String localClientName) {
         return createGameFromDTO(dto, localClientName, false);
     }

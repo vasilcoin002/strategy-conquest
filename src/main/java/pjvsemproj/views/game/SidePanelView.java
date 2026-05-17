@@ -19,11 +19,14 @@ import static pjvsemproj.views.ViewConstants.GAME_SIDE_PANEL_WIDTH;
 
 /**
  * UI panel displaying player info and actions.
- * Allows interaction with selected entities.
+ * <p>
+ * Allows interaction with selected entities. Encapsulates sub-elements
+ * inside a scrolling layout to display statistical attributes and trigger production menus dynamically
+ * depending on selection context permissions.
  */
 public class SidePanelView {
 
-    private final ScrollPane root;   // The new scrolling container
+    private final ScrollPane root;
 
     private final Label currentPlayerLabel;
     private final Label ballanceLabel;
@@ -39,6 +42,12 @@ public class SidePanelView {
     private BiConsumer<String, String> onBuyUnitAction;
     private Consumer<String> onUpgradeCityAction;
 
+    /**
+     * Constructs a side panel control canvas structure, assembling text nodes and layout spacers.
+     * <p>
+     * Pins key buttons like "Save Game", "Quit Game", and "Next Turn" to their respective execution callbacks
+     * and configures scrolling behavior metrics.
+     */
     public SidePanelView() {
         VBox contentBox = new VBox(15);
         contentBox.setPadding(new Insets(20));
@@ -93,13 +102,16 @@ public class SidePanelView {
 
     /**
      * Reads the tile's entities list and builds the switcher if anything is there.
+     * <p>
+     * Dynamically generates button panels to select overlapping elements (like a garrisoned troop
+     * sitting inside a city structure) on the exact same tile cell location.
+     *
+     * @param tile The targeted map cell {@link TileDTO} container currently being queried.
      */
     public void updateForTile(TileDTO tile) {
         switcherBox.getChildren().clear();
-//        actionMenuBox.getChildren().clear();
 
         if (tile == null || tile.entities.isEmpty()) {
-//            entityInfoLabel.setText("Selected: None");
             return;
         }
 
@@ -131,10 +143,20 @@ public class SidePanelView {
         }
     }
 
+    /**
+     * Fetches the root scrolling layout element parent component to attach to screen view roots.
+     *
+     * @return The underlying JavaFX configuration {@link ScrollPane} layout wrapper node.
+     */
     public ScrollPane getView() {    // Update return type
         return root;
     }
 
+    /**
+     * Synchronizes and formats player economic gold accounts into layout balance text components.
+     *
+     * @param players An aggregated collection list of all active match participant {@link PlayerDTO} models.
+     */
     public void updatePlayersBalance(List<PlayerDTO> players) {
         ballanceLabel.setText(
                 "Balance:\n" +
@@ -143,17 +165,34 @@ public class SidePanelView {
         );
     }
 
+    /**
+     * Refreshes the display indicator string showing who holds current turn processing clearances.
+     *
+     * @param currentPlayerName Profile name string key identifying the currently active user player.
+     */
     public void updateCurrentPlayer(String currentPlayerName) {
         if (currentPlayerName != null) {
             currentPlayerLabel.setText("Current Player: " + currentPlayerName);
         }
     }
 
+    /**
+     * Clears contextual entity metadata boxes and strips out child action components.
+     */
     public void clearEntityInfo() {
         entityInfoLabel.setText("Selected: None");
         actionMenuBox.getChildren().clear();
     }
 
+    /**
+     * Populates specific descriptive statistical markers and mounts action buttons based on entity characteristics.
+     * <p>
+     * If the selected entity matches city parameters and belongs to the human client player, it dynamically
+     * loads tier transform buttons and recruitment options for every valid troop class configuration.
+     *
+     * @param entity  The targeted model container whose data attributes must populate labels.
+     * @param isOwner Permission flag specifying if the local user holds command rights over this asset.
+     */
     public void updateEntityInfo(EntityDTO entity, boolean isOwner) {
         actionMenuBox.getChildren().clear();
 
@@ -169,7 +208,7 @@ public class SidePanelView {
                     });
                     actionMenuBox.getChildren().add(upgradeBtn);
                 }
-                
+
                 if (city.canSpawnTroops) {
                     Button buyMilitiaBtn = new Button("Buy " + TroopType.Militia.name() + ": " + TroopType.Militia.getPrice() + " gold");
                     Button buyInfantryBtn = new Button("Buy " + TroopType.Infantry.name() + ": " + TroopType.Infantry.getPrice() + " gold");
@@ -195,36 +234,77 @@ public class SidePanelView {
         }
     }
 
+    /**
+     * Internal delegation routine to invoke the underlying recruitment closures.
+     *
+     * @param cityId    Unique settlement identifier token acting as the manufacturing point.
+     * @param troopType High-level target class configuration metadata identifier string.
+     */
     private void triggerBuy(String cityId, String troopType) {
         if (onBuyUnitAction != null) {
             onBuyUnitAction.accept(cityId, troopType);
         }
     }
 
+    /**
+     * Registers a callback closure hook to process unit purchase commands.
+     *
+     * @param onBuyUnitAction A {@link BiConsumer} mapping production location IDs onto target class configuration tags.
+     */
     public void setOnBuyUnitAction(BiConsumer<String, String> onBuyUnitAction) {
         this.onBuyUnitAction = onBuyUnitAction;
     }
 
+    /**
+     * Registers a callback closure hook to handle city tier upgrades.
+     *
+     * @param onUpgradeCityAction A {@link Consumer} closure processing city tracking IDs.
+     */
     public void setOnUpgradeCityAction(Consumer<String> onUpgradeCityAction) {
         this.onUpgradeCityAction = onUpgradeCityAction;
     }
 
+    /**
+     * Disables or enables the Next Turn button panel depending on user control clearances.
+     *
+     * @param disabled {@code true} to lock inputs during rival action blocks; {@code false} when it is the user's turn.
+     */
     public void setNextTurnButtonDisabled(boolean disabled) {
         nextTurnBtn.setDisable(disabled);
     }
 
+    /**
+     * Registers a callback closure to process item target selection modifications inside switcher menus.
+     *
+     * @param onEntitySelectedAction A {@link Consumer} closure handling selection changes.
+     */
     public void setOnEntitySelectedAction(Consumer<EntityDTO> onEntitySelectedAction) {
         this.onEntitySelectedAction = onEntitySelectedAction;
     }
 
+    /**
+     * Registers a callback closure hook to rotate active turn player control parameters.
+     *
+     * @param action A {@link Runnable} closure executing turn rotation logic.
+     */
     public void setOnNextTurnAction(Runnable action) {
         this.onNextTurnAction = action;
     }
 
+    /**
+     * Registers a callback closure hook to handle match surrender exits.
+     *
+     * @param onQuitGameAction A {@link Runnable} closure executing exit cleanup commands.
+     */
     public void setOnQuitGameAction(Runnable onQuitGameAction) {
         this.onQuitGameAction = onQuitGameAction;
     }
 
+    /**
+     * Registers a callback closure hook to trigger save configuration exports.
+     *
+     * @param onSaveGameAction A {@link Runnable} closure spawning save file filepicker selectors.
+     */
     public void setOnSaveGameAction(Runnable onSaveGameAction) {
         this.onSaveGameAction = onSaveGameAction;
     }

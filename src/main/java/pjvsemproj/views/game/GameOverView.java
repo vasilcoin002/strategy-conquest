@@ -7,12 +7,26 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
+/**
+ * Graphical layout representation modal presented upon match resolution.
+ * <p>
+ * Displays the victory declaration banner identifying the winning participant and offers
+ * interactive controls to cleanly exit the active match session back to the primary menu.
+ */
 public class GameOverView {
 
     private final Scene scene;
 
     private Runnable onMainMenuAction;
 
+    /**
+     * Constructs a game over layout node graph hydrated with the winning player's credentials.
+     * <p>
+     * Builds standard layout dimensions, style themes, typography weights, and registers
+     * an event trigger on the return action button.
+     *
+     * @param winnerName The unique profile username string identifying the victorious player.
+     */
     public GameOverView(String winnerName) {
         VBox root = new VBox(20);
         root.setAlignment(Pos.CENTER);
@@ -36,10 +50,20 @@ public class GameOverView {
         scene = new Scene(root, 400, 300);
     }
 
+    /**
+     * Fetches the self-contained window scene graph prepared for modal display staging.
+     *
+     * @return The pre-assembled JavaFX {@link Scene} container asset.
+     */
     public Scene getScene() {
         return scene;
     }
 
+    /**
+     * Registers a callback closure to execute root menu redirections when requested by user input.
+     *
+     * @param onMainMenuAction A {@link Runnable} closure containing navigation instructions.
+     */
     public void setOnMainMenuAction(Runnable onMainMenuAction) {
         this.onMainMenuAction = onMainMenuAction;
     }

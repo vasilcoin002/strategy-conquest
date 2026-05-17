@@ -8,6 +8,13 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Server-side connection worker running on an independent background thread.
+ * <p>
+ * Responsible for managing the bidirectional communication lifecycle with an individual remote client socket.
+ * It maintains a blocking read loop to capture inbound text packets, decodes them using pipe-delimited tokens,
+ * routes the parsed commands to active match sessions, and exposes safe utilities to send replies.
+ */
 public class Connection implements Runnable {
 
     private static final Logger LOGGER = Logger.getLogger(Connection.class.getName());
@@ -19,12 +26,25 @@ public class Connection implements Runnable {
     private GameSession session;
     private boolean running;
 
+    /**
+     * Constructs a connection handler instance bound to a unique network socket.
+     *
+     * @param server The master {@link GameServer} instance orchestrating lobby matchmaking queues and registries.
+     * @param socket The active network {@link Socket} pipeline established with the remote application client.
+     */
     public Connection(GameServer server, Socket socket) {
         this.server = server;
         this.socket = socket;
         this.running = false;
     }
 
+    /**
+     * Runs the primary connection worker execution block.
+     * <p>
+     * Initializes buffered stream wrappers, switches structural flags to active states,
+     * and processes incoming text lines within a blocking message-reception loop until
+     * a disconnect pattern occurs or an I/O anomaly hits.
+     */
     @Override
     public void run() {
         try {
@@ -50,6 +70,13 @@ public class Connection implements Runnable {
         }
     }
 
+    /**
+     * Splits and parses raw input string messages to route them onto appropriate business handlers.
+     *
+     * @param msg The raw data line read from the underlying client socket input stream buffer.
+     * @return {@code true} if the listener loop should continue processing subsequent inbound messages;
+     * {@code false} if the session lifecycle must break and terminate.
+     */
     private boolean processIncomingMessage(String msg) {
         String[] tokens = msg.split("\\|", -1);
         Protocol actionCode = Protocol.valueOf(tokens[0]);
@@ -101,6 +128,12 @@ public class Connection implements Runnable {
         return true;
     }
 
+    /**
+     * Composes and transmits an encoded, pipe-delimited packet string back to the connected client.
+     *
+     * @param code The primary {@link Protocol} header token that classifies the action type context.
+     * @param args A varargs string array mapping parameters to append sequentially behind the protocol code header.
+     */
     public void sendToClient(Protocol code, String... args) {
         StringBuilder msg = new StringBuilder(code.toString());
 
@@ -112,6 +145,13 @@ public class Connection implements Runnable {
         out.flush();
     }
 
+    /**
+     * Processes login authentication packets and registers the client identity in the lobby.
+     * <p>
+     * Verifies syntax bounds, cleans input strings, and checks if the name is already in use.
+     *
+     * @param tokens The complete token array split from the raw incoming protocol message string.
+     */
     private void handleLogin(String[] tokens) {
         if (tokens.length < 2) {
             sendToClient(Protocol.ERROR, "LOGIN_REQUIRES_NAME");
@@ -130,6 +170,11 @@ public class Connection implements Runnable {
         sendToClient(Protocol.OK, "LOGIN_ACCEPTED");
     }
 
+    /**
+     * Routes a match readiness signal to the containing game session.
+     * <p>
+     * Verifies that the client is logged in and belongs to an active game room before applying changes.
+     */
     private void handleReady() {
         if (!isLoggedIn()) {
             sendToClient(Protocol.ERROR, "NOT_LOGGED_IN");
@@ -144,10 +189,18 @@ public class Connection implements Runnable {
         session.handleReady(this);
     }
 
+    /**
+     * Extracts coordinates and executes safe spatial relocation instructions inside the match session.
+     * <p>
+     * Verifies authentication guards, validates token element indices, and wraps parameter transformations
+     * in try-catch constraints to prevent malformed coordinate injection crashes.
+     *
+     * @param tokens The complete token array split from the raw incoming protocol message string.
+     */
     private void handleMove(String[] tokens) {
-
         if (!isLoggedIn()) {
             sendToClient(Protocol.ERROR, "NOT_LOGGED_IN");
+            return; // Fix missing return statement to stop processing malformed states
         }
 
         if (tokens.length < 4) {
@@ -165,6 +218,11 @@ public class Connection implements Runnable {
         }
     }
 
+    /**
+     * Parses input keys and forwards offensive combat commands to the active game session.
+     *
+     * @param tokens The complete token array split from the raw incoming protocol message string.
+     */
     private void handleAttack(String[] tokens) {
         if (!isLoggedIn()) {
             sendToClient(Protocol.ERROR, "NOT_LOGGED_IN");
@@ -187,6 +245,11 @@ public class Connection implements Runnable {
         session.onAttack(this, attackerId, targetId);
     }
 
+    /**
+     * Parses input keys and dispatches troop recruitment production commands to the game session.
+     *
+     * @param tokens The complete token array split from the raw incoming protocol message string.
+     */
     private void handleBuyUnit(String[] tokens) {
         if (!isLoggedIn()) {
             sendToClient(Protocol.ERROR, "NOT_LOGGED_IN");
@@ -209,6 +272,11 @@ public class Connection implements Runnable {
         session.onUnitPurchase(this, cityId, troopType);
     }
 
+    /**
+     * Parses configuration keys and dispatches structure level-upgrade requests to the session referee.
+     *
+     * @param tokens The complete token array split from the raw incoming protocol message string.
+     */
     private void handleUpgradeCity(String[] tokens) {
         if (!isLoggedIn()) {
             sendToClient(Protocol.ERROR, "NOT_LOGGED_IN");
@@ -230,6 +298,9 @@ public class Connection implements Runnable {
         session.onCityUpgrade(this, cityId);
     }
 
+    /**
+     * Forwards an action finalization token to rotate player turns within the game session.
+     */
     private void handleEndTurn() {
         if (!isLoggedIn()) {
             sendToClient(Protocol.ERROR, "NOT_LOGGED_IN");
@@ -245,8 +316,7 @@ public class Connection implements Runnable {
     }
 
     /**
-     * Safely terminates the network connection, closes streams,
-     * and stops the listening thread.
+     * Gracefully stops the reading thread loop, closes I/O buffers, and breaks socket channels.
      */
     public synchronized void closeConnection() {
         running = false;
@@ -268,10 +338,19 @@ public class Connection implements Runnable {
         }
     }
 
+    /**
+     * Verifies if this connection context has completed identity validation.
+     *
+     * @return {@code true} if an authenticated name string is bound to this thread context;
+     * {@code false} if unauthenticated.
+     */
     private boolean isLoggedIn() {
         return playerName != null;
     }
 
+    /**
+     * Hard-closes underlying low-level socket connections and logs critical connection failures.
+     */
     public void quit() {
         LOGGER.info("Quitting connection.");
         try {
@@ -283,10 +362,20 @@ public class Connection implements Runnable {
         }
     }
 
+    /**
+     * Links this connection worker thread to an active game session.
+     *
+     * @param session The multi-user matchmaking {@link GameSession} room context to join.
+     */
     public void setSession(GameSession session) {
         this.session = session;
     }
 
+    /**
+     * Fetches the registered player identity string name key bound to this connection state.
+     *
+     * @return The authenticated username string tracking this connection, or {@code null} if unauthenticated.
+     */
     public String getPlayerName() {
         return playerName;
     }

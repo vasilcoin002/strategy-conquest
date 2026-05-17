@@ -18,7 +18,9 @@ import java.util.logging.Logger;
 /**
  * Main server class responsible for accepting client connections.
  * <p>
- * Manages active connections and game sessions.
+ * Manages active connections and game sessions. It listens for inbound client
+ * requests on a dedicated port background thread, handles lobby registration, matches usernames
+ * against game configuration definitions, and spawns active multiplayer game sessions.
  */
 public class GameServer implements Runnable {
 
@@ -29,10 +31,23 @@ public class GameServer implements Runnable {
     private static final Logger LOGGER = Logger.getLogger(GameServer.class.getName());
     private boolean running;
 
+    /**
+     * Constructs a main game server state machine allocated to a specified network port.
+     *
+     * @param port The specific network port index number where the server socket will listen for connections.
+     */
     public GameServer(int port) {
         this.PORT_NUMBER = port;
     }
 
+    /**
+     * Executes the background thread execution block for connection listening loops.
+     * <p>
+     * Initializes the core {@link ServerSocket} and continually yields to blocking {@code accept()} requests.
+     * Each accepted connection is safely wrapped in a worker thread and registered to run independently.
+     *
+     * @throws RuntimeException wrapping an underlying {@link IOException} if socket binding or initialization fails.
+     */
     @Override
     public void run() {
         try {
@@ -49,6 +64,17 @@ public class GameServer implements Runnable {
         }
     }
 
+    /**
+     * Registers a verified network connection client into the active lobby registry tracking registry.
+     * <p>
+     * Enforces username uniqueness constraints. If successful, it maps the connection and immediately
+     * executes a matchmaking query to check if a new game session can be allocated.
+     *
+     * @param connection The server-side network {@link Connection} handling communications with the remote client machine.
+     * @param name       The requested profile username string claimed by the client context.
+     * @return {@code true} if the name was free and registration into the lobby maps succeeded;
+     * {@code false} if the identifier is already claimed by another online player.
+     */
     public synchronized boolean registerConnection(Connection connection, String name) {
         if (isNameTaken(name)) {
             return false;
@@ -62,10 +88,21 @@ public class GameServer implements Runnable {
         return true;
     }
 
+    /**
+     * Checks whether a specific username string is currently mapped to an active lobby connection.
+     *
+     * @param name The target username string parameter to check.
+     * @return {@code true} if the identifier key exists inside current connections; {@code false} otherwise.
+     */
     public synchronized boolean isNameTaken(String name) {
         return connectionsByName.containsKey(name);
     }
 
+    /**
+     * Gracefully breaks the continuous listening loop, terminates open sockets, and destroys all ongoing game sessions.
+     * <p>
+     * Interrupts blocking socket blocks, closes channels, and runs safety teardown routines on all active matches.
+     */
     public synchronized void stopServer() {
         running = false;
         try {
@@ -83,6 +120,13 @@ public class GameServer implements Runnable {
         sessions.clear();
     }
 
+    /**
+     * Evaluates lobby pairing criteria and authoritatively initializes a synchronized multiplayer game session room.
+     * <p>
+     * Pulls the first two connections from the pool, reads and parses the configuration file,
+     * strips any invisible character anomalies, and enforces strict, case-insensitive nickname checks against the level file.
+     * If validation passes, it initializes a {@link ServerGameService} referee layer and runs the match session.
+     */
     public synchronized void tryAssignToSession() {
         // If we have at least 2 people waiting in the lobby
         if (connectionsByName.size() >= 2) {
@@ -154,13 +198,23 @@ public class GameServer implements Runnable {
     }
 
     /**
-     * Strips all invisible characters, carriage returns, and extra spaces.
+     * Strips all invisible characters, carriage returns, tabs, and trailing whitespaces from name markers.
+     * <p>
+     * Protects the matching logic from regex text processing anomalies caused by varied file encodings.
+     *
+     * @param input The uncleaned raw string configuration line parameter.
+     * @return A clean, trimmed string containing only visible tracking identifiers.
      */
     private String cleanName(String input) {
         if (input == null) return "";
         return input.replaceAll("[\\n\\r\\t\\u200e\\u200f]", "").trim();
     }
 
+    /**
+     * Removes an active game session from the tracking registry and closes its associated network links.
+     *
+     * @param session The specific {@link GameSession} instance that needs to be destroyed.
+     */
     public synchronized void removeSession(GameSession session) {
         boolean removed = sessions.remove(session);
 
