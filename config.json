@@ -1,6 +1,6 @@
 {
-  "mapWidth": 3,
-  "mapHeight": 3,
+  "mapWidth": 5,
+  "mapHeight": 5,
   "currentPlayerName": "Vasya",
   "players": [
     {

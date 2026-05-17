@@ -104,62 +104,81 @@ public class GameServer implements Runnable {
     }
 
     public synchronized void tryAssignToSession() {
+        // If we have at least 2 people waiting in the lobby
         if (connectionsByName.size() >= 2) {
 
             List<Connection> waitingList = new ArrayList<>(connectionsByName.values());
             Connection c1 = waitingList.get(0);
             Connection c2 = waitingList.get(1);
 
-            connectionsByName.remove(c1.getPlayerName());
-            connectionsByName.remove(c2.getPlayerName());
-
-            GameSetupManager setupManager = new GameSetupManager();
-            Game game;
-
+            pjvsemproj.config.GameConfigParser parser = new pjvsemproj.config.GameConfigParser();
+            pjvsemproj.dto.GameDTO dto;
             try {
-                game = setupManager.loadNetworkGame("config.json");
+                dto = parser.parseLevelConfig("config.json");
             } catch (Exception e) {
                 c1.sendToClient(Protocol.ERROR, "Config failed: " + e.getMessage());
                 c2.sendToClient(Protocol.ERROR, "Config failed: " + e.getMessage());
                 return;
             }
 
-            String expected1 = game.getPlayers().get(0).getName();
-            String expected2 = game.getPlayers().get(1).getName();
+            String expected1 = cleanName(dto.players.get(0).name);
+            String expected2 = cleanName(dto.players.get(1).name);
 
-            String name1 = c1.getPlayerName();
-            String name2 = c2.getPlayerName();
+            String name1 = cleanName(c1.getPlayerName());
+            String name2 = cleanName(c2.getPlayerName());
 
-            boolean isMatch = (name1.equals(expected1) && name2.equals(expected2)) ||
-                    (name1.equals(expected2) && name2.equals(expected1));
+            boolean isMatch = (name1.equalsIgnoreCase(expected1) && name2.equalsIgnoreCase(expected2)) ||
+                    (name1.equalsIgnoreCase(expected2) && name2.equalsIgnoreCase(expected1));
 
             if (!isMatch) {
-                String errorMsg = "Name mismatch! Config requires: " + expected1 + " & " + expected2;
+                String errorMsg = "Mismatch! Config needs: '" + expected1 + "' & '" + expected2 + "'. You typed: '" + name1 + "' & '" + name2 + "'.";
 
                 c1.sendToClient(Protocol.ERROR, errorMsg);
                 c2.sendToClient(Protocol.ERROR, errorMsg);
 
-                connectionsByName.remove(name1);
-                connectionsByName.remove(name2);
-                c1.closeConnection();
-                c2.closeConnection();
+                connectionsByName.remove(c1.getPlayerName());
+                connectionsByName.remove(c2.getPlayerName());
+                c1.quit();
+                c2.quit();
                 return;
             }
 
-            CoreGameService service = new ServerGameService(game);
+            pjvsemproj.config.GameConfigSanitizer sanitizer = new pjvsemproj.config.GameConfigSanitizer();
+            pjvsemproj.config.GameConfigValidator validator = new pjvsemproj.config.GameConfigValidator();
+            GameSetupManager setupManager = new GameSetupManager();
 
+            try {
+                sanitizer.sanitize(dto);
+                validator.validate(dto);
+            } catch (Exception e) {
+                c1.sendToClient(Protocol.ERROR, "Validation failed: " + e.getMessage());
+                c2.sendToClient(Protocol.ERROR, "Validation failed: " + e.getMessage());
+                return;
+            }
+
+            Game game = setupManager.createNetworkGameFromDTO(dto, expected1);
+
+            connectionsByName.remove(c1.getPlayerName());
+            connectionsByName.remove(c2.getPlayerName());
+
+            CoreGameService service = new ServerGameService(game);
             GameSession session = new GameSession(this, c1, c2, service);
             sessions.add(session);
 
             c1.setSession(session);
             c2.setSession(session);
 
-            LOGGER.info("Match created between " + name1 + " and " + name2);
-            session.startGame();
-
-            LOGGER.info("Match created between " + c1.getPlayerName() + " and " + c2.getPlayerName());
+            LOGGER.info("Perfect match created between " + name1 + " and " + name2);
             session.startGame();
         }
+    }
+
+    /**
+     * Strips all invisible characters, carriage returns, and extra spaces.
+     */
+    private String cleanName(String input) {
+        if (input == null) return "";
+        return input.replaceAll("[\\n\\r\\t\\u200e\\u200f]", "").trim();
     }
 
     public synchronized void removeSession(GameSession session) {

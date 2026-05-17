@@ -28,7 +28,7 @@ public class MultiplayerLobbyController {
         int port = parseAndValidatePort();
         if (port == -1) return;
 
-        director.hostLobby(this.clientName, port);
+        director.hostLobby(this.clientName, port, this::handleServerConfigError);
     }
 
     private void handleJoinGame() {
@@ -41,7 +41,7 @@ public class MultiplayerLobbyController {
         int port = parseAndValidatePort();
         if (port == -1) return;
 
-        director.joinLobby(this.clientName, host, port);
+        director.joinLobby(this.clientName, host, port, this::handleServerConfigError);
     }
 
     /**

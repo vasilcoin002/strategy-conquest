@@ -82,7 +82,13 @@ public class Client implements Runnable {
                 break;
 
             case ERROR:
-                LOGGER.warning("Server ERROR: " + (tokens.length > 1 ? tokens[1] : ""));
+                String errorMsg = tokens.length > 1 ? tokens[1] : "Unknown Error";
+
+                if (lobbyListener != null) {
+                    lobbyListener.onError(errorMsg);
+                }
+
+                LOGGER.warning("Server ERROR: " + errorMsg);
                 break;
 
             case GAME_STARTED:
@@ -176,7 +182,7 @@ public class Client implements Runnable {
         }
 
         return true;
-        }
+    }
 
 
     public void close(){

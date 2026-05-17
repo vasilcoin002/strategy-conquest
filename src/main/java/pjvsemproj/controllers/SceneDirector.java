@@ -154,21 +154,21 @@ public class SceneDirector {
         System.out.println("Server started on port " + port);
     }
 
-    public void joinLobby(String playerName, String host, int port) {
+    public void joinLobby(String playerName, String host, int port, Consumer<String> onError) {
         System.out.println(playerName + " joins " + host + ":" + port);
 
         Client client = new Client(host, port, playerName);
-        client.setLobbyListener(new LobbyEventListener(this, client, playerName));
+
+        client.setLobbyListener(new LobbyEventListener(this, client, playerName, onError));
+
         Thread clientThread = new Thread(client);
         clientThread.setDaemon(true);
         clientThread.start();
     }
 
-
-    public void hostLobby(String playerName, int port) {
+    public void hostLobby(String playerName, int port, Consumer<String> onError) {
         startServer(port);
-
-        joinLobby(playerName, "localhost", port);
+        joinLobby(playerName, "localhost", port, onError);
     }
 
     public void showNetworkGame(ClientGameEngine gameService, String clientName) {
