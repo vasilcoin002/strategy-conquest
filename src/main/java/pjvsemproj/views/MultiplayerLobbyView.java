@@ -7,32 +7,35 @@ import javafx.scene.layout.VBox;
 public class MultiplayerLobbyView {
 
     private final VBox root;
-    private final ListView<LobbyInfo> lobbyList;
-    private final TextField playerNameField;
 
+    private Label errorLabel;
     private final TextField hostField;
+    private final TextField portField;
+
     private Runnable onCreateGameAction;
     private Runnable onJoinGameAction;
     private Runnable onBackAction;
 
     public MultiplayerLobbyView() {
         root = new VBox(15);
-        hostField = new TextField("localhost");
-        hostField.setPromptText("Host");
-        hostField.setMaxWidth(300);
         root.setAlignment(Pos.CENTER);
         root.setStyle("-fx-background-color: #2b2b2b; -fx-padding: 30px;");
 
+        errorLabel = new Label();
+        errorLabel.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+
+        // Inside your constructor, around where you define hostField
+        hostField = new TextField("localhost");
+        hostField.setPromptText("Host");
+        hostField.setMaxWidth(300);
+
+        // ADD THIS:
+        portField = new TextField("4444");
+        portField.setPromptText("Port (e.g., 4444)");
+        portField.setMaxWidth(300);
+
         Label title = new Label("MULTIPLAYER LOBBIES");
         title.setStyle("-fx-text-fill: white; -fx-font-size: 34px; -fx-font-weight: bold;");
-
-        playerNameField = new TextField("Player");
-        playerNameField.setPromptText("Player name");
-        playerNameField.setMaxWidth(300);
-
-        lobbyList = new ListView<>();
-        lobbyList.setPrefSize(400, 250);
-        lobbyList.setPlaceholder(new Label("No lobbies available"));
 
         Button createBtn = new Button("Create Game");
         Button joinBtn = new Button("Join Selected Lobby");
@@ -56,8 +59,9 @@ public class MultiplayerLobbyView {
 
         root.getChildren().addAll(
                 title,
-                playerNameField,
+                errorLabel,
                 hostField,
+                portField,
                 createBtn,
                 joinBtn,
                 backBtn
@@ -73,16 +77,12 @@ public class MultiplayerLobbyView {
         return root;
     }
 
-    public String getPlayerName() {
-        return playerNameField.getText().trim();
+    public void showError(String errorMessage) {
+        errorLabel.setText(errorMessage);
     }
 
-    public LobbyInfo getSelectedLobby() {
-        return lobbyList.getSelectionModel().getSelectedItem();
-    }
-
-    public void addLobby(LobbyInfo lobbyInfo) {
-        lobbyList.getItems().add(lobbyInfo);
+    public void clearError() {
+        errorLabel.setText("");
     }
 
     public void setOnCreateGameAction(Runnable action) {
@@ -97,11 +97,11 @@ public class MultiplayerLobbyView {
         this.onBackAction = action;
     }
 
-    public void clearLobbies() {
-        lobbyList.getItems().clear();
-    }
-
     public String getHost() {
         return hostField.getText().trim();
+    }
+
+    public String getPortText() {
+        return portField.getText().trim();
     }
 }

@@ -48,7 +48,7 @@ public class SceneDirector {
 
     public void showMainMenu() {
         MainMenuView menuView = new MainMenuView();
-        MainMenuController menuController = new MainMenuController(menuView, this);
+        MainMenuController menuController = new MainMenuController(menuView, this, menuView.getPlayerName());
 
         Scene scene = new Scene(menuView.getRoot(), 800, 600);
         stage.setScene(scene);
@@ -129,9 +129,9 @@ public class SceneDirector {
         popupStage.showAndWait();
     }
 
-    public void showMultiplayerLobby() {
+    public void showMultiplayerLobby(String playerName) {
         MultiplayerLobbyView lobbyView = new MultiplayerLobbyView();
-        new MultiplayerLobbyController(lobbyView, this);
+        MultiplayerLobbyController lobbyController = new MultiplayerLobbyController(lobbyView, this, playerName);
 
         Scene scene = new Scene(lobbyView.getRoot(), 800, 600);
         stage.setScene(scene);
@@ -188,7 +188,6 @@ public class SceneDirector {
     }
 
     public void hostLobby(String playerName, int port) {
-
         startServer(port);
 
         joinLobby(playerName, "localhost", port);

@@ -1,17 +1,20 @@
 package pjvsemproj.controllers;
 
+import javafx.application.Platform;
 import pjvsemproj.views.MultiplayerLobbyView;
 
 public class MultiplayerLobbyController {
 
     private final MultiplayerLobbyView view;
     private final SceneDirector director;
+    private final String clientName;
 
     private static final int DEFAULT_PORT = 4444;
 
-    public MultiplayerLobbyController(MultiplayerLobbyView view, SceneDirector director) {
+    public MultiplayerLobbyController(MultiplayerLobbyView view, SceneDirector director, String clientName) {
         this.view = view;
         this.director = director;
+        this.clientName = clientName;
 
         bindActions();
     }
@@ -32,20 +35,18 @@ public class MultiplayerLobbyController {
     }
 
     private void handleCreateGame() {
-
-        String playerName =
-                view.getPlayerName();
-
-        director.hostLobby(playerName, DEFAULT_PORT);
+        director.hostLobby(this.clientName, DEFAULT_PORT);
     }
 
     private void handleJoinGame() {
-
-        String playerName =
-                view.getPlayerName();
-
         String host = view.getHost();
 
-        director.joinLobby(playerName, host, DEFAULT_PORT);
+        director.joinLobby(this.clientName, host, DEFAULT_PORT);
+    }
+
+    public void handleServerConfigError(String errorMessage) {
+        Platform.runLater(() -> {
+            view.showError("Server Error: " + errorMessage);
+        });
     }
 }

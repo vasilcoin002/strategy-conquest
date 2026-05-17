@@ -15,10 +15,12 @@ import pjvsemproj.views.MainMenuView;
 public class MainMenuController {
     private final MainMenuView view;
     private final SceneDirector director;
+    private String clientName;
 
-    public MainMenuController(MainMenuView view, SceneDirector director) {
+    public MainMenuController(MainMenuView view, SceneDirector director, String clientName) {
         this.view = view;
         this.director = director;
+        this.clientName = clientName;
 
         bindActions();
     }
@@ -44,11 +46,13 @@ public class MainMenuController {
         }
         view.clearError();
 
+        this.clientName = playerName;
+
         boolean enableLogs = view.isLoggerEnabled();
         System.out.println("Triggered Local Game Load. Logging Enabled: " + enableLogs);
 
         try {
-            director.showLocalGame(playerName);
+            director.showLocalGame(clientName);
         } catch (Exception e) {
             view.showError("Error loading game: " + e.getMessage());
             System.err.println("Game load failed: " + e.getMessage());
@@ -59,7 +63,17 @@ public class MainMenuController {
      * Handles multiplayer game start.
      */
     private void handleLoadMultiplayerGame() {
-        director.showMultiplayerLobby();
+        String playerName = view.getPlayerName();
+
+        if (playerName == null || playerName.trim().isEmpty()) {
+            view.showError("Please enter a name first.");
+            return;
+        }
+
+        this.clientName = playerName;
+
+        // FIX: Pass the name variable into the director here!
+        director.showMultiplayerLobby(playerName);
     }
 
     private void handleExit() {
