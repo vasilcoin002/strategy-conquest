@@ -647,8 +647,6 @@ Used through:
 
 ---
 
----
-
 # Save Files
 
 Game saves are stored in JSON format using Gson serialization.
