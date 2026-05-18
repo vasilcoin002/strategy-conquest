@@ -130,7 +130,7 @@ public class SceneDirector {
     /**
      * Loads a single-player level layout configuration from storage and launches a local match session.
      * <p>
-     * Invokes the {@link GameSetupManager} parsing pipeline to safely read "config.json", provisions
+     * Invokes the {@link GameSetupManager} parsing pipeline to safely read "config1.json", provisions
      * an operational {@link LocalGameService} instance, and requests interface initialization.
      *
      * @param clientName The validated username string used by the human participant.
@@ -154,7 +154,7 @@ public class SceneDirector {
     public void showSaveFileDialog(Consumer<String> onFileSelected) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save Game");
-        fileChooser.setInitialFileName("config.json");
+        fileChooser.setInitialFileName("config1.json");
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("JSON Files", "*.json")
         );

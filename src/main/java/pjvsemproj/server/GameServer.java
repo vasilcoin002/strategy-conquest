@@ -138,7 +138,7 @@ public class GameServer implements Runnable {
             pjvsemproj.config.GameConfigParser parser = new pjvsemproj.config.GameConfigParser();
             pjvsemproj.dto.GameDTO dto;
             try {
-                dto = parser.parseLevelConfig("config.json");
+                dto = parser.parseLevelConfig("config1.json");
             } catch (Exception e) {
                 c1.sendToClient(Protocol.ERROR, "Config failed: " + e.getMessage());
                 c2.sendToClient(Protocol.ERROR, "Config failed: " + e.getMessage());

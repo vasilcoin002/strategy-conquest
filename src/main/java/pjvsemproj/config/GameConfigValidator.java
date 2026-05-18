@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import static pjvsemproj.models.game.GameConstants.*;
 
+// TODO add validation if players have different names
 /**
  * Enforces the structural and logical invariants of a loaded game configuration.
  * <p>
