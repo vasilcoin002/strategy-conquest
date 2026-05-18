@@ -116,7 +116,7 @@ public class Connection implements Runnable {
                 return true;
 
             case GAME_OVER:
-                System.out.println("Server notified of natural win by client. Shutting down...");
+                LOGGER.info("Server notified of natural win by client. Shutting down...");
                 server.stopServer();
                 running = false;
                 return true;
@@ -324,7 +324,7 @@ public class Connection implements Runnable {
         try {
             if (socket != null && !socket.isClosed()) {
                 socket.close();
-                System.out.println("Connection closed for player: " + playerName);
+                LOGGER.info("Connection closed for player: " + playerName);
             }
 
             if (in != null) {
@@ -334,7 +334,7 @@ public class Connection implements Runnable {
                 out.close();
             }
         } catch (IOException e) {
-            System.err.println("Error while closing connection for " + playerName + ": " + e.getMessage());
+            LOGGER.severe("Error while closing connection for " + playerName + ": " + e.getMessage());
         }
     }
 

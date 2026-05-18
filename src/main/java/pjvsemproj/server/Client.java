@@ -67,13 +67,13 @@ public class Client implements Runnable {
                 try {
                     String msg = in.readLine();
                     if (msg != null) {
-                        System.out.println("CLIENT DEBUG: Heard -> " + msg);
+                        LOGGER.info("CLIENT DEBUG: Heard -> " + msg);
                         processIncomingMessage(msg);
                     } else {
                         running = false;
                     }
                 } catch (Exception e) {
-                    System.err.println("CLIENT LISTENER CRASHED!");
+                    LOGGER.severe("CLIENT LISTENER CRASHED!");
                     running = false;
                 }
             }
@@ -119,7 +119,7 @@ public class Client implements Runnable {
                 break;
 
             case GAME_OVER:
-                System.out.println("Client received GAME_OVER for " + tokens[1]);
+                LOGGER.info("Client received GAME_OVER for " + tokens[1]);
                 String winnerName = tokens[1];
                 if (listener != null) {
                     listener.onGameOver(winnerName);
@@ -138,7 +138,7 @@ public class Client implements Runnable {
 
             case TURN_STARTED:
                 String currentPlayer = tokens[1];
-                System.out.println("CLIENT TURN_STARTED listener = " + listener);
+                LOGGER.info("CLIENT TURN_STARTED listener = " + listener);
 
                 if (listener != null) {
                     listener.onTurnStarted(currentPlayer);

@@ -17,6 +17,7 @@ import pjvsemproj.models.game.maps.Tile;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * Orchestrates the creation and initialization of active game sessions.
@@ -28,6 +29,7 @@ import java.util.Map;
  */
 public class GameSetupManager {
 
+    private static final Logger LOGGER = Logger.getLogger(GameSetupManager.class.getName());
     private final GameConfigParser parser;
     private final GameConfigSanitizer sanitizer;
     private final GameConfigValidator validator;
@@ -178,7 +180,7 @@ public class GameSetupManager {
         if (currentPlayer != null) {
             game.setCurrentPlayer(currentPlayer);
         } else {
-            System.err.println("Warning: Current player from save not found. Defaulting to Player 1.");
+            LOGGER.warning("Warning: Current player from save not found. Defaulting to Player 1.");
             game.setCurrentPlayer(game.getPlayers().getFirst());
         }
     }

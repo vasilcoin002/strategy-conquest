@@ -88,7 +88,7 @@ public class AbstractClientService extends AbstractGameService implements Client
         }
         conquestManager.announceWinner(winner);
 
-        System.out.println("Game quit");
+        LOGGER.info("Game quit");
     }
 
     /**

@@ -140,8 +140,5 @@ class GameConfigValidatorTest {
                 () -> validator.validate(invalidDto),
                 "Validator must reject this configuration because it contains multiple domain violations."
         );
-
-        // This will print to your test console so you can see WHICH rule caught the file first!
-        System.out.println("File successfully rejected with reason: " + exception.getMessage());
     }
 }

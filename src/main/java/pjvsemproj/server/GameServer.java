@@ -108,10 +108,10 @@ public class GameServer implements Runnable {
         try {
             if (serverSocket != null && !serverSocket.isClosed()) {
                 serverSocket.close(); // This immediately interrupts serverSocket.accept()
-                System.out.println("Server socket closed gracefully.");
+                LOGGER.info("Server socket closed gracefully.");
             }
         } catch (IOException e) {
-            System.err.println("Error closing server socket: " + e.getMessage());
+            LOGGER.severe("Error closing server socket: " + e.getMessage());
         }
 
         for (GameSession session : sessions) {

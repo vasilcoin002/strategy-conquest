@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.Random;
+import java.util.logging.Logger;
 
 /**
  * Handles the artificial intelligence logic for bot-controlled players.
@@ -18,6 +19,7 @@ import java.util.Random;
  */
 public class BotExecutor {
 
+    private static final Logger LOGGER = Logger.getLogger(BotExecutor.class.getName());
     private final LocalGameService service;
     private final Random random = new Random();
 
@@ -61,7 +63,7 @@ public class BotExecutor {
 
             Set<TileDTO> attackTiles = service.getBotAttackTiles(troop.id);
             TroopUnitDTO target = findWeakestEnemy(attackTiles, botName);
-            System.out.println("Attack tiles count: " + attackTiles.size());
+            LOGGER.info("Attack tiles count: " + attackTiles.size());
 
             if (target != null) {
                 service.attack(troop.id, target.id);

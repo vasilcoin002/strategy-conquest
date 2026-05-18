@@ -12,6 +12,7 @@ import pjvsemproj.views.game.GameView;
 
 import java.util.Objects;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
@@ -24,6 +25,7 @@ import static pjvsemproj.views.ViewConstants.TILE_SIZE;
  */
 public class GameController {
 
+    private static final Logger LOGGER = Logger.getLogger(GameController.class.getName());
     private final GameView view;
     private final ClientGameEngine gameService;
     private final SceneDirector sceneDirector;
@@ -227,9 +229,9 @@ public class GameController {
                     GameDTO saveState = gameService.getGameDTO();
                     GameConfigParser parser = new GameConfigParser();
                     parser.saveLevelConfig(saveState, filePath);
-                    System.out.println("Game saved successfully to: " + filePath);
+                    LOGGER.info("Game saved successfully to: " + filePath);
                 } catch (Exception e) {
-                    System.err.println("Failed to save game: " + e.getMessage());
+                    LOGGER.severe("Failed to save game: " + e.getMessage());
                 }
             }
         });
