@@ -28,13 +28,19 @@ public class LocalGameService extends AbstractClientService {
     }
 
     /**
-     * Signals that the client is ready.
+     * Signals that the client is ready and the game view has been loaded.
      * <p>
-     * Currently unimplemented for local games as no network synchronization is required.
+     * If a game is loaded from a save file and it is currently the AI's turn,
+     * this method kickstarts the bot's execution loop so the game doesn't softlock.
      */
     @Override
     public void ready() {
-
+        if (turnManager.getCurrentPlayer() instanceof BotPlayer) {
+            CompletableFuture.runAsync(() -> {
+                playBotTurn();
+                endTurn();
+            });
+        }
     }
 
     /**

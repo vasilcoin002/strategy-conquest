@@ -16,8 +16,6 @@ import java.util.logging.Logger;
 
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
-// TODO fix when game is loaded with bot's first turn, then nothing can happen because bot is not making it's turn and the human player can't click next turn
-// TODO write test for the problem above
 /**
  * Main application coordinator implementing the Controller role in MVC patterns.
  * <p>
@@ -80,11 +78,12 @@ public class GameController {
                 networkService.notifyServerOfWin(winnerName);
             }
 
-            // 2. Trigger the UI change on the JavaFX thread
             Platform.runLater(() -> sceneDirector.showGameOverPopup(winnerName));
         });
 
         view.setOnNextTurnAction(gameService::endTurn);
+
+        gameService.ready();
     }
 
     /**
