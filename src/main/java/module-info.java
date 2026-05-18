@@ -4,6 +4,7 @@ module pjvsemproj.pjvsemproj {
     requires javafx.graphics;
     requires java.logging;
     requires com.google.gson;
+    requires pjvsemproj.pjvsemproj;
 
     opens pjvsemproj to javafx.fxml;
     exports pjvsemproj;

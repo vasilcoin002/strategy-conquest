@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.logging.Logger;
 
 /**
  * Structural coordinator class implementing the Application Controller and Router patterns.
@@ -39,6 +40,7 @@ import java.util.function.Consumer;
  * and tracks server background threads safely.
  */
 public class SceneDirector {
+    private static final Logger LOGGER = Logger.getLogger(SceneDirector.class.getName());
     private final Stage stage;
     private Thread serverThread;
 
@@ -220,7 +222,7 @@ public class SceneDirector {
      */
     public void startServer(int port) {
         if (serverThread != null && serverThread.isAlive()) {
-            System.out.println("Server already running.");
+            LOGGER.warning("Server already running.");
             return;
         }
 
@@ -229,7 +231,7 @@ public class SceneDirector {
         serverThread.setDaemon(true);
         serverThread.start();
 
-        System.out.println("Server started on port " + port);
+        LOGGER.info("Server started on port " + port);
     }
 
     /**
@@ -244,7 +246,7 @@ public class SceneDirector {
      * @param onError    Callback handler closure to route remote registration rejection reports back onto lobby errors.
      */
     public void joinLobby(String playerName, String host, int port, Consumer<String> onError) {
-        System.out.println(playerName + " joins " + host + ":" + port);
+        LOGGER.info(playerName + " joins " + host + ":" + port);
 
         Client client = new Client(host, port, playerName);
 

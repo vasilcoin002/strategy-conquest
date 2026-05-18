@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import static pjvsemproj.models.game.GameConstants.TROOP_HEALING_PERCENT_BY_MAX_HP;
 
@@ -27,6 +28,7 @@ import static pjvsemproj.models.game.GameConstants.TROOP_HEALING_PERCENT_BY_MAX_
  * garisoned units.
  */
 public class CombatManager implements ITurnListener {
+    private static final Logger LOGGER = Logger.getLogger(CombatManager.class.getName());
 
     private Player currentPlayer;
     private final GameMap gameMap;
@@ -171,8 +173,9 @@ public class CombatManager implements ITurnListener {
         }
 
         target.takeDamage(attacker.calculateDamage());
-        finalizeAttack(attacker, target);
+        LOGGER.fine("Attacked troop with id " + target.getId());
 
+        finalizeAttack(attacker, target);
         return true;
     }
 

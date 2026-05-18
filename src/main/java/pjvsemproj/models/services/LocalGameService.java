@@ -8,6 +8,7 @@ import pjvsemproj.models.game.players.HumanPlayer;
 
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.logging.Logger;
 
 /**
  * Local (single-player) implementation of GameService.
@@ -65,7 +66,7 @@ public class LocalGameService extends AbstractClientService {
      * over to a newly instantiated {@link BotExecutor} module.
      */
     private void playBotTurn() {
-        System.out.println("Bot is making its moves...");
+        Logger.getLogger(LocalGameService.class.getName()).info("Bot is making its moves...");
 
         // simulation of thinking
         try {

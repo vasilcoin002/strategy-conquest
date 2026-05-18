@@ -10,6 +10,8 @@ import pjvsemproj.models.managers.utils.GridPositionHelper;
 import pjvsemproj.models.managers.utils.MovementNode;
 
 import java.util.*;
+import java.util.logging.Logger;
+
 
 /**
  * Handles movement logic including calculating reachable tiles, validating movement, and executing movement.
@@ -18,6 +20,7 @@ import java.util.*;
  * multi-user tile blockages, and interfaces with the {@link ConquestManager} to resolve capture triggers.
  */
 public class MovementManager implements ITurnListener {
+    private static final Logger LOGGER = Logger.getLogger(MovementManager.class.getName());
 
     private Player currentPlayer;
     private final GameMap gameMap;
@@ -144,6 +147,7 @@ public class MovementManager implements ITurnListener {
         }
 
         if (troopUnit.hasMovedThisTurn()) {
+            LOGGER.fine("Movement rejected: Unit " + troopUnit.getId() + " has already moved this turn.");
             return false;
         }
 

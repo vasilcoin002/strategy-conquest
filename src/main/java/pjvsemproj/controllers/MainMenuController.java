@@ -3,6 +3,11 @@ package pjvsemproj.controllers;
 import javafx.application.Platform;
 import pjvsemproj.views.MainMenuView;
 
+import java.util.logging.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.LogManager;
+
 /**
  * Controller for main menu UI.
  * <p>
@@ -12,6 +17,7 @@ import pjvsemproj.views.MainMenuView;
  * - exiting application
  */
 public class MainMenuController {
+    private static final Logger LOGGER = Logger.getLogger(MainMenuController.class.getName());
     private final MainMenuView view;
     private final SceneDirector director;
     private String clientName;
@@ -60,13 +66,14 @@ public class MainMenuController {
         this.clientName = playerName;
 
         boolean enableLogs = view.isLoggerEnabled();
-        System.out.println("Triggered Local Game Load. Logging Enabled: " + enableLogs);
+        configureGlobalLogging(enableLogs);
+        LOGGER.info("Triggered Local Game Load. Logging Enabled: " + enableLogs);
 
         try {
             director.showLocalGame(clientName);
         } catch (Exception e) {
             view.showError("Error loading game: " + e.getMessage());
-            System.err.println("Game load failed: " + e.getMessage());
+            LOGGER.log(Level.SEVERE, "Game load failed: {0}", e.getMessage());
         }
     }
 
@@ -86,6 +93,10 @@ public class MainMenuController {
 
         this.clientName = playerName;
 
+        boolean enableLogs = view.isLoggerEnabled();
+        configureGlobalLogging(enableLogs);
+        LOGGER.info("Triggered Multiplayer Lobby Load. Logging Enabled: " + enableLogs);
+
         director.showMultiplayerLobby(playerName);
     }
 
@@ -95,5 +106,18 @@ public class MainMenuController {
     private void handleExit() {
         Platform.exit();
         System.exit(0);
+    }
+
+    /**
+     * Actively configures the Java util logging framework based on UI selections.
+     * Mutes all handlers if logging is disabled.
+     */
+    private void configureGlobalLogging(boolean enableLogs) {
+        Logger rootLogger = LogManager.getLogManager().getLogger("");
+        if (enableLogs) {
+            rootLogger.setLevel(Level.ALL);
+        } else {
+            rootLogger.setLevel(Level.OFF);
+        }
     }
 }

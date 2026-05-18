@@ -6,6 +6,7 @@ import pjvsemproj.models.services.CoreGameService;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 
 /**
@@ -16,6 +17,7 @@ import java.util.Objects;
  * validated state mutations to both player participants using the networking protocols.
  */
 public class GameSession {
+    private static final Logger LOGGER = Logger.getLogger(GameSession.class.getName());
 
     private final GameServer gameServer;
     private final Connection connection1;
@@ -272,7 +274,7 @@ public class GameSession {
      * @param connection The specific {@link Connection} that requested disconnection.
      */
     public synchronized void onPlayerQuit(Connection connection) {
-        System.out.println("Server sending GAME_OVER to remaining player");
+        LOGGER.info("Server sending GAME_OVER to remaining player");
         endGameForRemainingPlayer(connection);
     }
 

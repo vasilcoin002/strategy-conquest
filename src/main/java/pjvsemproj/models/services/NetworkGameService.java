@@ -8,6 +8,8 @@ import pjvsemproj.server.Client;
 import pjvsemproj.server.NetworkGameListener;
 import pjvsemproj.server.Protocol;
 
+import java.util.logging.Logger;
+
 /**
  * Network-based implementation of GameService.
  * <p>
@@ -15,7 +17,7 @@ import pjvsemproj.server.Protocol;
  * serializes requests into network protocols, and routes instructions to a remote server host for authoritative evaluation.
  */
 public class NetworkGameService extends AbstractClientService {
-
+    private static final Logger LOGGER = Logger.getLogger(NetworkGameService.class.getName());
     private final Client client;
 
     /**
@@ -201,12 +203,12 @@ public class NetworkGameService extends AbstractClientService {
      * @param winnerName Profile username string identifying the match winner.
      */
     public void applyServerGameOver(String winnerName) {
-        System.out.println("Service triggering UI for " + winnerName);
+        LOGGER.info("Service triggering UI for " + winnerName);
 
         if (this.onGameOver != null) {
             this.onGameOver.accept(winnerName);
         } else {
-            System.err.println("CRITICAL UI ERROR: The onGameOver listener is NULL. GameController did not connect it!");
+            LOGGER.severe("CRITICAL UI ERROR: The onGameOver listener is NULL. GameController did not connect it!");
         }
     }
 

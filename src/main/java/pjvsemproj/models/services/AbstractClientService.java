@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.logging.Logger;
 
 /**
  * Intermediate orchestration subclass layering localization rules over core simulation services.
@@ -17,6 +18,7 @@ import java.util.function.Consumer;
  * to block cross-user operations, and dispatches UI thread component refresh callbacks.
  */
 public class AbstractClientService extends AbstractGameService implements ClientGameEngine {
+    private static final Logger LOGGER = Logger.getLogger(AbstractClientService.class.getName());
 
     protected String clientName;
     protected Consumer<String> onGameOver;
@@ -246,20 +248,19 @@ public class AbstractClientService extends AbstractGameService implements Client
     public Set<TileDTO> getAvailableTilesDTOForMovement(String unitId) {
         TroopUnit troop = findTroopById(unitId);
 
-        System.out.println("=== MOVE DEBUG ===");
-        System.out.println("clientName = " + clientName);
-        System.out.println("troop owner = " + troop.getOwner().getName());
-        System.out.println("current player = " + turnManager.getCurrentPlayer().getName());
-        System.out.println("moved = " + troop.hasMovedThisTurn());
+        LOGGER.info("=== MOVE DEBUG ===");
+        LOGGER.info("clientName = " + clientName);
+        LOGGER.info("troop owner = " + troop.getOwner().getName());
+        LOGGER.info("current player = " + turnManager.getCurrentPlayer().getName());
+        LOGGER.info("moved = " + troop.hasMovedThisTurn());
 
         if (!troopBelongsToClient(unitId)) {
-            System.out.println("BLOCKED: troop does not belong to client");
+            LOGGER.warning("BLOCKED: troop does not belong to client");
             return new HashSet<>();
         }
 
         Set<TileDTO> result = super.getAvailableTilesDTOForMovement(unitId);
-
-        System.out.println("move tiles count = " + result.size());
+        LOGGER.info("move tiles count = " + result.size());
 
         return result;
     }
