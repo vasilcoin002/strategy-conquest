@@ -124,6 +124,7 @@ public class GameView {
     public void show(Stage stage, String clientName) {
         stage.setTitle("Strategy Game - " + clientName);
         stage.setScene(scene);
+        stage.setResizable(false);
     }
 
     /**
