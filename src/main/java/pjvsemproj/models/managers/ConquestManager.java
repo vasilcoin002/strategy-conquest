@@ -7,6 +7,7 @@ import pjvsemproj.models.managers.utils.OwnershipHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Handles conquest logic including conquering cities, detecting winners, and notifying listeners.
@@ -15,6 +16,7 @@ import java.util.List;
  * calculates victory criteria conditions, and updates match state listeners.
  */
 public class ConquestManager implements ITurnListener {
+    private static final Logger LOGGER = Logger.getLogger(ConquestManager.class.getName());
 
     private final List<Player> players;
     private Player currentPlayer;
@@ -61,6 +63,17 @@ public class ConquestManager implements ITurnListener {
      * @param city      The targeted {@link City} node structure undergoing transfer.
      */
     public void conquerCity(TroopUnit troopUnit, City city) {
+        if (!troopUnit.getTile().equals(city.getTile())) {
+            LOGGER.warning("Conquest rejected: unit " + troopUnit.getId()
+                    + " is on pos ("
+                    + troopUnit.getTile().getX() + ", " + troopUnit.getTile().getY()
+                    + "), but the city is on pos ("
+                    + city.getTile().getX() + ", " + city.getTile().getY()
+                    + ")"
+            );
+            return;
+        }
+
         if (troopUnit.getOwner() == currentPlayer) {
             OwnershipHelper.transferCity(city, troopUnit.getOwner());
         }

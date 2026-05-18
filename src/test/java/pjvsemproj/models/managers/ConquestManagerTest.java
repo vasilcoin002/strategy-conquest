@@ -29,7 +29,7 @@ class ConquestManagerTest {
     }
 
     @Test
-    void conquerCity_EnemyCity_TransfersOwnershipAndUpdatesLists() {
+    void conquerCity_EnemyCity_TransfersOwnership() {
         // Setup a city owned by Player 2
         City enemyCity = new City(new Tile(0, 0), CityType.LEVEL_1);
         OwnershipHelper.transferCity(enemyCity, player2);
@@ -108,7 +108,7 @@ class ConquestManagerTest {
     }
 
     @Test
-    void conquerCity_AttackerOnDifferentTile_ThrowsException() {
+    void conquerCity_AttackerOnDifferentTileFromCity_DoesNotTransferOwnership() {
         Tile cityTile = new Tile(0, 0);
         Tile attackerTile = new Tile(0, 1); // Attacker is one tile away
 
@@ -118,12 +118,8 @@ class ConquestManagerTest {
         TroopUnit attacker = new TroopUnit(TroopType.Infantry, attackerTile, false, false);
         OwnershipHelper.addTroopUnitToPlayer(attacker, player1);
 
-        // Attempting to conquer from a different tile should trigger our guard clause
-        IllegalStateException exception = assertThrows(
-                IllegalStateException.class,
-                () -> conquestManager.conquerCity(attacker, enemyCity),
-                "Expected conquerCity to throw an exception when attacker is not on the city tile"
-        );
+        // Attempting to conquer from a different tile should log a warning and return early
+        conquestManager.conquerCity(attacker, enemyCity);
 
         // Ensure ownership did not accidentally transfer
         assertEquals(player2, enemyCity.getOwner(), "City must remain owned by Player 2");
