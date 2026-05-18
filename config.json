@@ -4,7 +4,7 @@
   "currentPlayerName": "Ivan",
   "players": [
     {
-      "name": "Ivan",
+      "name": "Vasya",
       "balance": 100
     },
     {
@@ -17,7 +17,7 @@
       "entityType": "City",
       "x": 1,
       "y": 1,
-      "ownerName": "Ivan",
+      "ownerName": "Vasya",
       "cityLevel": "LEVEL_1"
     },
     {
@@ -25,14 +25,14 @@
       "entityType": "City",
       "x": 1,
       "y": 8,
-      "ownerName": "Ivan",
+      "ownerName": "Vasya",
       "cityLevel": "LEVEL_1"
     },
     {
       "entityType": "Artillery",
       "x": 2,
       "y": 1,
-      "ownerName": "Ivan",
+      "ownerName": "Vasya",
       "hp": 20,
       "hasMovedThisTurn": false,
       "hasAttackedThisTurn": false
@@ -41,7 +41,7 @@
       "entityType": "Militia",
       "x": 2,
       "y": 8,
-      "ownerName": "Ivan",
+      "ownerName": "Vasya",
       "hp": 20,
       "hasMovedThisTurn": false,
       "hasAttackedThisTurn": false
