@@ -102,4 +102,13 @@ public class GameSessionMockitoTest {
         verify(connection1).sendToClient(Protocol.TURN_STARTED, "Player2");
         verify(connection2).sendToClient(Protocol.TURN_STARTED, "Player2");
     }
+
+    @Test
+    void onPlayerQuit_ShouldDeclareRemainingPlayerWinner_AndStopServer() {
+        session.onPlayerQuit(connection1);
+
+        verify(connection2).sendToClient(Protocol.GAME_OVER, "Player2");
+        verify(server).removeSession(session);
+        verify(server).stopServer();
+    }
 }
