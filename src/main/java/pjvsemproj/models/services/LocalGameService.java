@@ -70,8 +70,8 @@ public class LocalGameService extends AbstractClientService {
         // simulation of thinking
         try {
             Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            // TODO log
+        } catch (InterruptedException _) {
+
         }
 
         BotExecutor bot = new BotExecutor(this);

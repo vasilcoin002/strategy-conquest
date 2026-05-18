@@ -19,7 +19,6 @@ import java.util.function.Consumer;
 import static pjvsemproj.views.ViewConstants.GAME_SIDE_PANEL_WIDTH;
 import static pjvsemproj.views.ViewConstants.TILE_SIZE;
 
-// TODO make this non scalable
 /**
  * Main game UI configuration management screen layer.
  * <p>

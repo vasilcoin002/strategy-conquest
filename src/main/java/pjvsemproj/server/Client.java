@@ -74,7 +74,6 @@ public class Client implements Runnable {
                     }
                 } catch (Exception e) {
                     System.err.println("CLIENT LISTENER CRASHED!");
-                    // TODO log
                     running = false;
                 }
             }
