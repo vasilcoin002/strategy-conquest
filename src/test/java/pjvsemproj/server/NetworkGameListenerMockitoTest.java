@@ -1,10 +1,9 @@
-package pjvsemproj.models.services;
+package pjvsemproj.server;
 
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pjvsemproj.models.services.NetworkGameService;
-import pjvsemproj.server.NetworkGameListener;
 
 import static org.mockito.Mockito.*;
 

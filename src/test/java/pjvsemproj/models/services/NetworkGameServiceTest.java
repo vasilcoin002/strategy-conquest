@@ -9,7 +9,7 @@ import pjvsemproj.server.Client;
 
 import static org.mockito.Mockito.*;
 
-class NetworkGameServiceTest {
+public class NetworkGameServiceTest {
 
     private Client client;
     private Game game;
