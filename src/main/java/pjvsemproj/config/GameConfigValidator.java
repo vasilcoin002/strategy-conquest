@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 
 import static pjvsemproj.models.game.GameConstants.*;
 
-// TODO add validation if players have different names
 /**
  * Enforces the structural and logical invariants of a loaded game configuration.
  * <p>
@@ -62,9 +61,14 @@ public class GameConfigValidator {
         }
 
         boolean currentPlayerFound = false;
+        Set<String> uniquePlayerNames = new HashSet<>();
 
         for (PlayerDTO player : gameDTO.players) {
-            validateSinglePlayer(player); // Enforces name and balance rules
+            validateSinglePlayer(player);
+
+            if (!uniquePlayerNames.add(player.name)) {
+                throw new InvalidGameConfigException("Players must have unique names. Duplicate found: " + player.name);
+            }
 
             if (player.name.equals(gameDTO.currentPlayerName)) {
                 currentPlayerFound = true;

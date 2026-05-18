@@ -116,6 +116,20 @@ class GameConfigValidatorTest {
     }
 
     @Test
+    void validate_DuplicatePlayerNames_ThrowsException() {
+        GameDTO dto = createValidBaseDTO();
+
+        dto.players = Arrays.asList(
+                new PlayerDTO("Clone", 100),
+                new PlayerDTO("Clone", 100)
+        );
+        dto.currentPlayerName = "Clone";
+
+        assertThrows(InvalidGameConfigException.class, () -> validator.validate(dto),
+                "Validator must reject configurations where players share the same name.");
+    }
+
+    @Test
     void validate_MissingEntityId_ThrowsException() {
         GameDTO dto = createValidBaseDTO();
 
