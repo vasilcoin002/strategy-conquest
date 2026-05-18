@@ -366,6 +366,18 @@ Responsible for:
 - modifying authoritative game state
 
 ---
+# DTO-Based Architecture
+
+The project separates:
+- domain entities
+- transfer objects
+
+DTOs are used for:
+- networking
+- save/load system
+- rendering synchronization
+
+---
 
 # Multiplayer Architecture
 
