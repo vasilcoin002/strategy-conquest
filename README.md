@@ -366,6 +366,18 @@ Responsible for:
 - modifying authoritative game state
 
 ---
+# DTO-Based Architecture
+
+The project separates:
+- domain entities
+- transfer objects
+
+DTOs are used for:
+- networking
+- save/load system
+- rendering synchronization
+
+---
 
 # Multiplayer Architecture
 
@@ -634,3 +646,31 @@ Used through:
 - `Upgradable<T>`
 
 ---
+
+# Save Files
+
+Game saves are stored in JSON format using Gson serialization.
+
+Save files contain:
+- players
+- troop units
+- cities
+- map state
+- current turn information
+
+---
+
+# Development Notes
+
+The project follows:
+- layered architecture
+- service abstraction
+- DTO-based serialization
+- server-authoritative multiplayer architecture
+
+Gameplay logic is separated into managers:
+- movement
+- combat
+- economy
+- conquest
+- turn lifecycle
