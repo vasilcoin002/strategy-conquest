@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<System name="NakupJednotky">
+  <Parameters>
+    <Parameter id="0" name="Typ_Jednotky" type="1">
+      <values>
+        <value>Militia</value>
+        <value>Infantry</value>
+        <value>Cavalry</value>
+        <value>Artillery</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="1" name="Stav_Policka" type="1">
+      <values>
+        <value>Prazdne</value>
+        <value>Vlastni_jednotka</value>
+        <value>Cizi_jednotka</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="2" name="Zustatek_Zlata" type="1">
+      <values>
+        <value>Dostatek</value>
+        <value>Nedostatek</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+  </Parameters>
+  <OutputParameters />
+  <Relations />
+  <Constraints />
+  <Testset doi="2">
+    <Testcase TCNo="0">
+      <Value>1</Value>
+      <Value>Militia</Value>
+      <Value>Prazdne</Value>
+      <Value>Nedostatek</Value>
+    </Testcase>
+    <Testcase TCNo="1">
+      <Value>2</Value>
+      <Value>Militia</Value>
+      <Value>Vlastni_jednotka</Value>
+      <Value>Dostatek</Value>
+    </Testcase>
+    <Testcase TCNo="2">
+      <Value>3</Value>
+      <Value>Militia</Value>
+      <Value>Cizi_jednotka</Value>
+      <Value>Nedostatek</Value>
+    </Testcase>
+    <Testcase TCNo="3">
+      <Value>4</Value>
+      <Value>Infantry</Value>
+      <Value>Prazdne</Value>
+      <Value>Dostatek</Value>
+    </Testcase>
+    <Testcase TCNo="4">
+      <Value>5</Value>
+      <Value>Infantry</Value>
+      <Value>Vlastni_jednotka</Value>
+      <Value>Nedostatek</Value>
+    </Testcase>
+    <Testcase TCNo="5">
+      <Value>6</Value>
+      <Value>Infantry</Value>
+      <Value>Cizi_jednotka</Value>
+      <Value>Dostatek</Value>
+    </Testcase>
+    <Testcase TCNo="6">
+      <Value>7</Value>
+      <Value>Cavalry</Value>
+      <Value>Prazdne</Value>
+      <Value>Nedostatek</Value>
+    </Testcase>
+    <Testcase TCNo="7">
+      <Value>8</Value>
+      <Value>Cavalry</Value>
+      <Value>Vlastni_jednotka</Value>
+      <Value>Dostatek</Value>
+    </Testcase>
+    <Testcase TCNo="8">
+      <Value>9</Value>
+      <Value>Cavalry</Value>
+      <Value>Cizi_jednotka</Value>
+      <Value>Nedostatek</Value>
+    </Testcase>
+    <Testcase TCNo="9">
+      <Value>10</Value>
+      <Value>Artillery</Value>
+      <Value>Prazdne</Value>
+      <Value>Nedostatek</Value>
+    </Testcase>
+    <Testcase TCNo="10">
+      <Value>11</Value>
+      <Value>Artillery</Value>
+      <Value>Vlastni_jednotka</Value>
+      <Value>Dostatek</Value>
+    </Testcase>
+    <Testcase TCNo="11">
+      <Value>12</Value>
+      <Value>Artillery</Value>
+      <Value>Cizi_jednotka</Value>
+      <Value>Nedostatek</Value>
+    </Testcase>
+  </Testset>
+  <Header>
+    <Value />
+    <Value>Typ_Jednotky</Value>
+    <Value>Stav_Policka</Value>
+    <Value>Zustatek_Zlata</Value>
+  </Header>
+  <Stat-Data>
+    <ExecutionTime>0.009</ExecutionTime>
+    <MaxDomainSize>4</MaxDomainSize>
+    <MinDomainSize>2</MinDomainSize>
+    <TotalNoOfCombination>26</TotalNoOfCombination>
+    <TotalNoOfTests>12</TotalNoOfTests>
+    <Algorithm>IPOG</Algorithm>
+  </Stat-Data>
+</System>
+
